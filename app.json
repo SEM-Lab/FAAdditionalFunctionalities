@@ -2,7 +2,7 @@
   "id": "2589b784-1a55-4cb4-903b-095370d3de32",
   "name": "SEM-Functions-BDG",
   "publisher": "Default publisher",
-  "version": "1.0.0.0",
+  "version": "21.0.0.0",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -16,8 +16,8 @@
   "application": "21.0.0.0",
   "idRanges": [
     {
-      "from": 50100,
-      "to": 50149
+      "from": 60000,
+      "to": 60500
     }
   ],
   "resourceExposurePolicy": {
@@ -27,6 +27,8 @@
   },
   "runtime": "10.0",
   "features": [
-    "NoImplicitWith"
-  ]
+    "NoImplicitWith",
+    "TranslationFile"
+  ],
+  "target": "Cloud"
 }

@@ -2,11 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Microsoft cloud sandbox",
+            "name": "Pera Medikal Sandbox",
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "sandbox",
+            "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
+            "environmentName": "Pera_DEV",
             "startupObjectId": 22,
             "startupObjectType": "Page",
             "breakOnError": "All",
