@@ -10,10 +10,11 @@
             "environmentName": "Pera_DEV",
             "startupObjectId": 22,
             "startupObjectType": "Page",
-            "breakOnError": "All",
+            "breakOnError": "ExcludeTry",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync",
         }
     ]
 }
