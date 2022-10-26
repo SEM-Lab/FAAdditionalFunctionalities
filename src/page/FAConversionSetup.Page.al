@@ -17,6 +17,14 @@ page 60001 "FA Conversion Setup"
             {
                 Caption = 'General';
 
+                field("FA Conversion No. Series"; Rec."FA Conversion No. Series")
+                {
+                    ToolTip = 'Specifies the value of the FA Conversion No. Series field.';
+                }
+                field("Depreciation Book Code"; Rec."Depreciation Book Code")
+                {
+                    ToolTip = 'Specifies the value of the Depreciation Book Code field.';
+                }
                 field("Item Journal Template Name"; Rec."Item Journal Template Name")
                 {
                     ToolTip = 'Specifies the value of the Item Journal Template Name field.';

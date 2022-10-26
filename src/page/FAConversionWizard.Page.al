@@ -19,6 +19,7 @@ page 60000 "FA Conversion Wizard"
                     ApplicationArea = All;
                     Editable = false;
                     ShowCaption = false;
+                    Caption = 'Media Reference';
                 }
             }
             group(FinishedBanner)
@@ -31,12 +32,14 @@ page 60000 "FA Conversion Wizard"
                     ApplicationArea = All;
                     Editable = false;
                     ShowCaption = false;
+                    Caption = 'Media Reference';
                 }
             }
 
             group(Step1)
             {
                 Visible = Step1Visible;
+                Caption = 'Step1';
                 group("Welcome to FA Conversion")
                 {
                     Caption = 'Welcome to FA Conversion Setup';
@@ -70,6 +73,7 @@ page 60000 "FA Conversion Wizard"
             group(Step3)
             {
                 Visible = Step3Visible;
+                Caption = 'Step3';
                 group(Group23)
                 {
                     Caption = '';

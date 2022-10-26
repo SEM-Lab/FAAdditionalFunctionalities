@@ -12,5 +12,11 @@ tableextension 60001 "Item Extension" extends Item
             Caption = 'FA Conversion Gen. Bus. Posting Group';
             TableRelation = "Gen. Business Posting Group".Code;
         }
+        field(60002; "FA Posting Group"; Code[20])
+        {
+            Caption = 'FA Posting Group';
+            TableRelation = "FA Posting Group";
+        }
+
     }
 }

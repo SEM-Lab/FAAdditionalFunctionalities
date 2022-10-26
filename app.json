@@ -1,7 +1,7 @@
 {
   "id": "2589b784-1a55-4cb4-903b-095370d3de32",
-  "name": "Fixed Assest Additional Functionalities",
-  "publisher": "Default publisher",
+  "name": "Fixed Asset Additional Functionalities",
+  "publisher": "Infotek Yazilim ve Donanim A.S.",
   "version": "21.0.0.0",
   "brief": "",
   "description": "",
@@ -10,7 +10,14 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [],
+  "dependencies": [
+      {
+        "id": "90a4fa8d-fa01-4e48-ae5f-3c7da235e84a",
+        "name": "Turkish Localization by İnfotek",
+        "publisher": "Infotek Yazilim ve Donanim A.S.",
+        "version": "20.4.1.1"
+      }
+],
   "screenshots": [],
   "platform": "1.0.0.0",
   "application": "21.0.0.0",

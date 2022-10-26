@@ -20,6 +20,17 @@ table 60000 "FA Conversion Setup"
             Caption = 'Item Journal Batch Name';
             TableRelation = "Item Journal Batch".Name where("Journal Template Name" = field("Item Journal Template Name"));
         }
+        field(4; "FA Conversion No. Series"; Code[20])
+        {
+            Caption = 'FA Conversion No. Series';
+            TableRelation = "No. Series".Code;
+        }
+        field(5; "Depreciation Book Code"; Code[10])
+        {
+            Caption = 'Depreciation Book Code';
+            TableRelation = "Depreciation Book";
+        }
+
     }
 
     keys
