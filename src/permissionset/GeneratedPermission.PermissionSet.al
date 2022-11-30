@@ -9,5 +9,6 @@ permissionset 60000 "GeneratedPermission"
         page "FA Conversion" = X,
         page "FA Conversion Setup" = X,
         page "FA Conversion Wizard" = X,
-        page "FA Conversion List" = X;
+        page "FA Conversion List" = X,
+        codeunit "FA Transfer Functions" = X;
 }

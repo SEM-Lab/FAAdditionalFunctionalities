@@ -56,6 +56,11 @@ table 60001 "FA Conversion"
         {
             Caption = 'Posting Date';
         }
+        field(10; "FA Acquisition Entry No."; Integer)
+        {
+            Caption = 'FA Acquisition Entry No.';
+            Editable = false;
+        }
 
 
         field(107; "No. Series"; Code[20])

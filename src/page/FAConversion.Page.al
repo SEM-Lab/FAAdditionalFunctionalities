@@ -73,6 +73,21 @@ page 60002 "FA Conversion"
                     end;
                 }
             }
+            group("FA Acquisition")
+            {
+                Caption = 'FA Acquisition';
+                field("FA Acquisition Entry No."; Rec."FA Acquisition Entry No.")
+                {
+                    ToolTip = 'Specifies the value of the FA Acquisition Entry No. field.';
+                    trigger OnDrillDown()
+                    var
+                        FALedgerEntry: Record "FA Ledger Entry";
+                    begin
+                        FALedgerEntry.Get(Rec."FA Acquisition Entry No.");
+                        Page.Run(Page::"FA Ledger Entries", FALedgerEntry);
+                    end;
+                }
+            }
         }
     }
     actions
@@ -93,6 +108,22 @@ page 60002 "FA Conversion"
                 trigger OnAction()
                 begin
                     FAConversionFunctions.NegativeAdjustment(Rec);
+                end;
+            }
+            action(FAAcquisition)
+            {
+                ApplicationArea = All;
+                Caption = 'FA Acquisition';
+                ToolTip = 'Executes the FA Acquisition action.';
+                Image = FixedAssets;
+                Promoted = true;
+                PromotedOnly = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                begin
+                    FAConversionFunctions.FAAcquisition(Rec);
                 end;
             }
         }
