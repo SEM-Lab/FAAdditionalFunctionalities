@@ -110,6 +110,34 @@ codeunit 60001 "FA Transfer Functions"
         Commit();
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", 'OnAfterInsertEvent', '', true, true)]
+    local procedure OnAfterInsert_ILE(var Rec: Record "Item Ledger Entry")
+    var
+        Location: Record Location;
+        ServiceItem: Record "Service Item";
+    begin
+        if Rec."Entry Type" <> Rec."Entry Type"::Transfer then
+            exit;
+
+        if not Rec.Positive then
+            exit;
+
+        if not Location.Get(Rec."Location Code") then
+            exit;
+
+        if Location."Consignment Customer No. INF" = '' then
+            exit;
+
+        if not ServiceItem.Get(Rec."Serial No.") then
+            exit;
+
+
+        ServiceItem.Validate("Customer No.", Location."Consignment Customer No. INF");
+        if Location."Consignment Ship-to Code INF" <> '' then
+            ServiceItem.Validate("Ship-to Code", Location."Consignment Ship-to Code INF");
+        ServiceItem.Modify();
+    end;
+
     var
         FAConversionSetup: Record "FA Conversion Setup";
         CommitRequired: Boolean;

@@ -493,6 +493,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Current Location - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3810367679 - Control 2690523773 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
+          <source>Specifies the value of the Current Location Name field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Current Location Name - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3810367679 - Control 1159486367 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
+          <source>Specifies the value of the Current Location Ship-to Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Current Location Ship-to Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3810367679 - Control 2388433081 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
+          <source>Specifies the value of the Source Item No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Source Item No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="PageExtension 742805820 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
           <source>Executes the New FA Conversion action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -542,6 +557,21 @@
           <source>Current Location</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 2690523773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Current Location Name</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 1159486367 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Current Location Ship-to Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Ship-to Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 2388433081 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Source Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Source Item No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3111487712 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>FA Conversion Gen. Bus. Posting Group</source>

@@ -46,6 +46,8 @@ table 60001 "FA Conversion"
         field(7; "Serial No."; Code[50])
         {
             Caption = 'Serial No.';
+            TableRelation = "Item Ledger Entry"."Serial No." where("Item No." = field("Item No."), Open = const(true));
+            ValidateTableRelation = false;
         }
         field(8; "Negative Adjmt. ILE Entry No."; Integer)
         {

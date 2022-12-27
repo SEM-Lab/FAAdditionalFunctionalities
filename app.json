@@ -2,7 +2,7 @@
   "id": "2589b784-1a55-4cb4-903b-095370d3de32",
   "name": "Fixed Asset Additional Functionalities",
   "publisher": "Infotek Yazilim ve Donanim A.S.",
-  "version": "21.0.0.0",
+  "version": "21.2.1.0",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -16,11 +16,23 @@
         "name": "Turkish Localization by İnfotek",
         "publisher": "Infotek Yazilim ve Donanim A.S.",
         "version": "20.4.1.1"
+      },
+      {
+        "id": "f43e5dc3-0cd5-4d96-a989-8fb17d7978d4",
+        "name": "E-Shipment by İnfotek",
+        "publisher": "Infotek Yazilim ve Donanim A.S.",
+        "version": "20.4.1.0"
+      },
+      {
+        "id": "703b7c78-8339-4bad-b753-e7b14faf7cb4",
+        "name": "Consignment Management by İnfotek",
+        "publisher": "Infotek Yazilim ve Donanim A.S.",
+        "version": "21.1.1.0"
       }
 ],
   "screenshots": [],
   "platform": "1.0.0.0",
-  "application": "21.0.0.0",
+  "application": "21.2.0.0",
   "idRanges": [
     {
       "from": 60000,
