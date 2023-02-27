@@ -283,6 +283,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FATransfer - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1809950204 - Control 2407310161 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the FA Trans. Pos. Adjmt. Loc. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FA Trans. Pos. Adjmt. Loc.  - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 1809950204 - Control 170588986 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the FA Transfer Item No. field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
