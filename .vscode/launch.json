@@ -2,6 +2,22 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "FA_CONVERSION",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "tenant": "8beae494-639b-461e-9d2e-ad58f9467cf9",
+            "environmentName": "FA_CONVERSION",
+            "startupObjectId": 60003,
+            "startupObjectType": "Page",
+            "breakOnError": "ExcludeTry",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            //"schemaUpdateMode": "ForceSync",
+            //"startupCompany": "service item test"
+        },
+        {
             "name": "Pera Medikal Sandbox",
             "request": "launch",
             "type": "al",
@@ -15,7 +31,7 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             //"schemaUpdateMode": "ForceSync",
-            "startupCompany": "service item test"
+            //"startupCompany": "service item test"
         },
         {
             "name": "Localization_DEV",

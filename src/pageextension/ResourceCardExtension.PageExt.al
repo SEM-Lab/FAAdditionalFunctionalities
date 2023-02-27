@@ -8,6 +8,11 @@ pageextension 60003 "Resource Card Extension" extends "Resource Card"
             {
                 Caption = 'FA Data';
 
+                field("Fixed Asset No."; Rec."Fixed Asset No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Fixed Asset No. field.';
+                }
                 field("FA Serial No."; Rec."FA Serial No.")
                 {
                     ApplicationArea = All;

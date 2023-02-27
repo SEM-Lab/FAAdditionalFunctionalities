@@ -19,8 +19,8 @@ codeunit 60001 "FA Transfer Functions"
         FAConversionSetup.TestField("Resource VAT Prod. Post. Group");
 
         Resource.Init();
-        Resource.Validate("No.", FixedAsset."No.");
         Resource.Insert(true);
+        Resource.Validate("Fixed Asset No.", FixedAsset."No.");
         Resource.Validate(Name, FixedAsset.Description);
         Resource.Validate(Type, Resource.Type::Machine);
         Resource.Validate("Gen. Prod. Posting Group", FAConversionSetup."Resource Gen. Prod Post. Group");
@@ -36,6 +36,8 @@ codeunit 60001 "FA Transfer Functions"
         ItemTrackingCode: Record "Item Tracking Code";
         ItemJournalLine: Record "Item Journal Line";
         ItemLedgerEntry: Record "Item Ledger Entry";
+        FAConversion: Record "FA Conversion";
+        LocationCode: Code[10];
         AlreadyCreatedErr: Label 'FA Transfer Item has been already created.';
     begin
         ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
@@ -45,6 +47,12 @@ codeunit 60001 "FA Transfer Functions"
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("FA Transfer Item No.");
         FAConversionSetup.TestField("FA Trans. Pos. Adjmt. Loc.");
+
+        FAConversion.SetRange("FA No.", FixedAsset."No.");
+        if FAConversion.FindFirst() then
+            LocationCode := FAConversion."Location Code"
+        else
+            LocationCode := FAConversionSetup."FA Trans. Pos. Adjmt. Loc.";
 
         Item.Get(FAConversionSetup."FA Transfer Item No.");
         Item.TestField("Item Tracking Code");
@@ -72,7 +80,7 @@ codeunit 60001 "FA Transfer Functions"
         ItemJournalLine.Validate("Entry Type", ItemJournalLine."Entry Type"::"Positive Adjmt.");
         ItemJournalLine.Validate("Item No.", Item."No.");
         ItemJournalLine.Validate(Quantity, 1);
-        ItemJournalLine.Validate("Location Code", FAConversionSetup."FA Trans. Pos. Adjmt. Loc.");
+        ItemJournalLine.Validate("Location Code", LocationCode);
         //ItemJournalLine.Validate("Gen. Bus. Posting Group", Item."FA Conv. Gen. Bus. Post. Group");
         ItemJournalLine.Modify(true);
 

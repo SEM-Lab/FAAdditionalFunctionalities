@@ -24,6 +24,10 @@ page 60002 "FA Conversion"
                 {
                     ToolTip = 'Specifies the value of the Item No. field.';
                 }
+                field("Variant Code"; Rec."Variant Code")
+                {
+                    ToolTip = 'Specifies the value of the Variant Code field.';
+                }
                 field("Item Description"; Rec."Item Description")
                 {
                     ToolTip = 'Specifies the value of the Item Description field.';

@@ -28,5 +28,10 @@ tableextension 60022 "Fixed Asset Ext." extends "Fixed Asset"
             FieldClass = FlowField;
             CalcFormula = lookup(Location."Consignment Ship-to Code INF" where(Code = field("Current Location")));
         }
+        field(60004; "Source Variant Code"; Code[10])
+        {
+            Caption = 'Source Variant Code';
+            TableRelation = "Item Variant".Code where("Item No." = field("Source Item No."));
+        }
     }
 }

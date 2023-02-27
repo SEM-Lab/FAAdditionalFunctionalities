@@ -24,6 +24,11 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Source Item No. field.';
             }
+            field("Source Variant Code"; Rec."Source Variant Code")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Source Variant Code field.';
+            }
         }
     }
     actions

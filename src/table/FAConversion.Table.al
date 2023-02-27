@@ -46,7 +46,7 @@ table 60001 "FA Conversion"
         field(7; "Serial No."; Code[50])
         {
             Caption = 'Serial No.';
-            TableRelation = "Item Ledger Entry"."Serial No." where("Item No." = field("Item No."), Open = const(true));
+            TableRelation = "Item Ledger Entry"."Serial No." where("Item No." = field("Item No."), Open = const(true), "Location Code" = field("Location Code"), "Variant Code" = field("Variant Code"));
             ValidateTableRelation = false;
         }
         field(8; "Negative Adjmt. ILE Entry No."; Integer)
@@ -63,8 +63,11 @@ table 60001 "FA Conversion"
             Caption = 'FA Acquisition Entry No.';
             Editable = false;
         }
-
-
+        field(11; "Variant Code"; Code[10])
+        {
+            Caption = 'Variant Code';
+            Editable = false;
+        }
         field(107; "No. Series"; Code[20])
         {
             Caption = 'No. Series';

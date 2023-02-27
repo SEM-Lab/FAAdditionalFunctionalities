@@ -68,9 +68,9 @@
         "justification": "Any table with a single field in the PK of type code or text, should have set NotBlank on the PK field."
       },
       {
-        "id": "LC0014",
-        "action": "Warning",
-        "justification": "The Caption of permissionset objects should not exceed the maximum length."
+        "id": "LC0023",
+        "action": "None",
+        "justification": " "
       },
       {
         "id": "LC0015",

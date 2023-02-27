@@ -19,6 +19,28 @@ codeunit 60000 "FA Conversion Functions"
         Page.Run(Page::"FA Conversion", FAConversion);
     end;
 
+    procedure CreateFAConversionFromItemVariant(ItemVariant: Record "Item Variant")
+    var
+        FAConversion: Record "FA Conversion";
+        Item: Record Item;
+    begin
+        Item.Get(ItemVariant."Item No.");
+
+        Item.TestField("FA No. Series");
+        Item.TestField("FA Conv. Gen. Bus. Post. Group");
+        Item.TestField("FA Posting Group");
+
+        FAConversion.Init();
+        FAConversion.Insert(true);
+        FAConversion.Validate("Item No.", Item."No.");
+        FAConversion.Validate("Variant Code", ItemVariant.Code);
+        FAConversion.Validate("Item Description", ItemVariant.Description);
+        CreateFixedAsset(Item, FAConversion);
+        FAConversion.Modify(true);
+
+        Page.Run(Page::"FA Conversion", FAConversion);
+    end;
+
     local procedure CreateFixedAsset(Item: Record Item; var FAConversion: Record "FA Conversion")
     var
         FixedAsset: Record "Fixed Asset";
@@ -31,8 +53,8 @@ codeunit 60000 "FA Conversion Functions"
         FixedAsset.Init();
         NoSeriesManagement.InitSeries(Item."FA No. Series", FixedAsset."No. Series", 0D, FixedAsset."No.", FixedAsset."No. Series");
         FixedAsset.Insert(true);
-        FixedAsset.Validate(Description, Item.Description);
-        //FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
+        FixedAsset.Validate(Description, FAConversion."Item Description");
+        FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
         FixedAsset.Modify(true);
 
         FADepreciationBook.Init();
@@ -49,7 +71,7 @@ codeunit 60000 "FA Conversion Functions"
     var
         ItemJournalLine: Record "Item Journal Line";
         Item: Record Item;
-        FixedAssets: Record "Fixed Asset";
+        FixedAsset: Record "Fixed Asset";
     begin
         FAConversion.TestField("Location Code");
         FAConversion.TestField("Posting Date");
@@ -75,6 +97,7 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine.Validate("Posting Date", FAConversion."Posting Date");
         ItemJournalLine.Validate("Entry Type", ItemJournalLine."Entry Type"::"Negative Adjmt.");
         ItemJournalLine.Validate("Item No.", FAConversion."Item No.");
+        ItemJournalLine.Validate("Variant Code", FAConversion."Variant Code");
         ItemJournalLine.Validate(Quantity, 1);
         ItemJournalLine.Validate("Location Code", FAConversion."Location Code");
         ItemJournalLine.Validate("Gen. Bus. Posting Group", Item."FA Conv. Gen. Bus. Post. Group");
@@ -87,10 +110,11 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion."Negative Adjmt. ILE Entry No." := GlobalILENo;
         FAConversion.Modify(true);
 
-        FixedAssets.Get(FAConversion."FA No.");
-        FixedAssets.Validate("Serial No.", FAConversion."Serial No.");
-        FixedAssets.Validate("Source Item No.", FAConversion."Item No.");
-        FixedAssets.Modify(true);
+        FixedAsset.Get(FAConversion."FA No.");
+        FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
+        FixedAsset.Validate("Source Item No.", FAConversion."Item No.");
+        FixedAsset.Validate("Source Variant Code", FAConversion."Variant Code");
+        FixedAsset.Modify(true);
 
         GlobalFAConversion := FAConversion;
         AdjustAndPostInventoryCost(FAConversion);
