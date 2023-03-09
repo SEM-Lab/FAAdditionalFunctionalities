@@ -23,7 +23,7 @@
             "type": "al",
             "environmentType": "Sandbox",
             "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
-            "environmentName": "PERAMEDIKAL_TEST",
+            "environmentName": "SKITEMTEST",
             "startupObjectId": 60003,
             "startupObjectType": "Page",
             "breakOnError": "ExcludeTry",

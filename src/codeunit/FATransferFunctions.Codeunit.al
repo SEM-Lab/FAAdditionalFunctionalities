@@ -124,6 +124,9 @@ codeunit 60001 "FA Transfer Functions"
         Location: Record Location;
         ServiceItem: Record "Service Item";
     begin
+        if Rec.IsTemporary then
+            exit;
+
         if Rec."Entry Type" <> Rec."Entry Type"::Transfer then
             exit;
 
