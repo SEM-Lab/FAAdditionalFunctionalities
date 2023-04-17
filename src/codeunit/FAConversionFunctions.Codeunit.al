@@ -1,6 +1,7 @@
 codeunit 60000 "FA Conversion Functions"
 {
     SingleInstance = true;
+    Access = Public;
     procedure CreateFAConversionFromItemCard(Item: Record Item)
     var
         FAConversion: Record "FA Conversion";
@@ -19,7 +20,7 @@ codeunit 60000 "FA Conversion Functions"
         Page.Run(Page::"FA Conversion", FAConversion);
     end;
 
-    procedure CreateFAConversionFromItemVariant(ItemVariant: Record "Item Variant")
+    procedure CreateFAConversionFromItemVariant(ItemVariant: Record "Item Variant"; ShowPageAfterCreation: Boolean; LocationCode: Code[10])
     var
         FAConversion: Record "FA Conversion";
         Item: Record Item;
@@ -38,7 +39,14 @@ codeunit 60000 "FA Conversion Functions"
         CreateFixedAsset(Item, FAConversion);
         FAConversion.Modify(true);
 
-        Page.Run(Page::"FA Conversion", FAConversion);
+        if ShowPageAfterCreation then
+            Page.Run(Page::"FA Conversion", FAConversion)
+        else begin
+            FAConversion.Validate("Location Code", LocationCode);
+            FAConversion.Modify(true);
+            NegativeAdjustment(FAConversion);
+            FAAcquisition(FAConversion);
+        end;
     end;
 
     local procedure CreateFixedAsset(Item: Record Item; var FAConversion: Record "FA Conversion")

@@ -1,6 +1,7 @@
 codeunit 60001 "FA Transfer Functions"
 {
     SingleInstance = true;
+    Access = Public;
     procedure CreateResourceCard(FixedAsset: Record "Fixed Asset")
     var
         Resource: Record Resource;
@@ -144,6 +145,7 @@ codeunit 60001 "FA Transfer Functions"
 
 
         ServiceItem.Validate("Customer No.", Location."Consignment Customer No. INF");
+
         if Location."Consignment Ship-to Code INF" <> '' then
             ServiceItem.Validate("Ship-to Code", Location."Consignment Ship-to Code INF");
         ServiceItem.Modify();

@@ -15,7 +15,7 @@ pageextension 60004 "Item Variants Ext." extends "Item Variants"
                 ToolTip = 'Executes the New FA Conversion action.';
                 trigger OnAction()
                 begin
-                    FAConversionFunctions.CreateFAConversionFromItemVariant(Rec);
+                    FAConversionFunctions.CreateFAConversionFromItemVariant(Rec, true, '');
                 end;
             }
         }

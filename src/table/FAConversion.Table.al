@@ -4,6 +4,7 @@ table 60001 "FA Conversion"
     Caption = 'FA Conversion';
     DrillDownPageId = "FA Conversion List";
     LookupPageId = "FA Conversion List";
+    Access = Public;
 
     fields
     {

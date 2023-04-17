@@ -44,8 +44,8 @@
       },
       {
         "id": "LC0009",
-        "action": "Hidden",
-        "justification": "Show info message about code metrics for each function or trigger."
+        "action": "None",
+        "justification": " Cyclomatic complexity and Maintainability index"
       },
       {
         "id": "LC0010",
@@ -54,7 +54,7 @@
       },
       {
         "id": "LC0011",
-        "action": "Hidden",
+        "action": "Info",
         "justification": "Every object needs to specify a value for the Access property. Either true or false. Optionally this can also be activated for table fields with the setting enableRule0011ForTableFields."
       },
       {
@@ -70,16 +70,11 @@
       {
         "id": "LC0023",
         "action": "None",
-        "justification": " "
+        "justification": "Fieldgroup {0} is missing on table {1}."
       },
       {
         "id": "LC0015",
         "action": "Warning",
-        "justification": "All application objects should be covered by at least one permission set in the extension."
-      },
-      {
-        "id": "PTE0005",
-        "action": "None",
         "justification": "All application objects should be covered by at least one permission set in the extension."
       }
     ]

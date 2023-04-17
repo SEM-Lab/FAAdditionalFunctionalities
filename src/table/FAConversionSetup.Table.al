@@ -2,6 +2,7 @@ table 60000 "FA Conversion Setup"
 {
     DataClassification = CustomerContent;
     Caption = 'FA Conversion Setup';
+    Access = Public;
     fields
     {
         field(1; "Primary Key"; Code[10])
