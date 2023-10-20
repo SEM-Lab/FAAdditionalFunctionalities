@@ -51,5 +51,37 @@
         //     "tenant" : "infotekas.onmicrosoft.com",
         //     "environmentName": "Localization_DEV",
         // }
+        {
+            "name": "Pera Medikal - DARYO_TEST - Document Attachment",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "server": "https://businesscentral.dynamics.com",
+            "tenant" : "270c2df0-b681-41a1-b072-5aea0f64f459",
+            "environmentName": "DARYO_TEST",
+            // "startupCompany": "Berker-Daryo",
+            // "startupObjectType": "Table",
+            // "startupObjectId":71018599, //Tender Sales Contract Comment Line - table
+            "startupObjectType": "Table",
+            "startupObjectId":1173, //Document Attachment
+            // "startupObjectId":7015, //Sales Price List
+            // "startupObjectId":7017, //Purchase Price List
+            // "startupObjectId":71018600, //Tender Contract List
+            // "startupObjectId": 9300, //Sales Quote List
+            // "startupObjectId": 9305, //Sales Order List
+            // "startupObjectId": 143, //Posted Sales Invoices
+            // "startupObjectType": "Table",
+            // "startupObjectId":2000000110,
+            // "startupObjectId": 5404,
+            // "startupObjectId": 5741, //Tender List
+            // "startupObjectId": 31,
+            "breakOnError": true,
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "Synchronize"
+            // "schemaUpdateMode": "ForceSync"
+            // "schemaUpdateMode": "Recreate"
+        }
     ]
 }

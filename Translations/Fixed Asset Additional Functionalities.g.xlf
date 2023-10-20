@@ -148,6 +148,176 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method NewItemForTransfer - NamedType AlreadyCreatedErr</note>
         </trans-unit>
+        <trans-unit id="Page 593634465 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Direct Trans. Line</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the description associated with this line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 47657272 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Description 2 field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Description 2 - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3322554545 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Dimension Set ID field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Dimension Set ID - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 486908828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Document No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Document No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 2139693550 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Gen. Prod. Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Gen. Prod. Posting Group - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 4239513174 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Gross Weight field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Gross Weight - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 2037375551 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Inventory Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Inventory Posting Group - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 1037119892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Category Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Item Category Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the number of the item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Item No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3471167527 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Rcpt. Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Item Rcpt. Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3385165657 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Shpt. Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Item Shpt. Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3320823955 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Line No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3088522385 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Net Weight field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Net Weight - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3710982960 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Posting Date field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Posting Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 806193894 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Qty. per Unit of Measure field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Qty. per Unit of Measure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how many units of the record are processed.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3179217921 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Quantity (Base) field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Quantity (Base) - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 1577567912 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Shortcut Dimension 1 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 1003760969 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Shortcut Dimension 2 Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 577209412 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the SystemCreatedAt field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control SystemCreatedAt - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 4000648066 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the SystemCreatedBy field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control SystemCreatedBy - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 2123103222 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Transfer Order No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Transfer Order No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 1582893468 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code for the bin that the items are transferred from.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Transfer-from Bin Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 520660911 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Transfer-from Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Transfer-from Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 2931954263 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Transfer-To Bin Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Transfer-To Bin Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 324034516 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Transfer-to Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Transfer-to Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the name of the item or resource's unit of measure, such as piece or hour.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Unit of Measure - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 2385270358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Unit of Measure Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 4034345114 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Unit Volume field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Unit Volume - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 1631894181 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Units per Parcel field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Units per Parcel - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the variant of the item on the line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Control Variant Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Action 2018568690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Executes the Create Fixed Assets For Selected Lines action.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Action CreateFixedAssetsForSelectedLines - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 593634465 - Action 2018568690 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create Fixed Assets For Selected Lines</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Direct Trans. Line - Action CreateFixedAssetsForSelectedLines - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1971911761 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Conversion</source>
           <note from="Developer" annotates="general" priority="2"></note>
