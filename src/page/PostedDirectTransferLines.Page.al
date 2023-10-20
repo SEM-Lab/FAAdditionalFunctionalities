@@ -1,7 +1,7 @@
-page 60005 "Direct Trans. Line"
+page 60005 "Posted Direct Transfer Lines"
 {
     ApplicationArea = All;
-    Caption = 'Direct Trans. Line';
+    Caption = 'Posted Direct Transfer Lines';
     PageType = List;
     SourceTable = "Direct Trans. Line";
     UsageCategory = Lists;
@@ -24,6 +24,10 @@ page 60005 "Direct Trans. Line"
                 {
                     ToolTip = 'Specifies the number of the item.';
                 }
+                field("FA No. Series"; Rec."FA No. Series")
+                {
+                    ToolTip = 'Specifies the value of the FA No. Series field.';
+                }
                 field(Quantity; Rec.Quantity)
                 {
                     ToolTip = 'Specifies how many units of the record are processed.';
@@ -31,6 +35,10 @@ page 60005 "Direct Trans. Line"
                 field("Unit of Measure"; Rec."Unit of Measure")
                 {
                     ToolTip = 'Specifies the name of the item or resource''s unit of measure, such as piece or hour.';
+                }
+                field("Remaning Quantity"; Rec."Remaning Quantity")
+                {
+                    ToolTip = 'Specifies the value of the Remaning Quantity field.';
                 }
                 field(Description; Rec.Description)
                 {
@@ -161,10 +169,10 @@ page 60005 "Direct Trans. Line"
                     repeat
                         i := 0;
                         repeat
-                            ItemVariant.Get(Rec."Item No.", Rec."Variant Code");
-                            FAConversionFunctions.CreateFAConversionFromItemVariant(ItemVariant, false, Rec."Transfer-to Code");
+                            ItemVariant.Get(DirectTransLine."Item No.", DirectTransLine."Variant Code");
+                            FAConversionFunctions.CreateFAConversionFromItemVariant(ItemVariant, false, DirectTransLine."Transfer-to Code");
                             i += 1;
-                        until i >= Rec.Quantity;
+                        until i = DirectTransLine.Quantity;
                     until DirectTransLine.Next() = 0;
                 end;
             }

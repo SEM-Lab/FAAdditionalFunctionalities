@@ -111,7 +111,7 @@ page 60002 "FA Conversion"
 
                 trigger OnAction()
                 begin
-                    FAConversionFunctions.NegativeAdjustment(Rec);
+                    FAConversionFunctions.NegativeAdjustment(Rec, false);
                 end;
             }
             action(FAAcquisition)

@@ -8,7 +8,7 @@
             "environmentType": "Sandbox",
             "tenant": "8beae494-639b-461e-9d2e-ad58f9467cf9",
             "environmentName": "ERRADEV",
-            "startupObjectId": 60003,
+            "startupObjectId": 60005,
             "startupObjectType": "Page",
             "breakOnError": "ExcludeTry",
             "launchBrowser": true,

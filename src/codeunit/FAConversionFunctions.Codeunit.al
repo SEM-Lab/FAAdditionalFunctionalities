@@ -44,7 +44,7 @@ codeunit 60000 "FA Conversion Functions"
         else begin
             FAConversion.Validate("Location Code", LocationCode);
             FAConversion.Modify(true);
-            NegativeAdjustment(FAConversion);
+            NegativeAdjustment(FAConversion, true);
             FAAcquisition(FAConversion);
         end;
     end;
@@ -75,7 +75,7 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.Validate("FA Description", FixedAsset.Description);
     end;
 
-    procedure NegativeAdjustment(FAConversion: Record "FA Conversion")
+    procedure NegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
     var
         ItemJournalLine: Record "Item Journal Line";
         Item: Record Item;
@@ -109,6 +109,7 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine.Validate(Quantity, 1);
         ItemJournalLine.Validate("Location Code", FAConversion."Location Code");
         ItemJournalLine.Validate("Gen. Bus. Posting Group", Item."FA Conv. Gen. Bus. Post. Group");
+        ItemJournalLine.Validate("Unit Cost", GetUnitCostFromItemJnlLine(ItemJournalLine));
         ItemJournalLine.Modify(true);
 
         CreateReservationEntry(ItemJournalLine, FAConversion);
@@ -124,10 +125,35 @@ codeunit 60000 "FA Conversion Functions"
         FixedAsset.Validate("Source Variant Code", FAConversion."Variant Code");
         FixedAsset.Modify(true);
 
-        GlobalFAConversion := FAConversion;
-        AdjustAndPostInventoryCost(FAConversion);
-        Clear(GlobalFAConversion);
+        if not SkipCosting then begin
+            GlobalFAConversion := FAConversion;
+            AdjustAndPostInventoryCost(FAConversion);
+            Clear(GlobalFAConversion);
+        end;
     end;
+
+    procedure GetUnitCostFromItemJnlLine(var ItemJournalLine: Record "Item Journal Line"): Decimal
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        ItemLedgerEntry.SetAutoCalcFields("Cost Amount (Actual)");
+        ItemLedgerEntry.SetRange(Open, true);
+        ItemLedgerEntry.SetRange("Location Code", ItemJournalLine."Location Code");
+        ItemLedgerEntry.SetRange("Item No.", ItemJournalLine."Item No.");
+        ItemLedgerEntry.SetRange("Variant Code", ItemJournalLine."Variant Code");
+        if ItemLedgerEntry.FindFirst() then
+            if ItemLedgerEntry."Cost Amount (Actual)" <> 0 then
+                exit(ItemLedgerEntry."Cost Amount (Actual)" / ItemLedgerEntry.Quantity);
+
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post", 'OnBeforeCode', '', false, false)]
+    local procedure OnBeforeCode(var ItemJournalLine: Record "Item Journal Line"; var HideDialog: Boolean; var SuppressCommit: Boolean; var IsHandled: Boolean);
+    begin
+        HideDialog := true;
+    end;
+
+
 
     local procedure CreateReservationEntry(ItemJournalLine: Record "Item Journal Line"; FAConversion: Record "FA Conversion")
     var
@@ -212,6 +238,18 @@ codeunit 60000 "FA Conversion Functions"
         GlobalFAConversion := FAConversion;
         GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
         Clear(GlobalFAConversion);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnBeforeCode', '', false, false)]
+    local procedure OnBeforeCode2(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean);
+    begin
+        HideDialog := true;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnBeforeShowPostResultMessage', '', false, false)]
+    local procedure OnBeforeShowPostResultMessage(var GenJnlLine: Record "Gen. Journal Line"; TempJnlBatchName: Code[10]; var IsHandled: Boolean);
+    begin
+        IsHandled := true;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"FA Insert Ledger Entry", 'OnBeforeInsertRegister', '', false, false)]
