@@ -110,6 +110,36 @@ codeunit 60001 "FA Transfer Functions"
           ItemJournalLine."Item No.", ItemJournalLine."Variant Code", ItemJournalLine."Location Code", '', 0D, 0D, 0, ReservStatus::Surplus);
     end;
 
+    local procedure UpdateServiceItemLocationAfterTransferProcess(var ItemLedgerEntry: Record "Item Ledger Entry")
+    var
+        Location: Record Location;
+        ServiceItem: Record "Service Item";
+    begin
+        if ItemLedgerEntry.IsTemporary then
+            exit;
+
+        if ItemLedgerEntry."Entry Type" <> ItemLedgerEntry."Entry Type"::Transfer then
+            exit;
+
+        if not ItemLedgerEntry.Positive then
+            exit;
+
+        if not Location.Get(ItemLedgerEntry."Location Code") then
+            exit;
+
+        if Location."Consignment Customer No. INF" = '' then
+            exit;
+
+        if not ServiceItem.Get(ItemLedgerEntry."Serial No.") then
+            exit;
+
+        ServiceItem.Validate("Customer No.", Location."Consignment Customer No. INF");
+
+        if Location."Consignment Ship-to Code INF" <> '' then
+            ServiceItem.Validate("Ship-to Code", Location."Consignment Ship-to Code INF");
+        ServiceItem.Modify(true);
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, OnAfterSetParametersBeforeRun, '', false, false)]
     local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20])
     begin
@@ -121,34 +151,8 @@ codeunit 60001 "FA Transfer Functions"
 
     [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', true, true)]
     local procedure OnAfterInsert_ILE(var Rec: Record "Item Ledger Entry")
-    var
-        Location: Record Location;
-        ServiceItem: Record "Service Item";
     begin
-        if Rec.IsTemporary then
-            exit;
-
-        if Rec."Entry Type" <> Rec."Entry Type"::Transfer then
-            exit;
-
-        if not Rec.Positive then
-            exit;
-
-        if not Location.Get(Rec."Location Code") then
-            exit;
-
-        if Location."Consignment Customer No. INF" = '' then
-            exit;
-
-        if not ServiceItem.Get(Rec."Serial No.") then
-            exit;
-
-
-        ServiceItem.Validate("Customer No.", Location."Consignment Customer No. INF");
-
-        if Location."Consignment Ship-to Code INF" <> '' then
-            ServiceItem.Validate("Ship-to Code", Location."Consignment Ship-to Code INF");
-        ServiceItem.Modify(true);
+        UpdateServiceItemLocationAfterTransferProcess(Rec);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create E-Shipment NAV Doc. INF", OnAfterCreateEShipmentLineFromTransferShipment, '', false, false)]
@@ -167,6 +171,7 @@ codeunit 60001 "FA Transfer Functions"
 
         EShipmentLine.Validate("Sellers Item Identification", ServiceItem."Item No.");
         EShipmentLine.Validate(Name, ServiceItem.Description);
+        EShipmentLine.Modify(false);
     end;
 
     var

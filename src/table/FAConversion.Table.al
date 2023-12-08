@@ -73,6 +73,7 @@ table 60001 "FA Conversion"
         {
             Caption = 'No. Series';
             TableRelation = "No. Series";
+            AllowInCustomizations = Never;
         }
     }
 

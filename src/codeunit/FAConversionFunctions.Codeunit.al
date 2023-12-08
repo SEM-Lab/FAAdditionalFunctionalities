@@ -168,7 +168,7 @@ codeunit 60000 "FA Conversion Functions"
         TempReservationEntry."Entry No." := 1;
         TempReservationEntry."Serial No." := FAConversion."Serial No.";
         TempReservationEntry.Quantity := 1;
-        TempReservationEntry.Insert();
+        TempReservationEntry.Insert(false);
 
         CreateReservEntry.CreateReservEntryFor(
           Database::"Item Journal Line", ItemJournalLine."Entry Type".AsInteger(),
@@ -259,7 +259,7 @@ codeunit 60000 "FA Conversion Functions"
             exit;
 
         GlobalFAConversion."FA Acquisition Entry No." := FALedgerEntry."Entry No.";
-        GlobalFAConversion.Modify();
+        GlobalFAConversion.Modify(false);
     end;
 
 

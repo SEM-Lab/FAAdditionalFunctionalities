@@ -9,6 +9,7 @@ table 60000 "FA Conversion Setup"
         {
             Caption = 'Primary Key';
             NotBlank = false;
+            AllowInCustomizations = Never;
         }
 
         field(2; "Item Journal Template Name"; Code[10])
