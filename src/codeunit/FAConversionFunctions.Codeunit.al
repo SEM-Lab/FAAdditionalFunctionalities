@@ -147,8 +147,8 @@ codeunit 60000 "FA Conversion Functions"
 
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post", 'OnBeforeCode', '', false, false)]
-    local procedure OnBeforeCode(var ItemJournalLine: Record "Item Journal Line"; var HideDialog: Boolean; var SuppressCommit: Boolean; var IsHandled: Boolean);
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post", OnBeforeCode, '', false, false)]
+    local procedure OnBeforeCode(var ItemJournalLine: Record "Item Journal Line"; var HideDialog: Boolean; var SuppressCommit: Boolean; var IsHandled: Boolean)
     begin
         HideDialog := true;
     end;
@@ -240,20 +240,20 @@ codeunit 60000 "FA Conversion Functions"
         Clear(GlobalFAConversion);
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnBeforeCode', '', false, false)]
-    local procedure OnBeforeCode2(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean);
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", OnBeforeCode, '', false, false)]
+    local procedure OnBeforeCode2(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
     begin
         HideDialog := true;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnBeforeShowPostResultMessage', '', false, false)]
-    local procedure OnBeforeShowPostResultMessage(var GenJnlLine: Record "Gen. Journal Line"; TempJnlBatchName: Code[10]; var IsHandled: Boolean);
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", OnBeforeShowPostResultMessage, '', false, false)]
+    local procedure OnBeforeShowPostResultMessage(var GenJnlLine: Record "Gen. Journal Line"; TempJnlBatchName: Code[10]; var IsHandled: Boolean)
     begin
         IsHandled := true;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"FA Insert Ledger Entry", 'OnBeforeInsertRegister', '', false, false)]
-    local procedure OnBeforeInsertRegister(var Sender: Codeunit "FA Insert Ledger Entry"; var FALedgerEntry: Record "FA Ledger Entry"; var FALedgerEntry2: Record "FA Ledger Entry"; var NextEntryNo: Integer);
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"FA Insert Ledger Entry", OnBeforeInsertRegister, '', false, false)]
+    local procedure OnBeforeInsertRegister(var Sender: Codeunit "FA Insert Ledger Entry"; var FALedgerEntry: Record "FA Ledger Entry"; var FALedgerEntry2: Record "FA Ledger Entry"; var NextEntryNo: Integer)
     begin
         if GlobalFAConversion."Item No." = '' then
             exit;
@@ -263,8 +263,8 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
 
-    [EventSubscriber(ObjectType::Report, Report::"Adjust Cost - Item Entries", 'OnBeforePreReport', '', false, false)]
-    local procedure OnBeforePreReport_AdjustCostItemEntries(var Sender: Report "Adjust Cost - Item Entries"; ItemNoFilter: Text[250]; ItemCategoryFilter: Text[250]; PostToGL: Boolean; var Item: Record Item);
+    [EventSubscriber(ObjectType::Report, Report::"Adjust Cost - Item Entries", OnBeforePreReport, '', false, false)]
+    local procedure OnBeforePreReport_AdjustCostItemEntries(var Sender: Report "Adjust Cost - Item Entries"; ItemNoFilter: Text[250]; ItemCategoryFilter: Text[250]; PostToGL: Boolean; var Item: Record Item)
     begin
         if GlobalFAConversion."Item No." = '' then
             exit;
@@ -272,8 +272,8 @@ codeunit 60000 "FA Conversion Functions"
         Item.Get(GlobalFAConversion."Item No.");
     end;
 
-    [EventSubscriber(ObjectType::Report, Report::"Post Inventory Cost to G/L INF", 'OnBeforePreReport', '', false, false)]
-    local procedure OnBeforePreReport(var Sender: Report "Post Inventory Cost to G/L INF"; var Item: Record Item; var ItemValueEntry: Record "Value Entry"; var PostValueEntryToGL: Record "Post Value Entry to G/L");
+    [EventSubscriber(ObjectType::Report, Report::"Post Inventory Cost to G/L INF", OnBeforePreReport, '', false, false)]
+    local procedure OnBeforePreReport(var Sender: Report "Post Inventory Cost to G/L INF"; var Item: Record Item; var ItemValueEntry: Record "Value Entry"; var PostValueEntryToGL: Record "Post Value Entry to G/L")
     var
         PostMethod: Option "per Posting Group","per Entry";
     begin
@@ -285,8 +285,8 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, 'OnAfterSetParametersBeforeRun', '', false, false)]
-    local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20]);
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, OnAfterSetParametersBeforeRun, '', false, false)]
+    local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20])
     begin
         if not CommitRequired then
             exit;
@@ -294,8 +294,8 @@ codeunit 60000 "FA Conversion Functions"
         Commit();
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", 'OnAfterInsertItemLedgEntry', '', false, false)]
-    local procedure OnAfterInsertItemLedgEntry(var ItemLedgerEntry: Record "Item Ledger Entry"; ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer; var ValueEntryNo: Integer; var ItemApplnEntryNo: Integer; GlobalValueEntry: Record "Value Entry"; TransferItem: Boolean; var InventoryPostingToGL: Codeunit "Inventory Posting To G/L"; var OldItemLedgerEntry: Record "Item Ledger Entry");
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInsertItemLedgEntry, '', false, false)]
+    local procedure OnAfterInsertItemLedgEntry(var ItemLedgerEntry: Record "Item Ledger Entry"; ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer; var ValueEntryNo: Integer; var ItemApplnEntryNo: Integer; GlobalValueEntry: Record "Value Entry"; TransferItem: Boolean; var InventoryPostingToGL: Codeunit "Inventory Posting To G/L"; var OldItemLedgerEntry: Record "Item Ledger Entry")
     begin
         GlobalILENo := ItemLedgerEntry."Entry No.";
     end;

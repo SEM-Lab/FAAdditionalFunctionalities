@@ -2,12 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ERRADEV",
+            "name": "PERA_DEV",
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "tenant": "8beae494-639b-461e-9d2e-ad58f9467cf9",
-            "environmentName": "ERRADEV",
+            "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
+            "environmentName": "PERA_DEV",
             "startupObjectId": 60005,
             "startupObjectType": "Page",
             "breakOnError": "ExcludeTry",

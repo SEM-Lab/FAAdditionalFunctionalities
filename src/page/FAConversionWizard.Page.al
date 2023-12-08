@@ -11,7 +11,7 @@ page 60000 "FA Conversion Wizard"
         {
             group(StandardBanner)
             {
-                Caption = '';
+                Caption = '', Locked = true;
                 Editable = false;
                 Visible = TopBannerVisible and not FinishActionEnabled;
                 field(MediaResourcesStandard; MediaResourcesStandard."Media Reference")
@@ -24,7 +24,7 @@ page 60000 "FA Conversion Wizard"
             }
             group(FinishedBanner)
             {
-                Caption = '';
+                Caption = '', Locked = true;
                 Editable = false;
                 Visible = TopBannerVisible and FinishActionEnabled;
                 field(MediaResourcesDone; MediaResourcesDone."Media Reference")
@@ -46,7 +46,7 @@ page 60000 "FA Conversion Wizard"
                     Visible = Step1Visible;
                     group(Group18)
                     {
-                        Caption = '';
+                        Caption = '', Locked = true;
                         InstructionalText = 'Step1 - Replace this text with some instructions.';
                     }
                 }
@@ -55,7 +55,7 @@ page 60000 "FA Conversion Wizard"
                     Caption = 'Let''s go!';
                     group(Group22)
                     {
-                        Caption = '';
+                        Caption = '', Locked = true;
                         InstructionalText = 'Step1 - Replace this text with some more instructions.';
                     }
                 }
@@ -63,7 +63,7 @@ page 60000 "FA Conversion Wizard"
 
             group(Step2)
             {
-                Caption = '';
+                Caption = '', Locked = true;
                 InstructionalText = 'Step2 - Replace this text with some instructions.';
                 Visible = Step2Visible;
                 //You might want to add fields here
@@ -76,7 +76,7 @@ page 60000 "FA Conversion Wizard"
                 Caption = 'Step3';
                 group(Group23)
                 {
-                    Caption = '';
+                    Caption = '', Locked = true;
                     InstructionalText = 'Step3 - Replace this text with some instructions.';
                 }
                 group("That's it!")
@@ -84,7 +84,7 @@ page 60000 "FA Conversion Wizard"
                     Caption = 'That''s it!';
                     group(Group25)
                     {
-                        Caption = '';
+                        Caption = '', Locked = true;
                         InstructionalText = 'To save this setup, choose Finish.';
                     }
                 }
@@ -147,7 +147,7 @@ page 60000 "FA Conversion Wizard"
         if FAConversionSetup.Get() then
             Rec.TransferFields(FAConversionSetup);
 
-        Rec.Insert();
+        Rec.Insert(false);
 
         Step := Step::Start;
         EnableControls();
@@ -167,7 +167,7 @@ page 60000 "FA Conversion Wizard"
         Step3Visible: Boolean;
         TopBannerVisible: Boolean;
 
-    local procedure EnableControls();
+    local procedure EnableControls()
     begin
         ResetControls();
 
@@ -181,13 +181,13 @@ page 60000 "FA Conversion Wizard"
         end;
     end;
 
-    local procedure StoreRecordVar();
+    local procedure StoreRecordVar()
     var
         FAConversionSetup: Record "FA Conversion Setup";
     begin
         if not FAConversionSetup.Get() then begin
             FAConversionSetup.Init();
-            FAConversionSetup.Insert();
+            FAConversionSetup.Insert(false);
         end;
 
         FAConversionSetup.TransferFields(Rec, false);
@@ -195,13 +195,13 @@ page 60000 "FA Conversion Wizard"
     end;
 
 
-    local procedure FinishAction();
+    local procedure FinishAction()
     begin
         StoreRecordVar();
         CurrPage.Close();
     end;
 
-    local procedure NextStep(Backwards: Boolean);
+    local procedure NextStep(Backwards: Boolean)
     begin
         if Backwards then
             Step := Step - 1
@@ -211,7 +211,7 @@ page 60000 "FA Conversion Wizard"
         EnableControls();
     end;
 
-    local procedure ShowStep1();
+    local procedure ShowStep1()
     begin
         Step1Visible := true;
 
@@ -219,12 +219,12 @@ page 60000 "FA Conversion Wizard"
         BackActionEnabled := false;
     end;
 
-    local procedure ShowStep2();
+    local procedure ShowStep2()
     begin
         Step2Visible := true;
     end;
 
-    local procedure ShowStep3();
+    local procedure ShowStep3()
     begin
         Step3Visible := true;
 
@@ -232,7 +232,7 @@ page 60000 "FA Conversion Wizard"
         FinishActionEnabled := true;
     end;
 
-    local procedure ResetControls();
+    local procedure ResetControls()
     begin
         FinishActionEnabled := false;
         BackActionEnabled := true;
@@ -243,7 +243,7 @@ page 60000 "FA Conversion Wizard"
         Step3Visible := false;
     end;
 
-    local procedure LoadTopBanners();
+    local procedure LoadTopBanners()
     begin
         if MediaRepositoryStandard.Get('AssistedSetup-NoText-400px.png', Format(CurrentClientType())) and
             MediaRepositoryDone.Get('AssistedSetupDone-NoText-400px.png', Format(CurrentClientType()))

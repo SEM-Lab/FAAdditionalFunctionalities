@@ -203,7 +203,7 @@ page 60004 "Posted Transfer ReceiptLns INF"
             TransferReceiptLine.SetRange("Document No.", DocNo);
             TransferReceiptLine.FindFirst();
             TempTransferReceiptLine := TransferReceiptLine;
-            TempTransferReceiptLine.Insert();
+            TempTransferReceiptLine.Insert(false);
         end;
         if TempTransferReceiptLine."Line No." = LineNo then
             exit(true);

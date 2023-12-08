@@ -100,7 +100,7 @@ codeunit 60001 "FA Transfer Functions"
         TempReservationEntry."Entry No." := 1;
         TempReservationEntry."Serial No." := FixedAsset."No.";
         TempReservationEntry.Quantity := 1;
-        TempReservationEntry.Insert();
+        TempReservationEntry.Insert(false);
 
         CreateReservEntry.CreateReservEntryFor(
           Database::"Item Journal Line", ItemJournalLine."Entry Type".AsInteger(),
@@ -110,8 +110,8 @@ codeunit 60001 "FA Transfer Functions"
           ItemJournalLine."Item No.", ItemJournalLine."Variant Code", ItemJournalLine."Location Code", '', 0D, 0D, 0, ReservStatus::Surplus);
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, 'OnAfterSetParametersBeforeRun', '', false, false)]
-    local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20]);
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, OnAfterSetParametersBeforeRun, '', false, false)]
+    local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20])
     begin
         if not CommitRequired then
             exit;
@@ -119,7 +119,7 @@ codeunit 60001 "FA Transfer Functions"
         Commit();
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", 'OnAfterInsertEvent', '', true, true)]
+    [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', true, true)]
     local procedure OnAfterInsert_ILE(var Rec: Record "Item Ledger Entry")
     var
         Location: Record Location;
@@ -148,7 +148,25 @@ codeunit 60001 "FA Transfer Functions"
 
         if Location."Consignment Ship-to Code INF" <> '' then
             ServiceItem.Validate("Ship-to Code", Location."Consignment Ship-to Code INF");
-        ServiceItem.Modify();
+        ServiceItem.Modify(true);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create E-Shipment NAV Doc. INF", OnAfterCreateEShipmentLineFromTransferShipment, '', false, false)]
+    local procedure "Create E-Shipment NAV Doc. INF_OnAfterCreateEShipmentLineFromTransferShipment"(TransferShipmentHeader: Record "Transfer Shipment Header"; TransferShipmentLine: Record "Transfer Shipment Line"; var EShipmentLine: Record "E-Shipment Line INF")
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+        ServiceItem: Record "Service Item";
+    begin
+        ItemLedgerEntry.SetRange("Document No.", TransferShipmentLine."Document No.");
+        ItemLedgerEntry.SetRange("Document Line No.", TransferShipmentLine."Line No.");
+        if not ItemLedgerEntry.FindLast() then
+            exit;
+
+        if not ServiceItem.Get(ItemLedgerEntry."Serial No.") then
+            exit;
+
+        EShipmentLine.Validate("Sellers Item Identification", ServiceItem."Item No.");
+        EShipmentLine.Validate(Name, ServiceItem.Description);
     end;
 
     var
