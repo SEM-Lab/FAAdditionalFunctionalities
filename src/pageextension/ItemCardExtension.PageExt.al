@@ -23,6 +23,12 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the FA Posting Group field.';
                 }
+
+                field("FA Subclass Code"; Rec."FA Subclass Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the FA Subclass Code field.';
+                }
             }
         }
     }

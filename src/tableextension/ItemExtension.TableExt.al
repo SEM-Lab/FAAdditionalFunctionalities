@@ -18,5 +18,11 @@ tableextension 60001 "Item Extension" extends Item
             TableRelation = "FA Posting Group";
         }
 
+        field(60003; "FA Subclass Code"; Code[10])
+        {
+            Caption = 'FA Subclass Code';
+            TableRelation = "FA Subclass";
+        }
+
     }
 }

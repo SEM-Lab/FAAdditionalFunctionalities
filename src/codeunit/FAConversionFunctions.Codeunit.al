@@ -9,6 +9,7 @@ codeunit 60000 "FA Conversion Functions"
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
+        Item.TestField("FA Subclass Code");
 
         FAConversion.Init();
         FAConversion.Insert(true);
@@ -63,6 +64,7 @@ codeunit 60000 "FA Conversion Functions"
         FixedAsset.Insert(true);
         FixedAsset.Validate(Description, FAConversion."Item Description");
         FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
+        FixedAsset.Validate("FA Subclass Code", Item."FA Subclass Code");
         FixedAsset.Modify(true);
 
         FADepreciationBook.Init();
@@ -179,10 +181,24 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
     procedure AdjustAndPostInventoryCost(var FAConversion: Record "FA Conversion")
+    var
+        PostValueEntrytoGL: Record "Post Value Entry to G/L";
+        AdjustCostItemEntries: Report "Adjust Cost - Item Entries";
+        PostInventoryCosttoGL: Report "Post Inventory Cost to G/L";
     begin
-        Report.RunModal(Report::"Adjust Cost - Item Entries", false);
 
-        Report.RunModal(Report::"Post Inventory Cost to G/L", false);
+        AdjustCostItemEntries.InitializeRequest(FAConversion."Item No.", '');
+        AdjustCostItemEntries.UseRequestPage := false;
+        AdjustCostItemEntries.RunModal();
+
+        PostValueEntrytoGL.Reset();
+        PostValueEntrytoGL.SetRange("Item No.", FAConversion."Item No.");
+        PostInventoryCosttoGL.SetTableView(PostValueEntrytoGL);
+        PostInventoryCosttoGL.UseRequestPage := false;
+        PostInventoryCosttoGL.InitializeRequest(1, '', true);
+        PostInventoryCosttoGL.RunModal();
+
+        //Report.RunModal(Report::"Post Inventory Cost to G/L", false);
     end;
 
     procedure FAAcquisition(var FAConversion: Record "FA Conversion")
