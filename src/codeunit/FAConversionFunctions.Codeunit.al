@@ -82,6 +82,7 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine: Record "Item Journal Line";
         Item: Record Item;
         FixedAsset: Record "Fixed Asset";
+        ItemJnlPostBatch: Codeunit "Item Jnl.-Post Batch";
     begin
         FAConversion.TestField("Location Code");
         FAConversion.TestField("Posting Date");
@@ -116,7 +117,9 @@ codeunit 60000 "FA Conversion Functions"
 
         CreateReservationEntry(ItemJournalLine, FAConversion);
 
-        Codeunit.Run(Codeunit::"Item Jnl.-Post Batch", ItemJournalLine);
+        ItemJnlPostBatch.SetSuppressCommit(true);
+        ItemJnlPostBatch.Run(ItemJournalLine);
+        //Codeunit.Run(Codeunit::"Item Jnl.-Post Batch", ItemJournalLine);
 
         FAConversion."Negative Adjmt. ILE Entry No." := GlobalILENo;
         FAConversion.Modify(true);
