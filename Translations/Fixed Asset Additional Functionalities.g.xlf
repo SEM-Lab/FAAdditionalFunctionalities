@@ -8,60 +8,120 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 3269581359 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the FA Acquisition Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA Acquisition Entry No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 3269581359 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Acquisition Entry No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA Acquisition Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 1982396155 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the FA Description field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA Description - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1971911761 - Field 1982396155 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Description</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA Description - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 1991001892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the FA No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 1991001892 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 2842094365 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Description field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Item Description - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1971911761 - Field 2842094365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Description</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Item Description - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Item No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Location Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Location Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1971911761 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Location Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Location Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 125737948 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Negative Adjustment ILE Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Negative Adjmt. ILE Entry No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 125737948 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Negative Adjustment ILE Entry No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Negative Adjmt. ILE Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field No. - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1971911761 - Field 4200184881 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 1351594800 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the No. Series field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field No. Series - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 1351594800 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>No. Series</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field No. Series - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 3710982960 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Posting Date field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Posting Date - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1971911761 - Field 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Posting Date</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Posting Date - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 47037625 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Serial No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Serial No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 47037625 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Serial No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Serial No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Variant Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Variant Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1971911761 - Field 3450651614 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Variant Code</source>
@@ -73,40 +133,80 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 2223214263 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Depreciation Book Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Depreciation Book Code - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 2223214263 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Depreciation Book Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Depreciation Book Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 3007540741 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the FA Conversion No. Series field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field FA Conversion No. Series - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1809950204 - Field 3007540741 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Conversion No. Series</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field FA Conversion No. Series - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 3218303649 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the FA Trans. Pos. Adjmt. Loc. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field FA Trans. Pos. Adjmt. Loc. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 3218303649 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Trans. Pos. Adjmt. Location Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field FA Trans. Pos. Adjmt. Loc. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 170588986 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the FA Transfer Item No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field FA Transfer Item No. - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1809950204 - Field 170588986 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Transfer Item No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field FA Transfer Item No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 2741399884 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Gen. Journal Batch Name field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Gen. Journal Batch Name - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 2741399884 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Gen. Journal Batch Name</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Gen. Journal Batch Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 721261320 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Gen. Journal Template Name field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Gen. Journal Template Name - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1809950204 - Field 721261320 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Gen. Journal Template Name</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Gen. Journal Template Name - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 932182897 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Journal Batch Name field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Item Journal Batch Name - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 932182897 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Journal Batch Name</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Item Journal Batch Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 3145595453 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Journal Template Name field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Item Journal Template Name - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1809950204 - Field 3145595453 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Journal Template Name</source>
@@ -118,20 +218,40 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Primary Key - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 119026260 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Resource Gen. Prod. Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Resource Gen. Prod Post. Group - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 119026260 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Resource Gen. Prod. Posting Group</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Resource Gen. Prod Post. Group - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 604594745 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Resource VAT Prod. Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Resource VAT Prod. Post. Group - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1809950204 - Field 604594745 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Resource VAT Prod. Posting Group</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Resource VAT Prod. Post. Group - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 1844012642 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the VAT Bus. Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field VAT Bus. Posting Group - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 1844012642 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>VAT Bus. Posting Group</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field VAT Bus. Posting Group - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 236064653 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the VAT Prod. Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field VAT Prod. Posting Group - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 1809950204 - Field 236064653 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>VAT Prod. Posting Group</source>
@@ -158,70 +278,15 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control FA Acquisition - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 3269581359 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA Acquisition Entry No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control FA Acquisition Entry No. - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1971911761 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>General</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control General - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 1982396155 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA Description field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control FA Description - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 1991001892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control FA No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 2842094365 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Item Description field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Item Description - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Item No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Item No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Variant Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Variant Code - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1971911761 - Control 3011454188 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Negative Adjustment Information</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Negative Adjustment Information - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Location Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Location Code - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 125737948 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Negative Adjustment ILE Entry No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Negative Adjmt. ILE Entry No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 3710982960 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Posting Date field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Posting Date - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1971911761 - Control 47037625 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Serial No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Control Serial No. - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1971911761 - Action 1058008714 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Executes the FA Acquisition action.</source>
@@ -248,31 +313,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion List - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1850502279 - Control 1982396155 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA Description field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion List - Control FA Description - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1850502279 - Control 1991001892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion List - Control FA No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1850502279 - Control 2842094365 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Item Description field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion List - Control Item Description - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1850502279 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Item No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion List - Control Item No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1850502279 - Control 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion List - Control No. - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1809950204 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Conversion Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -283,85 +323,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FATransfer - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 2407310161 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA Trans. Pos. Adjmt. Loc. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FA Trans. Pos. Adjmt. Loc.  - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 170588986 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA Transfer Item No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FA Transfer Item No. - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1809950204 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>General</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control General - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 3007540741 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA Conversion No. Series field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FA Conversion No. Series - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1809950204 - Control 698089833 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Acquistion</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FAAcquistion - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 2223214263 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Depreciation Book Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control Depreciation Book Code - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 2741399884 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Gen. Journal Batch Name field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control Gen. Journal Batch Name - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 721261320 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Gen. Journal Template Name field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control Gen. Journal Template Name - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 1844012642 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the VAT Bus. Posting Group field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control VAT Bus. Posting Group - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 236064653 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the VAT Prod. Posting Group field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control VAT Prod. Posting Group - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1809950204 - Control 46465012 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Negative Adjustment</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control NegativeAdjusment - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 932182897 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Item Journal Batch Name field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control Item Journal Batch Name - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 3145595453 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Item Journal Template Name field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control Item Journal Template Name - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1809950204 - Control 2159513599 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Resource Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control ResourceSetup - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 119026260 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Resource Gen. Prod. Posting Group field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control Resource Gen. Prod Post. Group - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1809950204 - Control 604594745 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Resource VAT Prod. Posting Group field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control Resource VAT Prod. Post. Group - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1242322992 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Conversion</source>
@@ -468,11 +448,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Document No. - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 3470007613 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the FA No. Series field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control FA No. Series - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 3954217406 - Control 2139693550 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Gen. Prod. Posting Group field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -537,11 +512,6 @@
           <source>Specifies the value of the Quantity (Base) field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Quantity (Base) - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 3153419538 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Remaning Quantity field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Remaning Quantity - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 3954217406 - Control 1577567912 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
@@ -658,11 +628,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Receipt Date - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 3153419538 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the value of the Remaning Quantity field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Remaning Quantity - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 673585594 - Control 520660911 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Transfer-from Code field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -743,31 +708,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Action CreateResourceCard - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 3810367679 - Control 1454633904 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
-          <source>Specifies the value of the Current Location field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Current Location - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 3810367679 - Control 2690523773 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
-          <source>Specifies the value of the Current Location Name field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Current Location Name - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 3810367679 - Control 1159486367 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
-          <source>Specifies the value of the Current Location Ship-to Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Current Location Ship-to Code - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 3810367679 - Control 2388433081 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
-          <source>Specifies the value of the Source Item No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Source Item No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 3810367679 - Control 940135937 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
-          <source>Specifies the value of the Source Variant Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Control Source Variant Code - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="PageExtension 945892629 - Action 2629517463 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
           <source>Executes the Create FA Transfer Item action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -788,31 +728,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action CreateResourceCard - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 945892629 - Control 1454633904 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
-          <source>Specifies the value of the Current Location field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Control Current Location - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 945892629 - Control 2690523773 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
-          <source>Specifies the value of the Current Location Name field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Control Current Location Name - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 945892629 - Control 1159486367 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
-          <source>Specifies the value of the Current Location Ship-to Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Control Current Location Ship-to Code - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 945892629 - Control 2388433081 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
-          <source>Specifies the value of the Source Item No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Control Source Item No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 945892629 - Control 940135937 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
-          <source>Specifies the value of the Source Variant Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Control Source Variant Code - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="PageExtension 742805820 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
           <source>Executes the New FA Conversion action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -827,26 +742,6 @@
           <source>FA Conversion</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA Conversion - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 742805820 - Control 3111487712 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
-          <source>Specifies the value of the FA Conversion Gen. Bus. Posting Group field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA Conv. Gen. Bus. Post. Group - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 742805820 - Control 3470007613 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
-          <source>Specifies the value of the FA No. Series field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA No. Series - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 742805820 - Control 265035428 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
-          <source>Specifies the value of the FA Posting Group field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA Posting Group - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 742805820 - Control 1602339052 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
-          <source>Specifies the value of the FA Subclass Code field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA Subclass Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 1152214162 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1395186723">
           <source>Executes the New FA Conversion action.</source>
@@ -873,85 +768,140 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Resource Card Extension - Control FA Data - Property Caption</note>
         </trans-unit>
-        <trans-unit id="PageExtension 2451172297 - Control 1454633904 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1580859378">
-          <source>Specifies the value of the Current Location field.</source>
+        <trans-unit id="TableExtension 593634465 - Field 3470007613 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 593634465">
+          <source>Specifies the value of the FA No. Series field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Resource Card Extension - Control Current Location - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 2451172297 - Control 2453526900 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1580859378">
-          <source>Specifies the value of the FA Serial No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Resource Card Extension - Control FA Serial No. - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="PageExtension 2451172297 - Control 1182491315 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1580859378">
-          <source>Specifies the value of the Fixed Asset No. field.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Resource Card Extension - Control Fixed Asset No. - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Direct Trans. Line - Field FA No. Series - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 593634465 - Field 3470007613 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 593634465">
           <source>FA No. Series</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Direct Trans. Line - Field FA No. Series - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 593634465 - Field 3153419538 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 593634465">
+          <source>Specifies the value of the Remaning Quantity field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Direct Trans. Line - Field Remaning Quantity - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="TableExtension 593634465 - Field 3153419538 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 593634465">
           <source>Remaning Quantity</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Direct Trans. Line - Field Remaning Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 1454633904 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Specifies the value of the Current Location field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 1454633904 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Current Location</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 2690523773 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Specifies the value of the Current Location Name field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Name - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 2690523773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Current Location Name</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 1159486367 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Specifies the value of the Current Location Ship-to Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Ship-to Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 1159486367 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Current Location Ship-to Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Ship-to Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 2388433081 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Specifies the value of the Source Item No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Source Item No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 2388433081 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Source Item No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Source Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 940135937 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Specifies the value of the Source Variant Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Source Variant Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 940135937 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Source Variant Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Source Variant Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3111487712 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Specifies the value of the FA Conversion Gen. Bus. Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Conv. Gen. Bus. Post. Group - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3111487712 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>FA Conversion Gen. Bus. Posting Group</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Conv. Gen. Bus. Post. Group - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3470007613 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Specifies the value of the FA No. Series field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA No. Series - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3470007613 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>FA No. Series</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA No. Series - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 265035428 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Specifies the value of the FA Posting Group field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Posting Group - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 265035428 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>FA Posting Group</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Posting Group - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 1602339052 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Specifies the value of the FA Subclass Code field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Subclass Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 1602339052 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>FA Subclass Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Subclass Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3903578189 - Field 1454633904 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 348912950">
+          <source>Specifies the value of the Current Location field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Resource Extension - Field Current Location - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3903578189 - Field 1454633904 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 348912950">
           <source>Current Location</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Resource Extension - Field Current Location - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3903578189 - Field 2453526900 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 348912950">
+          <source>Specifies the value of the FA Serial No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Resource Extension - Field FA Serial No. - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3903578189 - Field 2453526900 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 348912950">
           <source>FA Serial No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Resource Extension - Field FA Serial No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3903578189 - Field 1182491315 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 348912950">
+          <source>Specifies the value of the Fixed Asset No. field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Resource Extension - Field Fixed Asset No. - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 3903578189 - Field 1182491315 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 348912950">
           <source>Fixed Asset No.</source>
@@ -962,6 +912,11 @@
           <source>FA No. Series</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field FA No. Series - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3810883434 - Field 3153419538 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1903112923">
+          <source>Specifies the value of the Remaning Quantity field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Remaning Quantity - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 3810883434 - Field 3153419538 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1903112923">
           <source>Remaning Quantity</source>

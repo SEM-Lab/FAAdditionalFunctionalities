@@ -11,12 +11,10 @@ pageextension 60003 "Resource Card Extension" extends "Resource Card"
                 field("Fixed Asset No."; Rec."Fixed Asset No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Fixed Asset No. field.';
                 }
                 field("FA Serial No."; Rec."FA Serial No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the FA Serial No. field.';
                     trigger OnDrillDown()
                     var
                         FixedAsset: Record "Fixed Asset";
@@ -28,7 +26,6 @@ pageextension 60003 "Resource Card Extension" extends "Resource Card"
                 field("Current Location"; Rec."Current Location")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Current Location field.';
                 }
             }
         }

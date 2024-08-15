@@ -2,12 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "PERA_DEV",
+            "name": "SEM - COPY090824",
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
-            "environmentName": "PERA_DEV",
+            "tenant": "3a2a17c9-a748-438b-8c0e-b375b3713c75",
+            "environmentName": "COPY090824",
             "startupObjectId": 60005,
             "startupObjectType": "Page",
             "breakOnError": "ExcludeTry",

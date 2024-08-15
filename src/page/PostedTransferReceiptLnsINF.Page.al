@@ -59,7 +59,6 @@ page 60004 "Posted Transfer ReceiptLns INF"
                 }
                 field("Remaning Quantity"; Rec."Remaning Quantity")
                 {
-                    ToolTip = 'Specifies the value of the Remaning Quantity field.';
                 }
                 field("Receipt Date"; Rec."Receipt Date")
                 {

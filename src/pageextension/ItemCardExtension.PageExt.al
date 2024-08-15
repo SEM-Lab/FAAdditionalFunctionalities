@@ -11,23 +11,19 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
                 field("FA No. Series"; Rec."FA No. Series")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the FA No. Series field.';
                 }
                 field("FA Conv. Gen. Bus. Post. Group"; Rec."FA Conv. Gen. Bus. Post. Group")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the FA Conversion Gen. Bus. Posting Group field.';
                 }
                 field("FA Posting Group"; Rec."FA Posting Group")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the FA Posting Group field.';
                 }
 
                 field("FA Subclass Code"; Rec."FA Subclass Code")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the FA Subclass Code field.';
                 }
             }
         }

@@ -1,8 +1,9 @@
 {
-"al.codeAnalyzers": [
-    "${CodeCop}",
-    "${UICop}",
-    "${PerTenantExtensionCop}",
-    "${analyzerFolder}BusinessCentral.LinterCop.dll"
-]
+    "al.codeAnalyzers": [
+        "${CodeCop}",
+        "${UICop}",
+        "${PerTenantExtensionCop}",
+        "${analyzerFolder}BusinessCentral.LinterCop.dll"
+    ],
+    "al.ruleSetPath": "LinterCop.ruleset.json"
 }

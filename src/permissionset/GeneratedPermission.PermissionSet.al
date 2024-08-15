@@ -1,5 +1,6 @@
-permissionset 60000 "GeneratedPermission"
+permissionset 60000 GeneratedPermission
 {
+    Caption = 'FA Add. Fuctions', Locked = true;
     Assignable = true;
     Access = Public;
     Permissions = tabledata "FA Conversion" = RIMD,

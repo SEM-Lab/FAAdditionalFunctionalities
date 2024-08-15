@@ -7,7 +7,7 @@ page 60000 "FA Conversion Wizard"
 
     layout
     {
-        area(content)
+        area(Content)
         {
             group(StandardBanner)
             {
@@ -93,7 +93,7 @@ page 60000 "FA Conversion Wizard"
     }
     actions
     {
-        area(processing)
+        area(Processing)
         {
             action(ActionBack)
             {
@@ -102,7 +102,7 @@ page 60000 "FA Conversion Wizard"
                 Enabled = BackActionEnabled;
                 Image = PreviousRecord;
                 InFooterBar = true;
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     NextStep(true);
                 end;
@@ -114,7 +114,7 @@ page 60000 "FA Conversion Wizard"
                 Enabled = NextActionEnabled;
                 Image = NextRecord;
                 InFooterBar = true;
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     NextStep(false);
                 end;
@@ -126,7 +126,7 @@ page 60000 "FA Conversion Wizard"
                 Enabled = FinishActionEnabled;
                 Image = Approve;
                 InFooterBar = true;
-                trigger OnAction();
+                trigger OnAction()
                 begin
                     FinishAction();
                 end;
@@ -134,12 +134,12 @@ page 60000 "FA Conversion Wizard"
         }
     }
 
-    trigger OnInit();
+    trigger OnInit()
     begin
         LoadTopBanners();
     end;
 
-    trigger OnOpenPage();
+    trigger OnOpenPage()
     var
         FAConversionSetup: Record "FA Conversion Setup";
     begin

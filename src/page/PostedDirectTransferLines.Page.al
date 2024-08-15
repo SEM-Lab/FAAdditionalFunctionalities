@@ -8,7 +8,7 @@ page 60005 "Posted Direct Transfer Lines"
 
     layout
     {
-        area(content)
+        area(Content)
         {
             repeater(General)
             {
@@ -26,7 +26,6 @@ page 60005 "Posted Direct Transfer Lines"
                 }
                 field("FA No. Series"; Rec."FA No. Series")
                 {
-                    ToolTip = 'Specifies the value of the FA No. Series field.';
                 }
                 field(Quantity; Rec.Quantity)
                 {
@@ -38,7 +37,6 @@ page 60005 "Posted Direct Transfer Lines"
                 }
                 field("Remaning Quantity"; Rec."Remaning Quantity")
                 {
-                    ToolTip = 'Specifies the value of the Remaning Quantity field.';
                 }
                 field(Description; Rec.Description)
                 {

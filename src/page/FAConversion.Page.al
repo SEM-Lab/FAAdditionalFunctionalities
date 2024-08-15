@@ -9,7 +9,7 @@ page 60002 "FA Conversion"
 
     layout
     {
-        area(content)
+        area(Content)
         {
             group(General)
             {
@@ -18,23 +18,18 @@ page 60002 "FA Conversion"
 
                 field("No."; Rec."No.")
                 {
-                    ToolTip = 'Specifies the value of the No. field.';
                 }
                 field("Item No."; Rec."Item No.")
                 {
-                    ToolTip = 'Specifies the value of the Item No. field.';
                 }
                 field("Variant Code"; Rec."Variant Code")
                 {
-                    ToolTip = 'Specifies the value of the Variant Code field.';
                 }
                 field("Item Description"; Rec."Item Description")
                 {
-                    ToolTip = 'Specifies the value of the Item Description field.';
                 }
                 field("FA No."; Rec."FA No.")
                 {
-                    ToolTip = 'Specifies the value of the FA No. field.';
                     trigger OnDrillDown()
                     var
                         FixedAsset: Record "Fixed Asset";
@@ -45,7 +40,6 @@ page 60002 "FA Conversion"
                 }
                 field("FA Description"; Rec."FA Description")
                 {
-                    ToolTip = 'Specifies the value of the FA Description field.';
                 }
             }
             group("Negative Adjustment Information")
@@ -54,20 +48,16 @@ page 60002 "FA Conversion"
 
                 field("Posting Date"; Rec."Posting Date")
                 {
-                    ToolTip = 'Specifies the value of the Posting Date field.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ToolTip = 'Specifies the value of the Location Code field.';
                 }
                 field("Serial No."; Rec."Serial No.")
                 {
-                    ToolTip = 'Specifies the value of the Serial No. field.';
                     Editable = SerialNoEditable;
                 }
                 field("Negative Adjmt. ILE Entry No."; Rec."Negative Adjmt. ILE Entry No.")
                 {
-                    ToolTip = 'Specifies the value of the Negative Adjustment ILE Entry No. field.';
                     trigger OnDrillDown()
                     var
                         ItemLedgerEntry: Record "Item Ledger Entry";
@@ -82,7 +72,6 @@ page 60002 "FA Conversion"
                 Caption = 'FA Acquisition';
                 field("FA Acquisition Entry No."; Rec."FA Acquisition Entry No.")
                 {
-                    ToolTip = 'Specifies the value of the FA Acquisition Entry No. field.';
                     trigger OnDrillDown()
                     var
                         FALedgerEntry: Record "FA Ledger Entry";

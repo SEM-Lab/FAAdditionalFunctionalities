@@ -130,7 +130,7 @@ codeunit 60001 "FA Transfer Functions"
         if Location."Consignment Customer No. INF" = '' then
             exit;
 
-        if not ServiceItem.Get(ItemLedgerEntry."Serial No.") then
+        if not ServiceItem.Get(CopyStr(ItemLedgerEntry."Serial No.", 1, MaxStrLen(ServiceItem."No."))) then
             exit;
 
         ServiceItem.Validate("Customer No.", Location."Consignment Customer No. INF");
@@ -148,6 +148,8 @@ codeunit 60001 "FA Transfer Functions"
 
         Commit();
     end;
+
+
 
     [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', true, true)]
     local procedure OnAfterInsert_ILE(var Rec: Record "Item Ledger Entry")

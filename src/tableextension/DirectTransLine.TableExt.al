@@ -9,6 +9,7 @@ tableextension 60000 "Direct Trans. Line" extends "Direct Trans. Line"
             FieldClass = FlowField;
             AllowInCustomizations = Never;
             CalcFormula = sum("Item Ledger Entry"."Remaining Quantity" where("Item No." = field("Item No."), "Variant Code" = field("Variant Code"), "Location Code" = field("Transfer-to Code")));
+            ToolTip = 'Specifies the value of the Remaning Quantity field.';
         }
         field(60001; "FA No. Series"; Code[20])
         {
@@ -17,6 +18,7 @@ tableextension 60000 "Direct Trans. Line" extends "Direct Trans. Line"
             FieldClass = FlowField;
             CalcFormula = lookup(Item."FA No. Series" where("No." = field("Item No.")));
             AllowInCustomizations = Never;
+            ToolTip = 'Specifies the value of the FA No. Series field.';
         }
     }
 }
