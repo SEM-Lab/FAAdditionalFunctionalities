@@ -140,6 +140,8 @@ codeunit 60001 "FA Transfer Functions"
         ServiceItem.Modify(true);
     end;
 
+
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, OnAfterSetParametersBeforeRun, '', false, false)]
     local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20])
     begin
@@ -174,6 +176,25 @@ codeunit 60001 "FA Transfer Functions"
         EShipmentLine.Validate("Sellers Item Identification", ServiceItem."Item No.");
         EShipmentLine.Validate(Name, ServiceItem.Description);
         EShipmentLine.Modify(false);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"EShipmentLineTracking ESHP INF", OnBeforeInsertEvent, '', false, false)]
+    local procedure OnBeforeInsertEvent_EShipmentLineTrackingESHPINF(var Rec: Record "EShipmentLineTracking ESHP INF")
+    begin
+        UpdateSerialNoOnBeforeInsertEShipmentLineTracking(Rec);
+    end;
+
+    local procedure UpdateSerialNoOnBeforeInsertEShipmentLineTracking(var Rec: Record "EShipmentLineTracking ESHP INF")
+    var
+        ServiceItem: Record "Service Item";
+    begin
+        if not ServiceItem.Get(Rec."Serial No.") then
+            exit;
+
+        if ServiceItem."Serial No." = '' then
+            exit;
+
+        Rec."Serial No." := ServiceItem."Serial No.";
     end;
 
     var

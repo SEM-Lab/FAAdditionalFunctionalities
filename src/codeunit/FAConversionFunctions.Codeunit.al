@@ -54,13 +54,16 @@ codeunit 60000 "FA Conversion Functions"
     var
         FixedAsset: Record "Fixed Asset";
         FADepreciationBook: Record "FA Depreciation Book";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        //NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series";
     begin
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("Depreciation Book Code");
 
         FixedAsset.Init();
-        NoSeriesManagement.InitSeries(Item."FA No. Series", FixedAsset."No. Series", 0D, FixedAsset."No.", FixedAsset."No. Series");
+        //NoSeriesManagement.InitSeries(Item."FA No. Series", FixedAsset."No. Series", 0D, FixedAsset."No.", FixedAsset."No. Series");
+        FixedAsset."No. Series" := Item."FA No. Series";
+        FixedAsset."No." := NoSeries.GetNextNo(Item."FA No. Series", WorkDate());
         FixedAsset.Insert(true);
         FixedAsset.Validate(Description, FAConversion."Item Description");
         FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
@@ -318,6 +321,8 @@ codeunit 60000 "FA Conversion Functions"
     begin
         GlobalILENo := ItemLedgerEntry."Entry No.";
     end;
+
+
 
     var
         FAConversionSetup: Record "FA Conversion Setup";

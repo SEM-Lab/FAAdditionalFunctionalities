@@ -15,11 +15,12 @@ table 60001 "FA Conversion"
             trigger OnValidate()
             var
                 FAConversionSetup: Record "FA Conversion Setup";
-                NoSeriesManagement: Codeunit NoSeriesManagement;
+                //NoSeries: Codeunit NoSeriesManagement;
+                NoSeries: Codeunit "No. Series";
             begin
                 if "No." <> xRec."No." then begin
                     FAConversionSetup.Get();
-                    NoSeriesManagement.TestManual(FAConversionSetup."FA Conversion No. Series");
+                    NoSeries.TestManual(FAConversionSetup."FA Conversion No. Series");
                     "No. Series" := '';
                 end;
             end;
@@ -100,12 +101,15 @@ table 60001 "FA Conversion"
     trigger OnInsert()
     var
         FAConversionSetup: Record "FA Conversion Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        //NoSeries: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series";
     begin
         if "No." = '' then begin
             FAConversionSetup.Get();
             FAConversionSetup.TestField("FA Conversion No. Series");
-            NoSeriesManagement.InitSeries(FAConversionSetup."FA Conversion No. Series", xRec."No. Series", 0D, "No.", "No. Series");
+            //NoSeriesManagement.InitSeries(FAConversionSetup."FA Conversion No. Series", xRec."No. Series", 0D, "No.", "No. Series");
+            Rec."No. Series" := FAConversionSetup."FA Conversion No. Series";
+            Rec."No." := NoSeries.GetNextNo(FAConversionSetup."FA Conversion No. Series", WorkDate());
         end;
 
         "Posting Date" := WorkDate();
