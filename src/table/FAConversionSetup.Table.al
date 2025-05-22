@@ -60,25 +60,25 @@ table 60000 "FA Conversion Setup"
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Gen. Journal Template Name"));
             ToolTip = 'Specifies the value of the Gen. Journal Batch Name field.';
         }
-        field(10; "VAT Bus. Posting Group"; Code[10])
+        field(10; "VAT Bus. Posting Group"; Code[20])
         {
             Caption = 'VAT Bus. Posting Group';
             TableRelation = "VAT Business Posting Group".Code;
             ToolTip = 'Specifies the value of the VAT Bus. Posting Group field.';
         }
-        field(11; "VAT Prod. Posting Group"; Code[10])
+        field(11; "VAT Prod. Posting Group"; Code[20])
         {
             Caption = 'VAT Prod. Posting Group';
             TableRelation = "VAT Product Posting Group";
             ToolTip = 'Specifies the value of the VAT Prod. Posting Group field.';
         }
-        field(12; "Resource Gen. Prod Post. Group"; Code[10])
+        field(12; "Resource Gen. Prod Post. Group"; Code[20])
         {
             Caption = 'Resource Gen. Prod. Posting Group';
             TableRelation = "Gen. Product Posting Group";
             ToolTip = 'Specifies the value of the Resource Gen. Prod. Posting Group field.';
         }
-        field(13; "Resource VAT Prod. Post. Group"; Code[10])
+        field(13; "Resource VAT Prod. Post. Group"; Code[20])
         {
             Caption = 'Resource VAT Prod. Posting Group';
             TableRelation = "VAT Product Posting Group";
