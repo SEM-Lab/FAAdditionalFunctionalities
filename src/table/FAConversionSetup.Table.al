@@ -84,8 +84,11 @@ table 60000 "FA Conversion Setup"
             TableRelation = "VAT Product Posting Group";
             ToolTip = 'Specifies the value of the Resource VAT Prod. Posting Group field.';
         }
-
-
+        field(14; "E-Book Description INF"; Text[100])
+        {
+            Caption = 'E-Book Description';
+            ToolTip = 'Specifies the value of the E-Book Description field.';
+        }
     }
 
     keys

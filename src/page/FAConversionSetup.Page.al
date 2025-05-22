@@ -40,6 +40,9 @@ page 60001 "FA Conversion Setup"
                     field("VAT Prod. Posting Group"; Rec."VAT Prod. Posting Group")
                     {
                     }
+                    field("E-Book Description INF"; Rec."E-Book Description INF")
+                    {
+                    }
                 }
                 group(NegativeAdjusment)
                 {

@@ -8,6 +8,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 3551146098 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the E-Book Description field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field E-Book Description INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 3551146098 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>E-Book Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field E-Book Description INF - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 3269581359 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the FA Acquisition Entry No. field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -142,6 +152,16 @@
           <source>Depreciation Book Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Depreciation Book Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 3551146098 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the E-Book Description field.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field E-Book Description INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 3551146098 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>E-Book Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field E-Book Description INF - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 1809950204 - Field 3007540741 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the FA Conversion No. Series field.</source>

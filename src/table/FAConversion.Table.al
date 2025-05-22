@@ -81,6 +81,21 @@ table 60001 "FA Conversion"
             ToolTip = 'Specifies the value of the Variant Code field.';
             Editable = false;
         }
+        field(12; "E-Book Description INF"; Text[100])
+        {
+            Caption = 'E-Book Description';
+            ToolTip = 'Specifies the value of the E-Book Description field.';
+        }
+        // field(13; "GIB Document Desc. INF"; Text[100])
+        // {
+        //     Caption = 'GIB Document Desc.';
+        //     ToolTip = 'Specifies the value of the GIB Document Desc. field.';
+        // }
+        // field(14; "GIB Document Type INF"; Enum "GIB Document Type INF")
+        // {
+        //     Caption = 'GIB Document Type';
+        //     ToolTip = 'Specifies the value of the GIB Document Type field.';
+        // }
         field(107; "No. Series"; Code[20])
         {
             Caption = 'No. Series';
@@ -100,12 +115,14 @@ table 60001 "FA Conversion"
 
     trigger OnInsert()
     var
-        FAConversionSetup: Record "FA Conversion Setup";
+        //FAConversionSetup: Record "FA Conversion Setup";
         //NoSeries: Codeunit NoSeriesManagement;
         NoSeries: Codeunit "No. Series";
     begin
+        FAConversionSetup.GetRecordOnce();
+
         if "No." = '' then begin
-            FAConversionSetup.Get();
+            //FAConversionSetup.Get();
             FAConversionSetup.TestField("FA Conversion No. Series");
             //NoSeriesManagement.InitSeries(FAConversionSetup."FA Conversion No. Series", xRec."No. Series", 0D, "No.", "No. Series");
             Rec."No. Series" := FAConversionSetup."FA Conversion No. Series";
@@ -113,5 +130,9 @@ table 60001 "FA Conversion"
         end;
 
         "Posting Date" := WorkDate();
+        Rec."E-Book Description INF" := FAConversionSetup."E-Book Description INF";
     end;
+
+    var
+        FAConversionSetup: Record "FA Conversion Setup";
 }

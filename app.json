@@ -2,7 +2,7 @@
   "id": "2589b784-1a55-4cb4-903b-095370d3de32",
   "name": "Fixed Asset Additional Functionalities",
   "publisher": "Infotek Yazilim ve Donanim A.S.",
-  "version": "24.0.0.3",
+  "version": "25.0.0.0",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -28,11 +28,17 @@
         "name": "Consignment Management by İnfotek",
         "publisher": "Infotek Yazilim ve Donanim A.S.",
         "version": "21.1.1.0"
-      }
+      },
+              {
+            "id": "48ec6a78-9cb7-47c4-9dfa-771457ea247b",
+            "name": "İnfotek Add-On Infrastructure",
+            "publisher": "Infotek Yazilim ve Donanim A.S.",
+            "version": "21.2.23.5"
+        }
 ],
   "screenshots": [],
   "platform": "24.0.0.0",
-  "application": "24.0.0.0",
+  "application": "25.0.0.0",
   "idRanges": [
     {
       "from": 60000,
@@ -44,7 +50,7 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "13.1",
+  "runtime": "14.0",
   "features": [
     "NoImplicitWith",
     "TranslationFile"

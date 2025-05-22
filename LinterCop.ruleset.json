@@ -6,6 +6,21 @@
       "id": "LC0010",
       "action": "None",
       "justification": "Cyclomatic complexity and Maintainability index."
+    },
+    {
+      "id": "LC0068",
+      "action": "None",
+      "justification": "Informs the user that there are missing permission to access tabledata."
+    },
+    {
+      "id": "LC0084",
+      "action": "None",
+      "justification": "The return value of the 'Get' method must be used to improve error handling or provide meaningful feedback to the user."
+    },
+        {
+      "id": "LC0023",
+      "action": "None",
+      "justification": "The return value of the 'Get' method must be used to improve error handling or provide meaningful feedback to the user."
     }
   ]
 }

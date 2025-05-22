@@ -70,6 +70,17 @@ page 60002 "FA Conversion"
             group("FA Acquisition")
             {
                 Caption = 'FA Acquisition';
+                field("E-Book Description INF"; Rec."E-Book Description INF")
+                {
+                }
+                // field("GIB Document Desc. INF"; Rec."GIB Document Desc. INF")
+                // {
+                // }
+                // field("GIB Document Type INF"; Rec."GIB Document Type INF")
+                // {
+                // }
+
+
                 field("FA Acquisition Entry No."; Rec."FA Acquisition Entry No.")
                 {
                     trigger OnDrillDown()

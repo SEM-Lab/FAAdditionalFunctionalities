@@ -212,13 +212,20 @@ codeunit 60000 "FA Conversion Functions"
         GenJournalLine: Record "Gen. Journal Line";
         ItemLedgerEntry: Record "Item Ledger Entry";
         Item: Record Item;
+
         GeneralPostingSetup: Record "General Posting Setup";
+        ServiceItemGroup: Record "Service Item Group";
     begin
+        FAConversionSetup.GetRecordOnce();
+
         FAConversion.TestField("Negative Adjmt. ILE Entry No.");
         FAConversion.TestField("Posting Date");
 
         Item.Get(FAConversion."Item No.");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
+
+        if ServiceItemGroup.Get(Item."Service Item Group") and ServiceItemGroup."Create Service Item" then
+            CreateServiceItemFromFAConversion(FAConversion);
 
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("Gen. Journal Template Name");
@@ -255,11 +262,36 @@ codeunit 60000 "FA Conversion Functions"
         GenJournalLine.Validate("Bal. Account No.", GeneralPostingSetup."Inventory Adjmt. Account");
         GenJournalLine.Validate("VAT Bus. Posting Group", FAConversionSetup."VAT Bus. Posting Group");
         GenJournalLine.Validate("VAT Prod. Posting Group", FAConversionSetup."VAT Prod. Posting Group");
+
+        if FAConversion."E-Book Description INF" <> '' then
+            GenJournalLine.Validate("E-Book Description INF", FAConversion."E-Book Description INF")
+        else
+            GenJournalLine.Validate("E-Book Description INF", FAConversionSetup."E-Book Description INF");
         GenJournalLine.Modify(true);
 
         GlobalFAConversion := FAConversion;
         GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
         Clear(GlobalFAConversion);
+    end;
+
+    procedure CreateServiceItemFromFAConversion(FAConversion: Record "FA Conversion")
+    var
+        ServItem: Record "Service Item";
+        ServMgtSetup: Record "Service Mgt. Setup";
+        NoSeries: Codeunit "No. Series";
+    begin
+        ServItem.Init();
+        ServMgtSetup.Get();
+        ServMgtSetup.TestField("Service Item Nos.");
+        ServItem."No. Series" := ServMgtSetup."Service Item Nos.";
+        ServItem."No." := NoSeries.GetNextNo(ServItem."No. Series");
+        ServItem.Insert(true);
+        //ServItem.OmitAssignResSkills(true);
+        ServItem.Validate("Item No.", FAConversion."Item No.");
+        //ServItem.OmitAssignResSkills(false);
+        ServItem."Variant Code" := FAConversion."Variant Code";
+        ServItem.Validate("Serial No.", FAConversion."Serial No.");
+        ServItem.Modify(true);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", OnBeforeCode, '', false, false)]
@@ -286,7 +318,12 @@ codeunit 60000 "FA Conversion Functions"
 
 
     [EventSubscriber(ObjectType::Report, Report::"Adjust Cost - Item Entries", OnBeforePreReport, '', false, false)]
-    local procedure OnBeforePreReport_AdjustCostItemEntries(var Sender: Report "Adjust Cost - Item Entries"; ItemNoFilter: Text[250]; ItemCategoryFilter: Text[250]; PostToGL: Boolean; var Item: Record Item)
+    local procedure OnBeforePreReport_AdjustCostItemEntries(var Sender: Report "Adjust Cost - Item Entries"; ItemNoFilter: Text[250];
+                                                                            ItemCategoryFilter: Text[250];
+                                                                            PostToGL: Boolean;
+
+    var
+        Item: Record Item)
     begin
         if GlobalFAConversion."Item No." = '' then
             exit;
@@ -295,7 +332,16 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
     [EventSubscriber(ObjectType::Report, Report::"Post Inventory Cost to G/L INF", OnBeforePreReport, '', false, false)]
-    local procedure OnBeforePreReport(var Sender: Report "Post Inventory Cost to G/L INF"; var Item: Record Item; var ItemValueEntry: Record "Value Entry"; var PostValueEntryToGL: Record "Post Value Entry to G/L")
+    local procedure OnBeforePreReport(var Sender: Report "Post Inventory Cost to G/L INF";
+
+    var
+        Item: Record Item;
+
+    var
+        ItemValueEntry: Record "Value Entry";
+
+    var
+        PostValueEntryToGL: Record "Post Value Entry to G/L")
     var
         PostMethod: Option "per Posting Group","per Entry";
     begin
@@ -313,7 +359,7 @@ codeunit 60000 "FA Conversion Functions"
         if not CommitRequired then
             exit;
 
-        Commit();
+        Commit();// 
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInsertItemLedgEntry, '', false, false)]
