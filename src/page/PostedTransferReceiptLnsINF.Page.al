@@ -148,13 +148,11 @@ page 60004 "Posted Transfer ReceiptLns INF"
                 trigger OnAction()
                 var
                     TransferReceiptLine: Record "Transfer Receipt Line";
-                    ItemVariant: Record "Item Variant";
                 begin
                     CurrPage.SetSelectionFilter(TransferReceiptLine);
                     TransferReceiptLine.FindSet();
                     repeat
-                        ItemVariant.Get(Rec."Item No.", Rec."Variant Code");
-                        FAConversionFunctions.CreateFAConversionFromItemVariant(ItemVariant, false, Rec."Transfer-to Code");
+                        FAConversionFunctions.CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false);
                     until TransferReceiptLine.Next() = 0;
                 end;
             }

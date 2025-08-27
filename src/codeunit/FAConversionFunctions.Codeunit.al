@@ -362,6 +362,96 @@ codeunit 60000 "FA Conversion Functions"
         Commit();// 
     end;
 
+    procedure CreateFAConversionFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; ShowPageAfterCreation: Boolean)
+    var
+        FAConversion: Record "FA Conversion";
+        Item: Record Item;
+        SerialNo: Text[50];
+    begin
+        Item.Get(TransferReceiptLine."Item No.");
+
+        Item.TestField("FA No. Series");
+        Item.TestField("FA Conv. Gen. Bus. Post. Group");
+        Item.TestField("FA Posting Group");
+
+        // Get serial number from Transfer Receipt Line via Item Ledger Entry
+        SerialNo := GetSerialNoFromTransferReceiptLine(TransferReceiptLine);
+
+        FAConversion.Init();
+        FAConversion.Insert(true);
+        FAConversion.Validate("Item No.", Item."No.");
+        FAConversion.Validate("Variant Code", TransferReceiptLine."Variant Code");
+        FAConversion.Validate("Item Description", TransferReceiptLine.Description);
+        FAConversion.Validate("Serial No.", SerialNo);
+        CreateFixedAsset(Item, FAConversion);
+        FAConversion.Modify(true);
+
+        if ShowPageAfterCreation then
+            Page.Run(Page::"FA Conversion", FAConversion)
+        else begin
+            FAConversion.Validate("Location Code", TransferReceiptLine."Transfer-to Code");
+            FAConversion.Modify(true);
+            NegativeAdjustment(FAConversion, true);
+            FAAcquisition(FAConversion);
+        end;
+    end;
+
+    procedure GetSerialNoFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"): Text[50]
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        // Find Item Ledger Entry for the Transfer Receipt Line
+        ItemLedgerEntry.SetRange("Document No.", TransferReceiptLine."Document No.");
+        ItemLedgerEntry.SetRange("Document Line No.", TransferReceiptLine."Line No.");
+        ItemLedgerEntry.SetRange("Item No.", TransferReceiptLine."Item No.");
+        ItemLedgerEntry.SetRange("Variant Code", TransferReceiptLine."Variant Code");
+        ItemLedgerEntry.SetRange("Location Code", TransferReceiptLine."Transfer-to Code");
+        ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Transfer);
+        ItemLedgerEntry.SetRange(Positive, true); // Receipt entry
+
+        if ItemLedgerEntry.FindFirst() then
+            exit(ItemLedgerEntry."Serial No.");
+
+        exit('');
+    end;
+
+    // procedure GetSerialNosFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; var SerialNoList: List of [Text[50]])
+    // var
+    //     ItemLedgerEntry: Record "Item Ledger Entry";
+    // begin
+    //     // Clear the list
+    //     Clear(SerialNoList);
+
+    //     // Find all Item Ledger Entries for the Transfer Receipt Line
+    //     ItemLedgerEntry.SetRange("Document No.", TransferReceiptLine."Document No.");
+    //     ItemLedgerEntry.SetRange("Document Line No.", TransferReceiptLine."Line No.");
+    //     ItemLedgerEntry.SetRange("Item No.", TransferReceiptLine."Item No.");
+    //     ItemLedgerEntry.SetRange("Variant Code", TransferReceiptLine."Variant Code");
+    //     ItemLedgerEntry.SetRange("Location Code", TransferReceiptLine."Transfer-to Code");
+    //     ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Transfer);
+    //     ItemLedgerEntry.SetRange(Positive, true); // Receipt entries only
+
+    //     if ItemLedgerEntry.FindSet() then
+    //         repeat
+    //             if ItemLedgerEntry."Serial No." <> '' then
+    //                 SerialNoList.Add(ItemLedgerEntry."Serial No.");
+    //         until ItemLedgerEntry.Next() = 0;
+    // end;
+
+    // procedure GetItemLedgerEntryFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; var ItemLedgerEntry: Record "Item Ledger Entry"): Boolean
+    // begin
+    //     // Find Item Ledger Entry for the Transfer Receipt Line
+    //     ItemLedgerEntry.SetRange("Document No.", TransferReceiptLine."Document No.");
+    //     ItemLedgerEntry.SetRange("Document Line No.", TransferReceiptLine."Line No.");
+    //     ItemLedgerEntry.SetRange("Item No.", TransferReceiptLine."Item No.");
+    //     ItemLedgerEntry.SetRange("Variant Code", TransferReceiptLine."Variant Code");
+    //     ItemLedgerEntry.SetRange("Location Code", TransferReceiptLine."Transfer-to Code");
+    //     ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Transfer);
+    //     ItemLedgerEntry.SetRange(Positive, true); // Receipt entry
+
+    //     exit(ItemLedgerEntry.FindFirst());
+    // end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInsertItemLedgEntry, '', false, false)]
     local procedure OnAfterInsertItemLedgEntry(var ItemLedgerEntry: Record "Item Ledger Entry"; ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer; var ValueEntryNo: Integer; var ItemApplnEntryNo: Integer; GlobalValueEntry: Record "Value Entry"; TransferItem: Boolean; var InventoryPostingToGL: Codeunit "Inventory Posting To G/L"; var OldItemLedgerEntry: Record "Item Ledger Entry")
     begin
