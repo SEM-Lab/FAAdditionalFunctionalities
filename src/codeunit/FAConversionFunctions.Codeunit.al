@@ -398,7 +398,8 @@ codeunit 60000 "FA Conversion Functions"
         ItemLedgerEntry.SetRange("Variant Code", TransferReceiptLine."Variant Code");
         ItemLedgerEntry.SetRange("Location Code", TransferReceiptLine."Transfer-to Code");
         ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Transfer);
-        ItemLedgerEntry.SetRange(Positive, true); // Receipt entry
+        ItemLedgerEntry.SetRange(Positive, true);
+        ItemLedgerEntry.SetFilter("Remaining Quantity", '>0'); // Receipt entry
 
         if ItemLedgerEntry.FindFirst() then
             exit(ItemLedgerEntry."Serial No.");

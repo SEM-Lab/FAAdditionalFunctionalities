@@ -148,11 +148,16 @@ page 60004 "Posted Transfer ReceiptLns INF"
                 trigger OnAction()
                 var
                     TransferReceiptLine: Record "Transfer Receipt Line";
+                    i: Integer;
                 begin
                     CurrPage.SetSelectionFilter(TransferReceiptLine);
                     TransferReceiptLine.FindSet();
                     repeat
-                        FAConversionFunctions.CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false);
+                        i := 0;
+                        repeat
+                            FAConversionFunctions.CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false);
+                            i += 1;
+                        until i = TransferReceiptLine.Quantity;
                     until TransferReceiptLine.Next() = 0;
                 end;
             }
