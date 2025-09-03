@@ -38,5 +38,13 @@ tableextension 60022 "Fixed Asset Ext." extends "Fixed Asset"
             TableRelation = "Item Variant".Code where("Item No." = field("Source Item No."));
             ToolTip = 'Specifies the value of the Source Variant Code field.';
         }
+        field(60005; "Source Item Description"; Text[100])
+        {
+            Caption = 'Source Item Description';
+            FieldClass = FlowField;
+            CalcFormula = lookup(Item.Description where("No." = field("Source Item No.")));
+            Editable = false;
+            ToolTip = 'Specifies the description of the source item.';
+        }
     }
 }

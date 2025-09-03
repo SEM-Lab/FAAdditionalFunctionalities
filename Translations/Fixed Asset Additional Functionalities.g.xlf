@@ -838,6 +838,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Ship-to Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 4121882914 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Specifies the description of the source item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Source Item Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 4121882914 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Source Item Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Source Item Description - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 2388433081 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Specifies the value of the Source Item No. field.</source>
           <note from="Developer" annotates="general" priority="2"></note>

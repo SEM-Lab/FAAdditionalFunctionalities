@@ -5,10 +5,11 @@ codeunit 60001 "FA Transfer Functions"
     procedure CreateResourceCard(FixedAsset: Record "Fixed Asset")
     var
         Resource: Record Resource;
+        ConfirmManagement: Codeunit "Confirm Management";
         ConfirmQst: Label 'Resource No.: %1 already exist. Do you want to view resource card?', Comment = '%1 = Resource No.';
     begin
         if Resource.Get(FixedAsset."No.") then begin
-            if not Confirm(ConfirmQst, true, Resource."No.") then
+            if not ConfirmManagement.GetResponseOrDefault(ConfirmQst, true) then
                 exit;
 
             Page.Run(Page::"Resource Card", Resource);
@@ -42,7 +43,7 @@ codeunit 60001 "FA Transfer Functions"
         AlreadyCreatedErr: Label 'FA Transfer Item has been already created.';
     begin
         ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
-        if not ItemLedgerEntry.IsEmpty then
+        if not ItemLedgerEntry.IsEmpty() then
             Error(AlreadyCreatedErr);
 
         FAConversionSetup.GetRecordOnce();
@@ -64,8 +65,6 @@ codeunit 60001 "FA Transfer Functions"
         FAConversionSetup.TestField("Item Journal Template Name");
         FAConversionSetup.TestField("Item Journal Batch Name");
 
-        CommitRequired := true;
-
         ItemJournalLine.SetRange("Journal Template Name", FAConversionSetup."Item Journal Template Name");
         ItemJournalLine.SetRange("Journal Batch Name", FAConversionSetup."Item Journal Batch Name");
         ItemJournalLine.DeleteAll(true);
@@ -75,7 +74,6 @@ codeunit 60001 "FA Transfer Functions"
         ItemJournalLine."Journal Batch Name" := FAConversionSetup."Item Journal Batch Name";
         ItemJournalLine."Line No." := 10000;
         ItemJournalLine.SetUpNewLine(ItemJournalLine);
-        CommitRequired := false;
         ItemJournalLine.Insert(true);
         ItemJournalLine.Validate("Posting Date", WorkDate());
         ItemJournalLine.Validate("Entry Type", ItemJournalLine."Entry Type"::"Positive Adjmt.");
@@ -115,7 +113,7 @@ codeunit 60001 "FA Transfer Functions"
         Location: Record Location;
         ServiceItem: Record "Service Item";
     begin
-        if ItemLedgerEntry.IsTemporary then
+        if ItemLedgerEntry.IsTemporary() then
             exit;
 
         if ItemLedgerEntry."Entry Type" <> ItemLedgerEntry."Entry Type"::Transfer then
@@ -142,14 +140,9 @@ codeunit 60001 "FA Transfer Functions"
 
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, OnAfterSetParametersBeforeRun, '', false, false)]
-    local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20])
-    begin
-        if not CommitRequired then
-            exit;
-
-        Commit();
-    end;
+    // Removed deprecated event subscriber for NoSeriesManagement.OnAfterSetParametersBeforeRun
+    // The modern "No. Series" codeunit handles transaction management internally
+    // and no longer requires manual commit logic through event subscribers
 
 
 
@@ -199,5 +192,4 @@ codeunit 60001 "FA Transfer Functions"
 
     var
         FAConversionSetup: Record "FA Conversion Setup";
-        CommitRequired: Boolean;
 }

@@ -96,7 +96,6 @@ codeunit 60000 "FA Conversion Functions"
         FAConversionSetup.TestField("Item Journal Template Name");
         FAConversionSetup.TestField("Item Journal Batch Name");
 
-        CommitRequired := true;
         ItemJournalLine.SetRange("Journal Template Name", FAConversionSetup."Item Journal Template Name");
         ItemJournalLine.SetRange("Journal Batch Name", FAConversionSetup."Item Journal Batch Name");
         ItemJournalLine.DeleteAll(true);
@@ -106,7 +105,6 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine."Journal Batch Name" := FAConversionSetup."Item Journal Batch Name";
         ItemJournalLine."Line No." := 10000;
         ItemJournalLine.SetUpNewLine(ItemJournalLine);
-        CommitRequired := false;
         ItemJournalLine.Insert(true);
         ItemJournalLine.Validate("Posting Date", FAConversion."Posting Date");
         ItemJournalLine.Validate("Entry Type", ItemJournalLine."Entry Type"::"Negative Adjmt.");
@@ -237,7 +235,6 @@ codeunit 60000 "FA Conversion Functions"
         GeneralPostingSetup.Get(Item."FA Conv. Gen. Bus. Post. Group", Item."Gen. Prod. Posting Group");
         GeneralPostingSetup.TestField("Inventory Adjmt. Account");
 
-        CommitRequired := true;
         GenJournalLine.SetRange("Journal Template Name", FAConversionSetup."Gen. Journal Template Name");
         GenJournalLine.SetRange("Journal Batch Name", FAConversionSetup."Gen. Journal Batch Name");
         GenJournalLine.DeleteAll(true);
@@ -247,7 +244,6 @@ codeunit 60000 "FA Conversion Functions"
         GenJournalLine."Journal Batch Name" := FAConversionSetup."Gen. Journal Batch Name";
         GenJournalLine."Line No." := 10000;
         GenJournalLine.SetUpNewLine(GenJournalLine, 0, true);
-        CommitRequired := false;
         GenJournalLine.Insert(true);
         GenJournalLine.Validate("Document No.", FAConversion."No.");
         GenJournalLine.Validate("Posting Date", FAConversion."Posting Date");
@@ -353,14 +349,9 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::NoSeriesManagement, OnAfterSetParametersBeforeRun, '', false, false)]
-    local procedure OnAfterSetParametersBeforeRun(var TryNoSeriesCode: Code[20]; var TrySeriesDate: Date; var WarningNoSeriesCode: Code[20])
-    begin
-        if not CommitRequired then
-            exit;
-
-        Commit();// 
-    end;
+    // Removed deprecated event subscriber for NoSeriesManagement.OnAfterSetParametersBeforeRun
+    // The modern "No. Series" codeunit handles transaction management internally
+    // and no longer requires manual commit logic through event subscribers
 
     procedure CreateFAConversionFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; ShowPageAfterCreation: Boolean)
     var
@@ -463,6 +454,5 @@ codeunit 60000 "FA Conversion Functions"
     var
         FAConversionSetup: Record "FA Conversion Setup";
         GlobalFAConversion: Record "FA Conversion";
-        CommitRequired: Boolean;
         GlobalILENo: Integer;
 }

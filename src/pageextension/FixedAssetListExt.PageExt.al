@@ -24,6 +24,10 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
             {
                 ApplicationArea = All;
             }
+            field("Source Item Description"; Rec."Source Item Description")
+            {
+                ApplicationArea = All;
+            }
         }
     }
     actions
