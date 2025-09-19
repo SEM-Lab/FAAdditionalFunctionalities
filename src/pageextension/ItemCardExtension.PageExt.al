@@ -25,6 +25,13 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
                 {
                     ApplicationArea = All;
                 }
+
+                field("FA Conversion Count"; Rec."FA Conversion Count")
+                {
+                    ApplicationArea = All;
+                    Style = Strong;
+                    ToolTip = 'Shows the total number of Fixed Asset conversions created from this item.';
+                }
             }
         }
     }

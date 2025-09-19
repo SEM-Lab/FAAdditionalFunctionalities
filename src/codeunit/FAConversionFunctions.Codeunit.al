@@ -142,6 +142,7 @@ codeunit 60000 "FA Conversion Functions"
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
     begin
+        ItemLedgerEntry.SetLoadFields("Cost Amount (Actual)", Quantity);
         ItemLedgerEntry.SetAutoCalcFields("Cost Amount (Actual)");
         ItemLedgerEntry.SetRange(Open, true);
         ItemLedgerEntry.SetRange("Location Code", ItemJournalLine."Location Code");
@@ -151,6 +152,7 @@ codeunit 60000 "FA Conversion Functions"
             if ItemLedgerEntry."Cost Amount (Actual)" <> 0 then
                 exit(ItemLedgerEntry."Cost Amount (Actual)" / ItemLedgerEntry.Quantity);
 
+        exit(0);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post", OnBeforeCode, '', false, false)]
@@ -354,10 +356,15 @@ codeunit 60000 "FA Conversion Functions"
     // and no longer requires manual commit logic through event subscribers
 
     procedure CreateFAConversionFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; ShowPageAfterCreation: Boolean)
+    begin
+        CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, ShowPageAfterCreation, '');
+    end;
+
+    procedure CreateFAConversionFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; ShowPageAfterCreation: Boolean; SerialNo: Text[50])
     var
         FAConversion: Record "FA Conversion";
         Item: Record Item;
-        SerialNo: Text[50];
+        UseSerialNo: Text[50];
     begin
         Item.Get(TransferReceiptLine."Item No.");
 
@@ -365,15 +372,18 @@ codeunit 60000 "FA Conversion Functions"
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
 
-        // Get serial number from Transfer Receipt Line via Item Ledger Entry
-        SerialNo := GetSerialNoFromTransferReceiptLine(TransferReceiptLine);
+        // Use provided serial number or get from Transfer Receipt Line
+        if SerialNo <> '' then
+            UseSerialNo := SerialNo
+        else
+            UseSerialNo := GetSerialNoFromTransferReceiptLine(TransferReceiptLine);
 
         FAConversion.Init();
         FAConversion.Insert(true);
         FAConversion.Validate("Item No.", Item."No.");
         FAConversion.Validate("Variant Code", TransferReceiptLine."Variant Code");
         FAConversion.Validate("Item Description", TransferReceiptLine.Description);
-        FAConversion.Validate("Serial No.", SerialNo);
+        FAConversion.Validate("Serial No.", UseSerialNo);
         CreateFixedAsset(Item, FAConversion);
         FAConversion.Modify(true);
 
@@ -390,8 +400,10 @@ codeunit 60000 "FA Conversion Functions"
     procedure GetSerialNoFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"): Text[50]
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
+        NoSerialNoFoundErr: Label 'No serial number found for transfer receipt line %1/%2.', Comment = '%1 = Document No., %2 = Line No.';
     begin
         // Find Item Ledger Entry for the Transfer Receipt Line
+        ItemLedgerEntry.SetLoadFields("Serial No.");
         ItemLedgerEntry.SetRange("Document No.", TransferReceiptLine."Document No.");
         ItemLedgerEntry.SetRange("Document Line No.", TransferReceiptLine."Line No.");
         ItemLedgerEntry.SetRange("Item No.", TransferReceiptLine."Item No.");
@@ -401,48 +413,59 @@ codeunit 60000 "FA Conversion Functions"
         ItemLedgerEntry.SetRange(Positive, true);
         ItemLedgerEntry.SetFilter("Remaining Quantity", '>0'); // Receipt entry
 
-        if ItemLedgerEntry.FindFirst() then
-            exit(ItemLedgerEntry."Serial No.");
+        if not ItemLedgerEntry.FindFirst() then
+            Error(NoSerialNoFoundErr, TransferReceiptLine."Document No.", TransferReceiptLine."Line No.");
 
-        exit('');
+        exit(ItemLedgerEntry."Serial No.");
     end;
 
-    // procedure GetSerialNosFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; var SerialNoList: List of [Text[50]])
-    // var
-    //     ItemLedgerEntry: Record "Item Ledger Entry";
-    // begin
-    //     // Clear the list
-    //     Clear(SerialNoList);
+    procedure GetSerialNosFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; var SerialNoList: List of [Text[50]])
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        // Clear the list
+        Clear(SerialNoList);
 
-    //     // Find all Item Ledger Entries for the Transfer Receipt Line
-    //     ItemLedgerEntry.SetRange("Document No.", TransferReceiptLine."Document No.");
-    //     ItemLedgerEntry.SetRange("Document Line No.", TransferReceiptLine."Line No.");
-    //     ItemLedgerEntry.SetRange("Item No.", TransferReceiptLine."Item No.");
-    //     ItemLedgerEntry.SetRange("Variant Code", TransferReceiptLine."Variant Code");
-    //     ItemLedgerEntry.SetRange("Location Code", TransferReceiptLine."Transfer-to Code");
-    //     ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Transfer);
-    //     ItemLedgerEntry.SetRange(Positive, true); // Receipt entries only
+        // Find all Item Ledger Entries for the Transfer Receipt Line
+        ItemLedgerEntry.SetLoadFields("Serial No.", "Remaining Quantity");
+        ItemLedgerEntry.SetRange("Document No.", TransferReceiptLine."Document No.");
+        ItemLedgerEntry.SetRange("Document Line No.", TransferReceiptLine."Line No.");
+        ItemLedgerEntry.SetRange("Item No.", TransferReceiptLine."Item No.");
+        ItemLedgerEntry.SetRange("Variant Code", TransferReceiptLine."Variant Code");
+        ItemLedgerEntry.SetRange("Location Code", TransferReceiptLine."Transfer-to Code");
+        ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Transfer);
+        ItemLedgerEntry.SetRange(Positive, true); // Receipt entries only
+        ItemLedgerEntry.SetFilter("Remaining Quantity", '>0'); // Only entries with remaining quantity
 
-    //     if ItemLedgerEntry.FindSet() then
-    //         repeat
-    //             if ItemLedgerEntry."Serial No." <> '' then
-    //                 SerialNoList.Add(ItemLedgerEntry."Serial No.");
-    //         until ItemLedgerEntry.Next() = 0;
-    // end;
+        if ItemLedgerEntry.FindSet() then
+            repeat
+                if (ItemLedgerEntry."Serial No." <> '') and (ItemLedgerEntry."Remaining Quantity" > 0) then
+                    SerialNoList.Add(ItemLedgerEntry."Serial No.");
+            until ItemLedgerEntry.Next() = 0;
+    end;
 
-    // procedure GetItemLedgerEntryFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; var ItemLedgerEntry: Record "Item Ledger Entry"): Boolean
-    // begin
-    //     // Find Item Ledger Entry for the Transfer Receipt Line
-    //     ItemLedgerEntry.SetRange("Document No.", TransferReceiptLine."Document No.");
-    //     ItemLedgerEntry.SetRange("Document Line No.", TransferReceiptLine."Line No.");
-    //     ItemLedgerEntry.SetRange("Item No.", TransferReceiptLine."Item No.");
-    //     ItemLedgerEntry.SetRange("Variant Code", TransferReceiptLine."Variant Code");
-    //     ItemLedgerEntry.SetRange("Location Code", TransferReceiptLine."Transfer-to Code");
-    //     ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Transfer);
-    //     ItemLedgerEntry.SetRange(Positive, true); // Receipt entry
+    procedure CreateMultipleFAConversionsFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line")
+    var
+        SerialNoList: List of [Text[50]];
+        SerialNo: Text[50];
+        i: Integer;
+        QtyToProcess: Decimal;
+    begin
+        // Get all serial numbers for this transfer receipt line
+        GetSerialNosFromTransferReceiptLine(TransferReceiptLine, SerialNoList);
 
-    //     exit(ItemLedgerEntry.FindFirst());
-    // end;
+        if SerialNoList.Count() > 0 then begin
+            // Create FA Conversion for each serial number
+            foreach SerialNo in SerialNoList do
+                CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false, SerialNo);
+        end else begin
+            // If no serial numbers, create FA Conversions based on quantity
+            QtyToProcess := TransferReceiptLine.Quantity;
+            for i := 1 to QtyToProcess do
+                CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false, '');
+        end;
+    end;
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInsertItemLedgEntry, '', false, false)]
     local procedure OnAfterInsertItemLedgEntry(var ItemLedgerEntry: Record "Item Ledger Entry"; ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer; var ValueEntryNo: Integer; var ItemApplnEntryNo: Integer; GlobalValueEntry: Record "Value Entry"; TransferItem: Boolean; var InventoryPostingToGL: Codeunit "Inventory Posting To G/L"; var OldItemLedgerEntry: Record "Item Ledger Entry")

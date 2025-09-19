@@ -28,5 +28,14 @@ tableextension 60001 "Item Extension" extends Item
             ToolTip = 'Specifies the value of the FA Subclass Code field.';
         }
 
+        field(60004; "FA Conversion Count"; Integer)
+        {
+            Caption = 'FA Conversion Count';
+            FieldClass = FlowField;
+            CalcFormula = count("FA Conversion" where("Item No." = field("No.")));
+            Editable = false;
+            ToolTip = 'Specifies how many Fixed Asset conversions have been created from this item.';
+        }
+
     }
 }

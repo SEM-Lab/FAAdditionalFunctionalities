@@ -42,6 +42,7 @@ codeunit 60001 "FA Transfer Functions"
         LocationCode: Code[10];
         AlreadyCreatedErr: Label 'FA Transfer Item has been already created.';
     begin
+        ItemLedgerEntry.SetLoadFields("Serial No.");
         ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
         if not ItemLedgerEntry.IsEmpty() then
             Error(AlreadyCreatedErr);
@@ -163,7 +164,7 @@ codeunit 60001 "FA Transfer Functions"
         if not ItemLedgerEntry.FindLast() then
             exit;
 
-        if not ServiceItem.Get(ItemLedgerEntry."Serial No.") then
+        if not ServiceItem.Get(CopyStr(ItemLedgerEntry."Serial No.", 1, MaxStrLen(ServiceItem."No."))) then
             exit;
 
         EShipmentLine.Validate("Sellers Item Identification", ServiceItem."Item No.");
@@ -181,13 +182,13 @@ codeunit 60001 "FA Transfer Functions"
     var
         ServiceItem: Record "Service Item";
     begin
-        if not ServiceItem.Get(Rec."Serial No.") then
+        if not ServiceItem.Get(CopyStr(Rec."Serial No.", 1, MaxStrLen(ServiceItem."No."))) then
             exit;
 
         if ServiceItem."Serial No." = '' then
             exit;
 
-        Rec."Serial No." := ServiceItem."Serial No.";
+        Rec."Serial No." := CopyStr(ServiceItem."Serial No.", 1, MaxStrLen(Rec."Serial No."));
     end;
 
     var

@@ -63,7 +63,7 @@ page 60001 "FA Conversion Setup"
                 field("FA Transfer Item No."; Rec."FA Transfer Item No.")
                 {
                 }
-                field("FA Trans. Pos. Adjmt. Loc. "; Rec."FA Trans. Pos. Adjmt. Loc.")
+                field("FA Trans. Pos. Adjmt. Loc."; Rec."FA Trans. Pos. Adjmt. Loc.")
                 {
                 }
             }
