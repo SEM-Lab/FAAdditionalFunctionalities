@@ -21,9 +21,6 @@ This is a Microsoft Business Central AL extension called "Fixed Asset Additional
 ### Debugging and Testing
 - Use VS Code launch configurations defined in `.vscode/launch.json`
 - Multiple sandbox environments are configured for testing:
-  - DIRUI_TEST (default startup object: Page 60005)
-  - YILDIZ_ENV (Pera environment)
-  - DARYO_TEST (Document Attachment testing)
   - ERRA_DEV (Development environment)
 
 ## Architecture Overview

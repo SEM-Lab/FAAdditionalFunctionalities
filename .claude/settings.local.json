@@ -23,7 +23,13 @@
       "Bash(al compile:*)",
       "mcp__atlassian__addCommentToJiraIssue",
       "mcp__atlassian__getTransitionsForJiraIssue",
-      "mcp__atlassian__transitionJiraIssue"
+      "mcp__atlassian__transitionJiraIssue",
+      "Bash(npx:*)",
+      "Read(//c/Users/DGUNDUZ/**)",
+      "Bash(powershell:*)",
+      "Bash(claude mcp:*)",
+      "mcp__filesystem__search_files",
+      "mcp__filesystem__read_multiple_files"
     ],
     "deny": [],
     "ask": []

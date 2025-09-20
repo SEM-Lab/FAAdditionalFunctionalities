@@ -17,8 +17,13 @@
       "action": "None",
       "justification": "The return value of the 'Get' method must be used to improve error handling or provide meaningful feedback to the user."
     },
-        {
+    {
       "id": "LC0023",
+      "action": "None",
+      "justification": "The return value of the 'Get' method must be used to improve error handling or provide meaningful feedback to the user."
+    },
+    {
+      "id": "LC0091",
       "action": "None",
       "justification": "The return value of the 'Get' method must be used to improve error handling or provide meaningful feedback to the user."
     }

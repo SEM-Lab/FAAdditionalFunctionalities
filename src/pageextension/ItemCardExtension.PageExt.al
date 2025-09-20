@@ -30,7 +30,7 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
                 {
                     ApplicationArea = All;
                     Style = Strong;
-                    ToolTip = 'Shows the total number of Fixed Asset conversions created from this item.';
+                    ToolTip = 'Specifies the total number of Fixed Asset conversions created from this item.';
                 }
             }
         }

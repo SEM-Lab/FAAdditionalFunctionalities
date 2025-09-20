@@ -149,7 +149,7 @@ page 60000 "FA Conversion Wizard"
 
         Rec.Insert(false);
 
-        Step := Step::Start;
+        Step := "Wizard Step"::Start;
         EnableControls();
     end;
 
@@ -158,7 +158,7 @@ page 60000 "FA Conversion Wizard"
         MediaRepositoryStandard: Record "Media Repository";
         MediaResourcesDone: Record "Media Resources";
         MediaResourcesStandard: Record "Media Resources";
-        Step: Option Start,Step2,Finish;
+        Step: Enum "Wizard Step";
         BackActionEnabled: Boolean;
         FinishActionEnabled: Boolean;
         NextActionEnabled: Boolean;
@@ -172,11 +172,11 @@ page 60000 "FA Conversion Wizard"
         ResetControls();
 
         case Step of
-            Step::Start:
+            "Wizard Step"::Start:
                 ShowStep1();
-            Step::Step2:
+            "Wizard Step"::Step2:
                 ShowStep2();
-            Step::Finish:
+            "Wizard Step"::Finish:
                 ShowStep3();
         end;
     end;
@@ -204,9 +204,19 @@ page 60000 "FA Conversion Wizard"
     local procedure NextStep(Backwards: Boolean)
     begin
         if Backwards then
-            Step := Step - 1
+            case Step of
+                "Wizard Step"::Step2:
+                    Step := "Wizard Step"::Start;
+                "Wizard Step"::Finish:
+                    Step := "Wizard Step"::Step2;
+            end
         else
-            Step := Step + 1;
+            case Step of
+                "Wizard Step"::Start:
+                    Step := "Wizard Step"::Step2;
+                "Wizard Step"::Step2:
+                    Step := "Wizard Step"::Finish;
+            end;
 
         EnableControls();
     end;

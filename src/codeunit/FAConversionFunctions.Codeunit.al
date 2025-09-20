@@ -5,16 +5,36 @@ codeunit 60000 "FA Conversion Functions"
     procedure CreateFAConversionFromItemCard(Item: Record Item)
     var
         FAConversion: Record "FA Conversion";
+        Location: Record Location;
+        DefaultLocationCode: Code[10];
+        LocationNotFoundErr: Label 'Location %1 does not exist. Please create the location first or set a valid default location in FA Conversion Setup.', Comment = '%1 = Location Code';
+        NoLocationsErr: Label 'No locations are defined in the system. Please create at least one location before proceeding.';
     begin
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
         Item.TestField("FA Subclass Code");
 
+        // Get default location code from setup or item
+        DefaultLocationCode := GetDefaultLocationCode();
+
+        // Validate that the location exists
+        if DefaultLocationCode <> '' then
+            if not Location.Get(DefaultLocationCode) then
+                Error(LocationNotFoundErr, DefaultLocationCode);
+
+        // If no default location found, try to get the first available location
+        if DefaultLocationCode = '' then
+            if Location.FindFirst() then
+                DefaultLocationCode := Location.Code
+            else
+                Error(NoLocationsErr);
+
         FAConversion.Init();
         FAConversion.Insert(true);
         FAConversion.Validate("Item No.", Item."No.");
         FAConversion.Validate("Item Description", Item.Description);
+        FAConversion.Validate("Location Code", DefaultLocationCode);
         CreateFixedAsset(Item, FAConversion);
         FAConversion.Modify(true);
 
@@ -68,6 +88,11 @@ codeunit 60000 "FA Conversion Functions"
         FixedAsset.Validate(Description, FAConversion."Item Description");
         FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
         FixedAsset.Validate("FA Subclass Code", Item."FA Subclass Code");
+
+        // Ensure FA Location exists before validation
+        EnsureFALocationExists(FAConversion."Location Code");
+        FixedAsset.Validate("FA Location Code", FAConversion."Location Code");
+
         FixedAsset.Modify(true);
 
         FADepreciationBook.Init();
@@ -340,13 +365,11 @@ codeunit 60000 "FA Conversion Functions"
 
     var
         PostValueEntryToGL: Record "Post Value Entry to G/L")
-    var
-        PostMethod: Option "per Posting Group","per Entry";
     begin
         if GlobalFAConversion."Item No." = '' then
             exit;
 
-        Sender.InitializeRequest(PostMethod::"per Entry", '', true);
+        Sender.InitializeRequest(1, '', true); // 1 corresponds to "per Entry"
         PostValueEntryToGL.SetFilter("Item No.", GlobalFAConversion."Item No.");
     end;
 
@@ -384,14 +407,14 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.Validate("Variant Code", TransferReceiptLine."Variant Code");
         FAConversion.Validate("Item Description", TransferReceiptLine.Description);
         FAConversion.Validate("Serial No.", UseSerialNo);
+        // Populate Location Code from Transfer Receipt Line before creating the Fixed Asset
+        FAConversion.Validate("Location Code", TransferReceiptLine."Transfer-to Code");
         CreateFixedAsset(Item, FAConversion);
         FAConversion.Modify(true);
 
         if ShowPageAfterCreation then
             Page.Run(Page::"FA Conversion", FAConversion)
         else begin
-            FAConversion.Validate("Location Code", TransferReceiptLine."Transfer-to Code");
-            FAConversion.Modify(true);
             NegativeAdjustment(FAConversion, true);
             FAAcquisition(FAConversion);
         end;
@@ -454,11 +477,10 @@ codeunit 60000 "FA Conversion Functions"
         // Get all serial numbers for this transfer receipt line
         GetSerialNosFromTransferReceiptLine(TransferReceiptLine, SerialNoList);
 
-        if SerialNoList.Count() > 0 then begin
-            // Create FA Conversion for each serial number
+        if SerialNoList.Count() > 0 then
             foreach SerialNo in SerialNoList do
-                CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false, SerialNo);
-        end else begin
+                CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false, SerialNo)
+        else begin
             // If no serial numbers, create FA Conversions based on quantity
             QtyToProcess := TransferReceiptLine.Quantity;
             for i := 1 to QtyToProcess do
@@ -474,6 +496,40 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
 
+
+    local procedure GetDefaultLocationCode(): Code[10]
+    var
+        Location: Record Location;
+        LocalFAConversionSetup: Record "FA Conversion Setup";
+    begin
+        // First try to get from FA Conversion Setup
+        LocalFAConversionSetup.GetRecordOnce();
+        if LocalFAConversionSetup."FA Trans. Pos. Adjmt. Loc." <> '' then
+            if Location.Get(LocalFAConversionSetup."FA Trans. Pos. Adjmt. Loc.") then
+                exit(LocalFAConversionSetup."FA Trans. Pos. Adjmt. Loc.");
+
+        // If no default location in setup, try to get the first available location
+        if Location.FindFirst() then
+            exit(Location.Code);
+
+        // If no locations exist, return empty (will be handled by validation)
+        exit('');
+    end;
+
+    local procedure EnsureFALocationExists(LocationCode: Code[10])
+    var
+        FALocation: Record "FA Location";
+    begin
+        if LocationCode = '' then
+            exit;
+
+        if not FALocation.Get(LocationCode) then begin
+            FALocation.Init();
+            FALocation.Code := LocationCode;
+            FALocation.Name := LocationCode; // Use code as default name
+            FALocation.Insert(true);
+        end;
+    end;
 
     var
         FAConversionSetup: Record "FA Conversion Setup";

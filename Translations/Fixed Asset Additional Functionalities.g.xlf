@@ -278,6 +278,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field VAT Prod. Posting Group - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 1812270184 - NamedType 631801445" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location %1 does not exist. Please create the location first or set a valid default location in FA Conversion Setup.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Location Code</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CreateFAConversionFromItemCard - NamedType LocationNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 1812270184 - NamedType 409723510" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No locations are defined in the system. Please create at least one location before proceeding.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CreateFAConversionFromItemCard - NamedType NoLocationsErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 3581864996 - NamedType 1190805493" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No serial number found for transfer receipt line %1/%2.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Document No., %2 = Line No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method GetSerialNoFromTransferReceiptLine - NamedType NoSerialNoFoundErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 118642255 - Method 1176824990 - NamedType 750120336" size-unit="char" translate="yes" xml:space="preserve">
           <source>Resource No.: %1 already exist. Do you want to view resource card?</source>
           <note from="Developer" annotates="general" priority="2">%1 = Resource No.</note>
@@ -763,6 +778,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA Conversion - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 742805820 - Control 3963759824 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
+          <source>Specifies the total number of Fixed Asset conversions created from this item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA Conversion Count - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1152214162 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1395186723">
           <source>Executes the New FA Conversion action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -878,6 +898,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Conv. Gen. Bus. Post. Group - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3963759824 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Specifies how many Fixed Asset conversions have been created from this item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Conversion Count - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3963759824 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>FA Conversion Count</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Conversion Count - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3470007613 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Specifies the value of the FA No. Series field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -952,6 +982,21 @@
           <source>Remaning Quantity</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Remaning Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 282391907 - EnumValue 2667510389 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Finish</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Wizard Step - EnumValue Finish - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 282391907 - EnumValue 620325036 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Start</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Wizard Step - EnumValue Start - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 282391907 - EnumValue 2279239964 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Step 2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Wizard Step - EnumValue Step2 - Property Caption</note>
         </trans-unit>
       </group>
     </body>
