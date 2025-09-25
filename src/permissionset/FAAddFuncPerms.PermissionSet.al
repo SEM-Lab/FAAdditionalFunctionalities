@@ -1,6 +1,6 @@
-permissionset 60000 GeneratedPermission
+permissionset 60000 "FA Add Func Perms"
 {
-    Caption = 'FA Add. Fuctions', Locked = true;
+    Caption = 'FA Add. Functions', Locked = true;
     Assignable = true;
     Access = Public;
     Permissions = tabledata "FA Conversion" = RIMD,
@@ -14,5 +14,6 @@ permissionset 60000 GeneratedPermission
         page "FA Conversion List" = X,
         codeunit "FA Transfer Functions" = X,
         page "Posted Transfer ReceiptLns INF" = X,
-        page "Posted Direct Transfer Lines" = X;
+        page "Posted Direct Transfer Lines" = X,
+        codeunit "FA Location Sync Handler" = X;
 }

@@ -76,7 +76,7 @@
             "environmentName": "ERRA270825",
             "startupObjectId": 60004,
             "startupObjectType": "Page",
-            "breakOnError": "ExcludeTry",
+            "breakOnError": "ExcludeTry", 
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,

@@ -2,15 +2,18 @@ enum 60001 "Wizard Step"
 {
     Extensible = true;
 
-    value(0; Start)
+    value(0; "")
+    {
+    }
+    value(1; Start)
     {
         Caption = 'Start';
     }
-    value(1; Step2)
+    value(2; Step2)
     {
         Caption = 'Step 2';
     }
-    value(2; Finish)
+    value(3; Finish)
     {
         Caption = 'Finish';
     }

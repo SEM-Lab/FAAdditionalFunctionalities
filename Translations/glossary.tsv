@@ -1,0 +1,45 @@
+English	tr-TR	Context/Notes
+Fixed Asset	Sabit Kıymet	Accounting term for long-term tangible assets like property, equipment, vehicles. Business Central specific.
+Depreciation Book	Amortisman Defteri	Accounting ledger for tracking asset depreciation over time. ERP-specific concept.
+Deftere Nakil Group	Deftere Nakil Grubu	ERP categorization system for automatic Deftere Nakil to general ledger accounts. No direct Turkish equivalent.
+General Journal	Genel Günlük	Primary accounting journal for recording all types of financial transactions. Standard accounting term.
+Item Journal	Madde Günlük	ERP journal specifically for inventory/item transactions like purchases, sales, adjustments.
+VAT Bus. Deftere Nakil Group	KDV İş Nakil Grubu	Tax Deftere Nakil group for business entities in VAT calculations. Complex tax accounting term.
+Gen. Prod. Deftere Nakil Group	Genel Ürün Deftere Nakil Grubu	General product Deftere Nakil group for revenue/cost categorization in ERP systems.
+Shortcut Dimension	Kısayol Boyut	ERP feature for quick access to frequently used dimension codes in financial reporting.
+Transfer Order	Transfer Sipariş	Logistics document for moving inventory between locations. Warehouse management term.
+Bin Code	Depo Gözü Kodu	Warehouse bin location identifier. Could be confused with binary code in IT context.
+Unit of Measure	Ölçü Birimi	Measurement unit for items (pieces, kg, hours). Multiple possible interpretations in business context.
+Serial No.	Seri No.	Unique identifier for items/assets. Can refer to manufacturing serial numbers or document sequences.
+Variant Code	Varyant Kodu	Product variant identifier (size, color, etc.). ERP-specific product differentiation term.
+Location Code	Konum Kodu	Warehouse or business location identifier. Context-dependent meaning in ERP systems.
+No. Series	No. Serisi	ERP automatic numbering system for documents and records. No direct Turkish business equivalent.
+FA Acquisition	Sabit Kıymet Edinimi	Fixed Asset acquisition process. Specific to asset accounting workflows.
+Negative Adjustment	Negatif Düzeltme	Accounting adjustment reducing asset values. Opposite of positive adjustment.
+Gen. Journal Template	Genel Günlük Şablonu	Pre-configured journal template for consistent transaction entry. ERP-specific.
+Item Category Code	Madde Kategori Kodu	ERP classification system for grouping similar items. Business categorization term.
+Dimension Set ID	Boyut Seti Kimliği	Unique identifier for combination of dimension values. Advanced ERP reporting concept.
+SystemCreatedAt	SistemOluşturulmaTarihi	System-generated timestamp field. Technical term with specific ERP meaning.
+SystemCreatedBy	SistemOluşturanKişi	System-generated user identifier field. Technical term with specific ERP meaning.
+FA Conversion	Sabit Kıymet Dönüşümü	Process of converting inventory items to fixed assets. Custom business process term.
+Resource Card	Kaynak Kartı	ERP record for labor/machine resources. Different from general "resource" meaning.
+E-Book Description	E-Defter Açıklaması	Digital book description field. Could be confused with electronic vs physical books.
+FA Trans. Pos. Adjmt. Location	FA Transfer Pozitif Düzeltme Konumu	Fixed Asset transfer positive adjustment location. Very specific ERP term.
+Remaning Quantity	Kalan Miktar	Remaining quantity after transactions. Could be confused with "remaining" in other contexts.
+Current Location Ship-to Code	Mevcut Konum Sevk-yeri Kodu	Current shipping destination code. Complex logistics term.
+Source Item Description	Kaynak Madde Açıklaması	Original item description before conversion. Context-specific meaning.
+FA Conversion Gen. Bus. Deftere Nakil Group	Sabit Kıymet Dönüşümü Genel İş Nakil Grubu	Special Deftere Nakil group for FA conversion business transactions. Highly specific.
+FA Subclass Code	Sabit Kıymet Alt Sınıf Kodu	Sub-classification within fixed asset categories. Advanced asset accounting term.
+Transfer Receipt Line	Transfer Alış İrsaliyesi Satırı	Line item in transfer receipt document. Logistics document term.
+Wizard Step	Sihirbaz Adımı	Step in guided setup wizard. UI/UX term with specific software meaning.
+Posted Direct Transfer	Deftere Nakledilen Doğrudan Transfer	Completed direct transfer transaction. Accounting status term.
+Item Rcpt. Entry No.	Madde Alış İrsaliyesi Giriş No.	Item receipt entry number. Inventory transaction identifier.
+Item Shpt. Entry No.	Madde İrsaliye Giriş No.	Item shipment entry number. Inventory transaction identifier.
+Qty. per Unit of Measure	Ölçü Birimi Başına Miktar	Quantity per measurement unit. Could have multiple interpretations.
+Transfer-from Bin Code	Transfer-kodu	Source bin code in transfer. Warehouse logistics term.
+Transfer-To Bin Code	Transfer-varış Depo Gözü Kodu	Destination bin code in transfer. Warehouse logistics term.
+Units per Parcel	Paket Başına Birim	Units contained in each parcel/package. Shipping/logistics term.
+FA Transfer Item	Sabit Kıymet Transfer Maddesi	Item created for fixed asset transfer. Custom business process term.
+Media Reference	Medya Referansı	Digital media file reference. Could refer to different types of media.
+Instructional Text	Talimat Metni	Guided setup instruction text. UI-specific term.
+Gen. Journal Batch	Genel Günlük Toplu İş	Grouped journal entries for batch processing. ERP workflow term.

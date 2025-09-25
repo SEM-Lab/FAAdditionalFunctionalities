@@ -1,165 +1,49 @@
-# Fixed Asset Additional Functionalities - AI Coding Guidelines
+## Fixed Asset Additional Functionalities — AI coding instructions
 
-## Project Overview
-This is a Microsoft Business Central AL extension that enables conversion of items to fixed assets and manages fixed asset transfers. Published by İnfotek Yazılım ve Donanım A.Ş., targeting BC versions 25.0+ with Turkish localization support.
+Purpose: give an AI agent the precise, actionable project knowledge it needs to work productively on this Business Central AL extension.
 
-## Architecture & Data Flow
+Keep it short — read referenced files for details. When making code edits, follow existing ID ranges, naming, and patterns.
 
-### Core Business Process
-1. **Item to Fixed Asset Conversion** (`src/codeunit/FAConversionFunctions.Codeunit.al`):
-   - User initiates from Item Card or Item Variants page
-   - Creates FA Conversion record with automatic numbering
-   - Generates Fixed Asset and FA Depreciation Book entries
-   - Posts negative adjustment to remove item from inventory
-   - Posts FA acquisition to create fixed asset value
-   - Optionally creates service items and resource cards
+- Project type: Microsoft Dynamics 365 Business Central AL extension (target App 25.0+, Platform 24.0+). See `app.json` for exact requirements.
+- Key folders: `src/codeunit/`, `src/table/`, `src/tableextension/`, `src/page/`, `Translations/`.
 
-2. **Fixed Asset Transfer** (`src/codeunit/FATransferFunctions.Codeunit.al`):
-   - Creates transfer items with serial number tracking
-   - Manages resource cards for fixed assets
-   - Handles service item integration and consignment management
+Important patterns and conventions (examples)
+- Object ID range: custom objects use 60000–60500. Example: `FA Conversion Setup (60000)` (`src/table/FAConversionSetup.Table.al`).
+- SingleInstance codeunits for shared logic. Example: `src/codeunit/FAConversionFunctions.Codeunit.al` uses `SingleInstance = true`.
+- Singleton setup tables use GetRecordOnce() pattern to avoid repeated reads (see `FAConversionSetup.Table.al`).
+- Posting flows are event-driven: code heavily uses event subscribers (see `FAConversionFunctions.Codeunit.al` and `FATransferFunctions.Codeunit.al`). Follow existing event signatures.
 
-### Key Tables
-- **FA Conversion (60001)**: Main transaction table storing conversion details
-- **FA Conversion Setup (60000)**: Singleton configuration table using `GetRecordOnce()` pattern
+Data flows to note
+- Conversion flow: Item Card → FA Conversion record (table 60001) → create Fixed Asset + Depreciation Book + inventory negative adjustment. See `src/codeunit/FAConversionFunctions.Codeunit.al`.
+- Transfer flow: FA transfer creates transfer items and resource cards, integrates with e-shipment and consignment routines (`src/codeunit/FATransferFunctions.Codeunit.al`).
 
-### Integration Points
-- **Turkish Localization**: Required dependency for Turkish business processes
-- **E-Shipment**: Integration for shipment documentation
-- **Consignment Management**: Customer-specific inventory handling
-- **İnfotek Add-On Infrastructure**: Core framework dependency
+Developer workflows
+- Build/compile: use AL Language tooling (VS Code AL extension). The repository includes `Translations/*.g.xlf` produced by AL compilation. Use `refreshXlf` helper (script/tool) to sync translations when needed (see `Translations/Fixed Asset Additional Functionalities.g.xlf`).
+- Launch configurations: sandbox targets are present in `.vscode/launch.json` (examples: DIRUI_TEST, YILDIZ_ENV). Use those for debugging and UI flows.
 
-## Development Standards
+Project-specific coding rules
+- Don't change object ID ranges. New objects must be in 60000–60500.
+- Use existing CommitRequired pattern for transactions and follow Commit/rollback behavior in codeunits.
+- Respect custom LinterCop rules (see `LinterCop.ruleset.json`); some rules are intentionally disabled for historical reasons.
 
-### Object ID Ranges
-- Use ID range **60000-60500** for all custom objects
-- Follow pattern: Tables (60000+), Codeunits (60000+), Pages (60000+)
+Integration & dependencies
+- Turkish Localization dependency required (check `app.json` dependencies). Keep dependency versions in sync with app.json.
+- Integration points: e-shipment, consignment, and Infotek add-on infra — these are implemented via event subscribers and custom table extensions. When changing interfaces, search for subscribers across the repo.
 
-### AL Language Features
-```al
-// Use modern AL syntax
-codeunit 60000 "FA Conversion Functions"
-{
-    SingleInstance = true;  // For shared business logic
-    Access = Public;
-    
-    // Event subscribers for extending standard BC functionality
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post", OnBeforeCode, '', false, false)]
-    local procedure OnBeforeCode(var ItemJournalLine: Record "Item Journal Line")
-    begin
-        // Suppress dialogs during automated posting
-        HideDialog := true;
-    end;
-}
-```
+Where to look first (high-value files)
+- `src/codeunit/FAConversionFunctions.Codeunit.al` — main business logic for conversion
+- `src/codeunit/FATransferFunctions.Codeunit.al` — transfer and resource-card logic
+- `src/table/FAConversion.Table.al` and `src/table/FAConversionSetup.Table.al` — core tables and setup pattern
+- `src/tableextension/ItemExtension.TableExt.al` — required item configuration fields used during conversion
+- `Translations/*.g.xlf` — generated translation units; run `refreshXlf` when editing captions/messages.
 
-### Code Patterns
+Edit guidance for agents
+- When adding new fields, also add XLF entries (run a compilation to generate `.g.xlf` then `refreshXlf`).
+- Use `GetRecordOnce()` for singleton setup reads. Use `SingleInstance` on codeunits that must be shared.
+- Prefer event subscribers over direct modification of system posting routines; follow signature and routing patterns already in code.
 
-#### Singleton Setup Tables
-```al
-// Use GetRecordOnce() pattern for performance
-procedure GetRecordOnce()
-begin
-    if RecordHasBeenRead then
-        exit;
-    Get();
-    RecordHasBeenRead := true;
-end;
-```
+If you need clarification
+- Ask which target sandbox/launch config to use, and whether to update translations or app.json dependencies.
 
-#### Reservation Entries for Tracking
-```al
-// Custom serial number tracking through reservation entries
-CreateReservEntry.CreateReservEntryFor(
-    Database::"Item Journal Line", 
-    ItemJournalLine."Entry Type".AsInteger(),
-    // ... parameters
-);
-```
-
-#### Event-Driven Extensions
-- Extensive use of event subscribers to extend standard posting routines
-- Integration with item journal posting, general journal posting, FA ledger entries
-- Custom handling of transfer receipts and e-shipment processes
-
-### Configuration Fields
-Items require specific FA conversion fields (`src/tableextension/ItemExtension.TableExt.al`):
-- `FA No. Series`: Number series for generated fixed assets
-- `FA Conv. Gen. Bus. Post. Group`: Posting group for inventory adjustments
-- `FA Posting Group`: Fixed asset posting configuration
-- `FA Subclass Code`: Fixed asset classification
-
-## Testing & Debugging
-
-### Sandbox Environments
-Multiple test environments configured in `.vscode/launch.json`:
-- DIRUI_TEST, YILDIZ_ENV, DARYO_TEST, ERRA_DEV
-- Use different startup objects for testing specific features
-
-### End-to-End Testing Scenarios
-1. **Conversion Process**: Item Card → FA Conversion → Fixed Asset creation
-2. **Transfer Process**: Fixed Asset → Transfer Item → Resource Card creation
-3. **Integration Testing**: E-shipment and consignment management workflows
-
-## Localization & Translation
-
-### XLF Translation Files
-- Located in `Translations/` folder
-- Pattern: `Fixed Asset Additional Functionalities[version].tr-TR.xlf`
-- Use `refreshXlf` tool to synchronize with generated `.g.xlf` file
-
-### Multi-language Support
-```al
-// Runtime supports translation files
-"features": [
-    "TranslationFile"
-]
-```
-
-## Code Quality
-
-### LinterCop Configuration
-Custom rules disabled in `LinterCop.ruleset.json`:
-- LC0010: Cyclomatic complexity
-- LC0068: Missing tabledata permissions  
-- LC0084/LC0023: Get method return value usage
-
-### Commit Patterns
-```al
-// Use CommitRequired pattern for transaction control
-if not CommitRequired then
-    exit;
-Commit();
-```
-
-## Deployment
-
-### Dependencies (app.json)
-```json
-"dependencies": [
-    {
-        "id": "90a4fa8d-fa01-4e48-ae5f-3c7da235e84a",
-        "name": "Turkish Localization by İnfotek",
-        "version": "24.4.0.0"
-    }
-    // ... other dependencies
-]
-```
-
-### Runtime Requirements
-- **Platform**: 24.0.0.0+
-- **Application**: 25.0.0.0+
-- **Runtime**: 14.0
-- **Target**: Cloud
-
-## Common Integration Patterns
-
-### Service Item Creation
-Automatically creates service items when `Service Item Group."Create Service Item"` is enabled during FA acquisition posting.
-
-### E-Shipment Integration
-Custom event subscribers update e-shipment lines with service item information during transfer processes.
-
-### Consignment Management
-Updates service item locations based on consignment customer settings during transfer operations.</content>
+End of file — update or ask for feedback if anything is missing or unclear.
 <parameter name="filePath">c:\Users\DGUNDUZ\Dropbox\AL\FA Additional Functionalities\.github\copilot-instructions.md

@@ -1,5 +1,17 @@
 pageextension 60004 "Item Variants Ext." extends "Item Variants"
 {
+    layout
+    {
+        addlast(content)
+        {
+            field("FA Conversion Count"; Rec."FA Conversion Count")
+            {
+                ApplicationArea = All;
+                Style = Strong;
+            }
+        }
+    }
+
     actions
     {
         addfirst(Processing)

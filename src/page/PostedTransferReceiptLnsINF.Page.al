@@ -43,6 +43,17 @@ page 60004 "Posted Transfer ReceiptLns INF"
                 {
                     ToolTip = 'Specifies the value of the Transfer-to Code field.';
                 }
+                field("FA Location Code"; Rec."Transfer-to Code")
+                {
+                    Caption = 'FA Location Code';
+                    ToolTip = 'Shows the location code that will be used for Fixed Asset conversion (same as Transfer-to Code).';
+                }
+                field("FA Location Name"; GetLocationName(Rec."Transfer-to Code"))
+                {
+                    Caption = 'FA Location Name';
+                    ToolTip = 'Shows the location name that will be used for Fixed Asset conversion.';
+                    Editable = false;
+                }
                 field("Item Category Code"; Rec."Item Category Code")
                 {
                     ToolTip = 'Specifies the value of the Item Category Code field.';
@@ -222,6 +233,19 @@ page 60004 "Posted Transfer ReceiptLns INF"
     begin
         if not IsFirstLine(Rec."Document No.", Rec."Line No.") then
             DocumentNoHideValue := true;
+    end;
+
+    local procedure GetLocationName(LocationCode: Code[10]): Text[100]
+    var
+        Location: Record Location;
+    begin
+        if LocationCode = '' then
+            exit('');
+
+        if Location.Get(LocationCode) then
+            exit(Location.Name);
+
+        exit('');
     end;
 
 }
