@@ -2,6 +2,10 @@ codeunit 60001 "FA Transfer Functions"
 {
     SingleInstance = true;
     Access = Public;
+    /// <summary>
+    /// Creates a Resource Card based on Fixed Asset data.
+    /// </summary>
+    /// <param name="FixedAsset">The Fixed Asset record to create Resource Card from.</param>
     procedure CreateResourceCard(FixedAsset: Record "Fixed Asset")
     var
         Resource: Record Resource;
@@ -32,6 +36,10 @@ codeunit 60001 "FA Transfer Functions"
         Page.Run(Page::"Resource Card", Resource);
     end;
 
+    /// <summary>
+    /// Creates a new transfer item for Fixed Asset with serial number tracking.
+    /// </summary>
+    /// <param name="FixedAsset">The Fixed Asset record to create transfer item for.</param>
     procedure NewItemForTransfer(FixedAsset: Record "Fixed Asset")
     var
         Item: Record Item;

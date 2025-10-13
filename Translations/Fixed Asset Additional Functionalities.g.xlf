@@ -288,10 +288,20 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CreateFAConversionFromItemCard - NamedType NoLocationsErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 1058008714 - NamedType 2530530535" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to post FA acquisition: %1</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method FAAcquisition - NamedType ErrorHandlingLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 3581864996 - NamedType 1190805493" size-unit="char" translate="yes" xml:space="preserve">
           <source>No serial number found for transfer receipt line %1/%2.</source>
           <note from="Developer" annotates="general" priority="2">%1 = Document No., %2 = Line No.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method GetSerialNoFromTransferReceiptLine - NamedType NoSerialNoFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 4075544376 - NamedType 2530530535" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to create negative adjustment: %1</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method NegativeAdjustment - NamedType ErrorHandlingLbl</note>
         </trans-unit>
         <trans-unit id="Codeunit 118642255 - Method 1176824990 - NamedType 750120336" size-unit="char" translate="yes" xml:space="preserve">
           <source>Resource No.: %1 already exist. Do you want to view resource card?</source>
@@ -628,120 +638,120 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Action CreateFixedAssetsForSelectedLines - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Posted Transfer Receipt Lines</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the description of the item being transferred.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Description - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Description - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 486908828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 486908828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the document number associated with this transfer line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Document No. - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Document No. - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 2357346185 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 2357346185 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Shows the location code that will be used for Fixed Asset conversion (same as Transfer-to Code).</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control FA Location Code - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control FA Location Code - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 2357346185 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 2357346185 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Location Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control FA Location Code - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control FA Location Code - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 3450403007 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 3450403007 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Shows the location name that will be used for Fixed Asset conversion.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control FA Location Name - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control FA Location Name - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 3450403007 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 3450403007 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Location Name</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control FA Location Name - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control FA Location Name - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 1037119892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 1037119892 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Item Category Code field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Item Category Code - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Item Category Code - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the number of the item that you want to transfer.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Item No. - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Item No. - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the quantity of the item specified on the line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Quantity - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Quantity - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 358029708 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 358029708 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the receipt date of the transfer receipt line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Receipt Date - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Receipt Date - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 520660911 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 520660911 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Transfer-from Code field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Transfer-from Code - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Transfer-from Code - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 324034516 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 324034516 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Transfer-to Code field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Transfer-to Code - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Transfer-to Code - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the name of the item or resource's unit of measure, such as piece or hour.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Unit of Measure - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Unit of Measure - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the variant of the item on the line.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Control Variant Code - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Variant Code - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 1402615620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 1402615620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>&amp;Line</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action &amp;Line - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action &amp;Line - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 2173385693 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 2173385693 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>View or edit dimensions, such as area, project, or department, that you can assign to sales and purchase documents to distribute costs and analyze transaction history.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action Dimensions - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action Dimensions - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 2173385693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 2173385693 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Dimensions</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action Dimensions - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action Dimensions - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 1107476520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 1107476520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open the document that the selected line exists on.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action Show Document - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action Show Document - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 1107476520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 1107476520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Show Document</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action Show Document - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action Show Document - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 2018568690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 2018568690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Executes the Create Fixed Assets For Selected Lines action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action CreateFixedAssetsForSelectedLines - Property ToolTip</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action CreateFixedAssetsForSelectedLines - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 2018568690 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 2018568690 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Create Fixed Assets For Selected Lines</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action CreateFixedAssetsForSelectedLines - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action CreateFixedAssetsForSelectedLines - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 673585594 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Page 1938024015 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Process</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Transfer ReceiptLns INF - Action Category_Process - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Action Category_Process - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 3810367679 - Action 2629517463 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
           <source>Executes the Create FA Transfer Item action.</source>

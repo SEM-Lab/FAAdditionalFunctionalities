@@ -42,8 +42,6 @@ codeunit 60002 "FA Location Sync Handler"
 
     local procedure SyncLocationFields(var FixedAsset: Record "Fixed Asset")
     var
-        Location: Record Location;
-        FALocation: Record "FA Location";
         FAConversion: Record "FA Conversion";
     begin
         if FixedAsset."FA Location Code" = '' then

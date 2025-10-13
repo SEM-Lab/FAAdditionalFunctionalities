@@ -2,8 +2,7 @@
     "al.codeAnalyzers": [
         "${CodeCop}",
         "${UICop}",
-        "${PerTenantExtensionCop}",
-        "${analyzerFolder}BusinessCentral.LinterCop.dll"
+        "${PerTenantExtensionCop}"
     ],
     "al.ruleSetPath": "LinterCop.ruleset.json",
     "alOutline.activeBuildConfiguration": ""

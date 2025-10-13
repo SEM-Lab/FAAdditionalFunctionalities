@@ -45,7 +45,9 @@
       "WebFetch(domain:teams.microsoft.com)",
       "mcp__teams__auth_status",
       "mcp__teams__get_chat_messages",
-      "Bash(del \"C:\\Users\\DGUNDUZ\\Dropbox\\AL\\FA Additional Functionalities\\TEST_SCENARIOS.md\")"
+      "Bash(del \"C:\\Users\\DGUNDUZ\\Dropbox\\AL\\FA Additional Functionalities\\TEST_SCENARIOS.md\")",
+      "WebFetch(domain:docs.microsoft.com)",
+      "mcp__mcp-filesystem__read_file"
     ],
     "deny": [],
     "ask": []

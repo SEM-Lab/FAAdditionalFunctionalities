@@ -13,7 +13,7 @@ permissionset 60000 "FA Add Func Perms"
         page "FA Conversion Wizard" = X,
         page "FA Conversion List" = X,
         codeunit "FA Transfer Functions" = X,
-        page "Posted Transfer ReceiptLns INF" = X,
         page "Posted Direct Transfer Lines" = X,
-        codeunit "FA Location Sync Handler" = X;
+        codeunit "FA Location Sync Handler" = X,
+        page "Pstd Transfer RcptLns INF" = X;
 }

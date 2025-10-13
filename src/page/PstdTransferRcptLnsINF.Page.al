@@ -1,4 +1,4 @@
-page 60004 "Posted Transfer ReceiptLns INF"
+page 60004 "Pstd Transfer RcptLns INF"
 {
     Caption = 'Posted Transfer Receipt Lines';
     Editable = false;

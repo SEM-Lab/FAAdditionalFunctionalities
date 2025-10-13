@@ -2,6 +2,10 @@ codeunit 60000 "FA Conversion Functions"
 {
     SingleInstance = true;
     Access = Public;
+    /// <summary>
+    /// Creates a Fixed Asset conversion from an Item Card.
+    /// </summary>
+    /// <param name="Item">The source item record to convert to Fixed Asset.</param>
     procedure CreateFAConversionFromItemCard(Item: Record Item)
     var
         FAConversion: Record "FA Conversion";
@@ -41,6 +45,12 @@ codeunit 60000 "FA Conversion Functions"
         Page.Run(Page::"FA Conversion", FAConversion);
     end;
 
+    /// <summary>
+    /// Creates a Fixed Asset conversion from an Item Variant.
+    /// </summary>
+    /// <param name="ItemVariant">The source item variant record to convert to Fixed Asset.</param>
+    /// <param name="ShowPageAfterCreation">Whether to display the FA Conversion page after creation.</param>
+    /// <param name="LocationCode">The location code to assign to the FA Conversion.</param>
     procedure CreateFAConversionFromItemVariant(ItemVariant: Record "Item Variant"; ShowPageAfterCreation: Boolean; LocationCode: Code[10])
     var
         FAConversion: Record "FA Conversion";
@@ -105,7 +115,27 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.Validate("FA Description", FixedAsset.Description);
     end;
 
+    /// <summary>
+    /// Posts a negative inventory adjustment for the FA conversion item.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion record to process.</param>
+    /// <param name="SkipCosting">Whether to skip cost adjustment and posting to GL.</param>
     procedure NegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
+    var
+        ErrorHandlingLbl: Label 'Failed to create negative adjustment: %1', Comment = '%1 = Error message';
+    begin
+        if not TryNegativeAdjustment(FAConversion, SkipCosting) then
+            Error(ErrorHandlingLbl, GetLastErrorText());
+    end;
+
+    /// <summary>
+    /// Attempts to post a negative inventory adjustment for the FA conversion item.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion record to process.</param>
+    /// <param name="SkipCosting">Whether to skip cost adjustment and posting to GL.</param>
+    /// <returns>True if successful, false otherwise.</returns>
+    [TryFunction]
+    procedure TryNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
     var
         ItemJournalLine: Record "Item Journal Line";
         Item: Record Item;
@@ -163,6 +193,11 @@ codeunit 60000 "FA Conversion Functions"
         end;
     end;
 
+    /// <summary>
+    /// Calculates the unit cost from Item Ledger Entries for the journal line.
+    /// </summary>
+    /// <param name="ItemJournalLine">The Item Journal Line to calculate cost for.</param>
+    /// <returns>The calculated unit cost based on actual cost from Item Ledger Entries.</returns>
     procedure GetUnitCostFromItemJnlLine(var ItemJournalLine: Record "Item Journal Line"): Decimal
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
@@ -211,6 +246,10 @@ codeunit 60000 "FA Conversion Functions"
           ItemJournalLine."Item No.", ItemJournalLine."Variant Code", ItemJournalLine."Location Code", '', 0D, ItemJournalLine."Posting Date", 0, ReservStatus::Prospect);
     end;
 
+    /// <summary>
+    /// Adjusts item costs and posts inventory cost to General Ledger.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion record for which to adjust costs.</param>
     procedure AdjustAndPostInventoryCost(var FAConversion: Record "FA Conversion")
     var
         PostValueEntrytoGL: Record "Post Value Entry to G/L";
@@ -232,12 +271,29 @@ codeunit 60000 "FA Conversion Functions"
         //Report.RunModal(Report::"Post Inventory Cost to G/L", false);
     end;
 
+    /// <summary>
+    /// Posts Fixed Asset acquisition entry through General Journal.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion record to process for acquisition.</param>
     procedure FAAcquisition(var FAConversion: Record "FA Conversion")
+    var
+        ErrorHandlingLbl: Label 'Failed to post FA acquisition: %1', Comment = '%1 = Error message';
+    begin
+        if not TryFAAcquisition(FAConversion) then
+            Error(ErrorHandlingLbl, GetLastErrorText());
+    end;
+
+    /// <summary>
+    /// Attempts to post Fixed Asset acquisition entry through General Journal.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion record to process for acquisition.</param>
+    /// <returns>True if successful, false otherwise.</returns>
+    [TryFunction]
+    procedure TryFAAcquisition(var FAConversion: Record "FA Conversion")
     var
         GenJournalLine: Record "Gen. Journal Line";
         ItemLedgerEntry: Record "Item Ledger Entry";
         Item: Record Item;
-
         GeneralPostingSetup: Record "General Posting Setup";
         ServiceItemGroup: Record "Service Item Group";
     begin
@@ -297,6 +353,10 @@ codeunit 60000 "FA Conversion Functions"
         Clear(GlobalFAConversion);
     end;
 
+    /// <summary>
+    /// Creates a Service Item based on the FA Conversion data.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion record to create Service Item from.</param>
     procedure CreateServiceItemFromFAConversion(FAConversion: Record "FA Conversion")
     var
         ServItem: Record "Service Item";
@@ -378,11 +438,22 @@ codeunit 60000 "FA Conversion Functions"
     // The modern "No. Series" codeunit handles transaction management internally
     // and no longer requires manual commit logic through event subscribers
 
+    /// <summary>
+    /// Creates a Fixed Asset conversion from a Transfer Receipt Line.
+    /// </summary>
+    /// <param name="TransferReceiptLine">The Transfer Receipt Line to convert to Fixed Asset.</param>
+    /// <param name="ShowPageAfterCreation">Whether to display the FA Conversion page after creation.</param>
     procedure CreateFAConversionFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; ShowPageAfterCreation: Boolean)
     begin
         CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, ShowPageAfterCreation, '');
     end;
 
+    /// <summary>
+    /// Creates a Fixed Asset conversion from a Transfer Receipt Line with specific serial number.
+    /// </summary>
+    /// <param name="TransferReceiptLine">The Transfer Receipt Line to convert to Fixed Asset.</param>
+    /// <param name="ShowPageAfterCreation">Whether to display the FA Conversion page after creation.</param>
+    /// <param name="SerialNo">The specific serial number to assign to the conversion.</param>
     procedure CreateFAConversionFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; ShowPageAfterCreation: Boolean; SerialNo: Text[50])
     var
         FAConversion: Record "FA Conversion";
@@ -420,6 +491,11 @@ codeunit 60000 "FA Conversion Functions"
         end;
     end;
 
+    /// <summary>
+    /// Retrieves the serial number from Item Ledger Entries for a Transfer Receipt Line.
+    /// </summary>
+    /// <param name="TransferReceiptLine">The Transfer Receipt Line to get serial number for.</param>
+    /// <returns>The serial number found in the associated Item Ledger Entry.</returns>
     procedure GetSerialNoFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"): Text[50]
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
@@ -442,6 +518,11 @@ codeunit 60000 "FA Conversion Functions"
         exit(ItemLedgerEntry."Serial No.");
     end;
 
+    /// <summary>
+    /// Retrieves all serial numbers from Item Ledger Entries for a Transfer Receipt Line.
+    /// </summary>
+    /// <param name="TransferReceiptLine">The Transfer Receipt Line to get serial numbers for.</param>
+    /// <param name="SerialNoList">List to populate with found serial numbers.</param>
     procedure GetSerialNosFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"; var SerialNoList: List of [Text[50]])
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
@@ -467,6 +548,10 @@ codeunit 60000 "FA Conversion Functions"
             until ItemLedgerEntry.Next() = 0;
     end;
 
+    /// <summary>
+    /// Creates multiple Fixed Asset conversions from a single Transfer Receipt Line based on serial numbers or quantity.
+    /// </summary>
+    /// <param name="TransferReceiptLine">The Transfer Receipt Line to create multiple FA conversions from.</param>
     procedure CreateMultipleFAConversionsFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line")
     var
         SerialNoList: List of [Text[50]];
