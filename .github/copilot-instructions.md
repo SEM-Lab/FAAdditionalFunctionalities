@@ -4,43 +4,85 @@ Purpose: give an AI agent the precise, actionable project knowledge it needs to 
 
 Keep it short — read referenced files for details. When making code edits, follow existing ID ranges, naming, and patterns.
 
-- Project type: Microsoft Dynamics 365 Business Central AL extension (target App 25.0+, Platform 24.0+). See `app.json` for exact requirements.
+- Project type: Microsoft Dynamics 365 Business Central AL extension (target App 26.0+, Platform 24.0+). See `app.json` for exact requirements.
 - Key folders: `src/codeunit/`, `src/table/`, `src/tableextension/`, `src/page/`, `Translations/`.
 
-Important patterns and conventions (examples)
-- Object ID range: custom objects use 60000–60500. Example: `FA Conversion Setup (60000)` (`src/table/FAConversionSetup.Table.al`).
-- SingleInstance codeunits for shared logic. Example: `src/codeunit/FAConversionFunctions.Codeunit.al` uses `SingleInstance = true`.
-- Singleton setup tables use GetRecordOnce() pattern to avoid repeated reads (see `FAConversionSetup.Table.al`).
-- Posting flows are event-driven: code heavily uses event subscribers (see `FAConversionFunctions.Codeunit.al` and `FATransferFunctions.Codeunit.al`). Follow existing event signatures.
+### Big Picture Architecture
 
-Data flows to note
-- Conversion flow: Item Card → FA Conversion record (table 60001) → create Fixed Asset + Depreciation Book + inventory negative adjustment. See `src/codeunit/FAConversionFunctions.Codeunit.al`.
-- Transfer flow: FA transfer creates transfer items and resource cards, integrates with e-shipment and consignment routines (`src/codeunit/FATransferFunctions.Codeunit.al`).
+This extension implements two core business processes in Business Central:
 
-Developer workflows
-- Build/compile: use AL Language tooling (VS Code AL extension). The repository includes `Translations/*.g.xlf` produced by AL compilation. Use `refreshXlf` helper (script/tool) to sync translations when needed (see `Translations/Fixed Asset Additional Functionalities.g.xlf`).
-- Launch configurations: sandbox targets are present in `.vscode/launch.json` (examples: DIRUI_TEST, YILDIZ_ENV). Use those for debugging and UI flows.
+**Conversion Flow**: Item Card → FA Conversion record (table 60001) → Fixed Asset + Depreciation Book + inventory negative adjustment. Creates FA acquisition entries and handles cost adjustments.
 
-Project-specific coding rules
-- Don't change object ID ranges. New objects must be in 60000–60500.
-- Use existing CommitRequired pattern for transactions and follow Commit/rollback behavior in codeunits.
-- Respect custom LinterCop rules (see `LinterCop.ruleset.json`); some rules are intentionally disabled for historical reasons.
+**Transfer Flow**: Fixed Asset transfer → transfer items with serial tracking → resource cards → e-shipment/consignment integration. Manages bidirectional location synchronization.
 
-Integration & dependencies
-- Turkish Localization dependency required (check `app.json` dependencies). Keep dependency versions in sync with app.json.
-- Integration points: e-shipment, consignment, and Infotek add-on infra — these are implemented via event subscribers and custom table extensions. When changing interfaces, search for subscribers across the repo.
+**Key Design Patterns**:
+- Event-driven posting: Heavy use of event subscribers to extend standard BC posting routines
+- Singleton setup: `FA Conversion Setup` table uses `GetRecordOnce()` pattern
+- SingleInstance codeunits: `FAConversionFunctions` and `FATransferFunctions` for shared logic
+- Transaction control: `CommitRequired` pattern for posting operations
 
-Where to look first (high-value files)
-- `src/codeunit/FAConversionFunctions.Codeunit.al` — main business logic for conversion
-- `src/codeunit/FATransferFunctions.Codeunit.al` — transfer and resource-card logic
-- `src/table/FAConversion.Table.al` and `src/table/FAConversionSetup.Table.al` — core tables and setup pattern
-- `src/tableextension/ItemExtension.TableExt.al` — required item configuration fields used during conversion
-- `Translations/*.g.xlf` — generated translation units; run `refreshXlf` when editing captions/messages.
+### Critical Developer Workflows
 
-Edit guidance for agents
-- When adding new fields, also add XLF entries (run a compilation to generate `.g.xlf` then `refreshXlf`).
-- Use `GetRecordOnce()` for singleton setup reads. Use `SingleInstance` on codeunits that must be shared.
-- Prefer event subscribers over direct modification of system posting routines; follow signature and routing patterns already in code.
+- **Build/Compile**: Use VS Code AL extension (`AL: Package`) or `.\compile.ps1` PowerShell script. Output goes to `out/` directory.
+- **Debug/Deploy**: Use `.vscode/launch.json` configs. Active: `ERRA_DEV` (tenant: 8beae494-639b-461e-9d2e-ad58f9467cf9, environment: ERRA270825)
+- **Translation Sync**: After changing captions/messages, compile to generate `Translations/*.g.xlf`, then run translation sync helper
+- **Testing**: Manual sandbox validation only - no automated unit tests. Test conversion and transfer scenarios in sandbox.
+
+### Project-Specific Conventions (Follow Exactly)
+
+- **Object ID Range**: 60000–60500 ONLY. Never use IDs outside this range - will break deployment.
+- **Setup Table Pattern**: Use `GetRecordOnce()` for singleton reads (see `FAConversionSetup.Table.al`)
+- **Codeunit Pattern**: Mark shared logic codeunits as `SingleInstance = true`
+- **Event Subscribers**: Prefer over direct modifications; follow existing signatures in `FAConversionFunctions.Codeunit.al`
+- **Transaction Pattern**: Use `CommitRequired` for posting operations that must commit/rollback
+- **Item Tracking**: Handle via Reservation Entries (see `CreateReservationEntry` procedures)
+
+### Integration Points & Dependencies
+
+- **Required Dependencies**: Turkish Localization (v24.4.0.0), E-Shipment (v20.4.1.0), Consignment Management (v21.1.1.0), İnfotek Add-On Infrastructure (v21.2.23.5)
+- **Event Subscribers**: Modify standard posting routines - search for subscribers when changing interfaces
+- **Table Extensions**: Add FA conversion fields to standard BC tables (Item, Fixed Asset, Resource, etc.)
+
+### Key Files & What They Contain
+
+- `src/codeunit/FAConversionFunctions.Codeunit.al` — Core conversion logic: Item→FA creation, inventory adjustments, GL postings
+- `src/codeunit/FATransferFunctions.Codeunit.al` — Transfer logic: Resource cards, transfer items, location sync
+- `src/table/FAConversion.Table.al` — Main transaction table for conversions
+- `src/table/FAConversionSetup.Table.al` — Singleton setup table (GetRecordOnce pattern)
+- `src/tableextension/ItemExtension.TableExt.al` — FA conversion fields added to Item table
+- `Translations/*.g.xlf` — Generated translation files; compile to update, then sync manually
+
+### Common Development Tasks
+
+**Adding New FA Conversion Fields**:
+1. Add field to `FAConversion.Table.al` (ID in 60000-60500 range)
+2. Add XLF translation entries
+3. Compile to generate `.g.xlf`
+4. Run translation sync
+
+**Modifying Posting Logic**:
+- Use event subscribers in `FAConversionFunctions.Codeunit.al`
+- Follow existing `TryFunction`/`[TryFunction]` error handling pattern
+- Test in sandbox with real data
+
+**Adding New Objects**:
+- Use IDs in 60000-60500 range
+- Follow naming patterns from existing objects
+- Update translations after adding captions
+
+### Critical Patterns to Follow
+
+- **Error Handling**: Use `[TryFunction]` for posting operations, wrap calls with error handling
+- **Reservation Entries**: Always create for serial-tracked items during journal posting
+- **Location Sync**: Bidirectional sync between FA Conversion and Fixed Asset location codes
+- **Cost Calculation**: Use actual cost from Item Ledger Entries, not standard cost
+
+### Debugging Tips
+
+- **Posting Issues**: Check event subscribers that modify the same posting routine
+- **Missing Translations**: Compile to regenerate `.g.xlf` and run translation sync
+- **Setup Reads**: Use `GetRecordOnce()` pattern to avoid repeated DB reads and state bugs
+- **Serial Tracking**: Verify Reservation Entries are created correctly during adjustments
 
 If you need clarification
 - Ask which target sandbox/launch config to use, and whether to update translations or app.json dependencies.

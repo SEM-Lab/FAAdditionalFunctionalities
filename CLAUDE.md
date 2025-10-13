@@ -8,8 +8,14 @@ This is a Microsoft Business Central AL extension called "Fixed Asset Additional
 
 ## Development Commands
 
+### Prerequisites
+- **VS Code**: Install Microsoft AL Language extension
+- **Symbols**: Run `AL: Download Symbols` from command palette to fetch base application symbols for target sandbox
+- **Dependencies**: Ensure all dependencies in `app.json` are available in target environment
+
 ### Building and Compilation
 - **VS Code (Recommended)**: `Ctrl+Shift+P` → `AL: Publish` to compile and deploy to configured sandbox
+- **Hot Reload**: Press F5 in debug mode to compile, deploy, and refresh changes automatically
 - **PowerShell Script**: Run `.\compile.ps1` for command-line compilation using AL compiler
 - **AL Compiler Direct**: `al compile /project:"." /out:"./out"` (requires AL compiler in PATH)
 - Compiled `.app` files are generated in the `out/` directory
@@ -22,7 +28,11 @@ This is a Microsoft Business Central AL extension called "Fixed Asset Additional
 ### Debugging and Testing
 - **Active Environment**: ERRA_DEV (tenant: 8beae494-639b-461e-9d2e-ad58f9467cf9, environment: ERRA270825)
 - **Default Startup**: Page 60004 (FA Conversion List)
-- Launch with F5 in VS Code to deploy and debug
+- **Debug**: Press F5 in VS Code to deploy and start debugging
+- **Manual Test Scenarios**:
+  - Item to FA Conversion: Item Card → FA Conversion → Fixed Asset creation + depreciation + inventory adjustment
+  - Transfer Receipt to FA: Posted Transfer Receipt Lines → Bulk FA creation with location inheritance
+  - Transfer Flow: Create transfer → Resource card → E-shipment/consignment updates
 
 ## Architecture Overview
 
@@ -122,3 +132,26 @@ This is a Microsoft Business Central AL extension called "Fixed Asset Additional
 - Compile generates `.g.xlf` files in `Translations/`
 - Turkish translations in `Fixed Asset Additional Functionalities.tr-TR.xlf`
 - Run compilation after caption/message changes to update XLF files
+
+## Pull Request Guidelines
+
+### Required Checks
+- ✅ Code compiles successfully (no errors)
+- ✅ Translation files updated if captions/messages changed
+- ✅ Tested in sandbox environment
+- ✅ All new objects use ID range 60000-60500
+
+### PR Title Format
+Include: Changed object IDs, new dependencies (if any), translation updates status
+
+### QA Instructions
+Specify in PR description:
+- Launch configuration to use (e.g., ERRA_DEV)
+- Test data setup required
+- Expected results for each test scenario
+
+## Security Notes
+
+- **NEVER** commit sandbox credentials, tenant IDs, or secrets to repository
+- Use VS Code settings or environment variables for sensitive configuration
+- Launch.json configurations are gitignored when containing credentials
