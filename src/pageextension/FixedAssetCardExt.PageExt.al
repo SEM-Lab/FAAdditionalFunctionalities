@@ -2,6 +2,12 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
 {
     layout
     {
+        // Make FA Location Code uneditable to enforce automatic location mapping
+        modify("FA Location Code")
+        {
+            Editable = false;
+        }
+
         addafter("FA Location Code")
         {
             field("Current Location"; Rec."Current Location")
@@ -58,6 +64,24 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
                 trigger OnAction()
                 begin
                     FATransferFunctions.CreateResourceCard(Rec);
+                end;
+            }
+            action(ShowItemLedgerEntries)
+            {
+                ApplicationArea = All;
+                Caption = 'Item Ledger Entries';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = ItemLedger;
+                ToolTip = 'View item ledger entries filtered by the selected fixed asset''s serial number.';
+
+                trigger OnAction()
+                var
+                    ItemLedgerEntry: Record "Item Ledger Entry";
+                begin
+                    ItemLedgerEntry.SetRange("Serial No.", Rec."No.");
+                    Page.Run(Page::"Item Ledger Entries", ItemLedgerEntry);
                 end;
             }
 

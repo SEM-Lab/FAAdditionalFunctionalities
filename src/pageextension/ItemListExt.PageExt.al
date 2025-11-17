@@ -1,4 +1,4 @@
-pageextension 60004 "Item Variants Ext." extends "Item Variants"
+pageextension 60007 "Item List Ext." extends "Item List"
 {
     layout
     {
@@ -8,14 +8,14 @@ pageextension 60004 "Item Variants Ext." extends "Item Variants"
             {
                 ApplicationArea = All;
                 Style = Strong;
-                ToolTip = 'Specifies the total number of Fixed Asset conversions created from this item variant.';
+                ToolTip = 'Specifies the total number of Fixed Asset conversions created from this item.';
             }
         }
     }
 
     actions
     {
-        addfirst(Processing)
+        addfirst(Functions)
         {
             action(NewFAConversion)
             {
@@ -25,14 +25,16 @@ pageextension 60004 "Item Variants Ext." extends "Item Variants"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Image = FixedAssets;
-                ToolTip = 'Executes the New FA Conversion action.';
+                ToolTip = 'Create a new Fixed Asset conversion from the selected item.';
+
                 trigger OnAction()
                 begin
-                    FAConversionFunctions.CreateFAConversionFromItemVariant(Rec, true, '');
+                    FAConversionFunctions.CreateFAConversionFromItemCard(Rec);
                 end;
             }
         }
     }
+
     var
         FAConversionFunctions: Codeunit "FA Conversion Functions";
 }

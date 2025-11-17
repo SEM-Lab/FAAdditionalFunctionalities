@@ -485,10 +485,10 @@ codeunit 60000 "FA Conversion Functions"
 
         if ShowPageAfterCreation then
             Page.Run(Page::"FA Conversion", FAConversion)
-        else begin
-            NegativeAdjustment(FAConversion, true);
-            FAAcquisition(FAConversion);
-        end;
+        else
+            // All-or-nothing transaction: FA creation + Transfer item creation
+            if not TryCreateCompleteFA(FAConversion) then
+                Error('Failed to create Fixed Asset and Transfer Item: %1', GetLastErrorText());
     end;
 
     /// <summary>
@@ -571,6 +571,34 @@ codeunit 60000 "FA Conversion Functions"
             for i := 1 to QtyToProcess do
                 CreateFAConversionFromTransferReceiptLine(TransferReceiptLine, false, '');
         end;
+    end;
+
+    /// <summary>
+    /// Attempts to create complete FA with transfer item in a single transaction.
+    /// All operations succeed or all fail together (all-or-nothing).
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion record to process.</param>
+    /// <returns>True if all operations succeeded, false otherwise.</returns>
+    [TryFunction]
+    local procedure TryCreateCompleteFA(var FAConversion: Record "FA Conversion")
+    var
+        FixedAsset: Record "Fixed Asset";
+        FATransferFunctions: Codeunit "FA Transfer Functions";
+    begin
+        // Step 1: Post negative adjustment (remove from inventory)
+        NegativeAdjustment(FAConversion, true);
+
+        // Step 2: Post FA acquisition
+        FAAcquisition(FAConversion);
+
+        // Step 3: Create transfer item (NEW - required for all FAs from Transfer Receipt)
+        if not FixedAsset.Get(FAConversion."FA No.") then
+            Error('Fixed Asset %1 not found after creation.', FAConversion."FA No.");
+
+        // This will error if location is missing or transfer item creation fails
+        FATransferFunctions.NewItemForTransfer(FixedAsset);
+
+        // If we reach here, all steps succeeded
     end;
 
 

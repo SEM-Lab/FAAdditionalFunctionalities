@@ -773,6 +773,26 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Action CreateResourceCard - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3810367679 - Action 79176595 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
+          <source>View item ledger entries filtered by the selected fixed asset's serial number.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Action ShowItemLedgerEntries - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 3810367679 - Action 79176595 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3133908286">
+          <source>Item Ledger Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Action ShowItemLedgerEntries - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Action 3161602747 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
+          <source>Creates a transfer order for selected fixed assets with automatic serial number tracking.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action CreateBulkTransferOrder - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Action 3161602747 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
+          <source>Create Bulk Transfer Order</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action CreateBulkTransferOrder - Property Caption</note>
+        </trans-unit>
         <trans-unit id="PageExtension 945892629 - Action 2629517463 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
           <source>Executes the Create FA Transfer Item action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -792,6 +812,16 @@
           <source>Create Resource Card</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action CreateResourceCard - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Action 79176595 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
+          <source>View item ledger entries filtered by the selected fixed asset's serial number.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action ShowItemLedgerEntries - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Action 79176595 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
+          <source>Item Ledger Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action ShowItemLedgerEntries - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 742805820 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
           <source>Executes the New FA Conversion action.</source>
@@ -813,6 +843,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Card Extension - Control FA Conversion Count - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="PageExtension 1512221076 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Create a new Fixed Asset conversion from the selected item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item List Ext. - Action NewFAConversion - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1512221076 - Action 2924160797 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>New FA Conversion</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item List Ext. - Action NewFAConversion - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1512221076 - Control 3963759824 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 4178721393">
+          <source>Specifies the total number of Fixed Asset conversions created from this item.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item List Ext. - Control FA Conversion Count - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="PageExtension 1152214162 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1395186723">
           <source>Executes the New FA Conversion action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -822,6 +867,11 @@
           <source>New FA Conversion</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Variants Ext. - Action NewFAConversion - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 1152214162 - Control 3963759824 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1395186723">
+          <source>Specifies the total number of Fixed Asset conversions created from this item variant.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Variants Ext. - Control FA Conversion Count - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 3908294399 - Action 2018568690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3908294399">
           <source>Executes the Create Fixed Assets For Selected Lines action.</source>
