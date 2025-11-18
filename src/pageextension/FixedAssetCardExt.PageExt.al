@@ -22,6 +22,10 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
             {
                 ApplicationArea = All;
             }
+            field("Current Location Type INF"; Rec."Current Location Type INF")
+            {
+                ApplicationArea = All;
+            }
             field("Source Item No."; Rec."Source Item No.")
             {
                 ApplicationArea = All;

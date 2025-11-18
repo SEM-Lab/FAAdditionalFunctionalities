@@ -34,6 +34,12 @@
       "name": "İnfotek Add-On Infrastructure",
       "publisher": "Infotek Yazilim ve Donanim A.S.",
       "version": "21.2.23.5"
+    },
+    {
+      "id": "b8d5fa23-614a-40de-a41b-44f62d690a04",
+      "name": "Device Transfer Management by İnfotek",
+      "publisher": "Infotek Yazilim ve Donanim A.S.",
+      "version": "26.0.1.2"
     }
   ],
   "screenshots": [],

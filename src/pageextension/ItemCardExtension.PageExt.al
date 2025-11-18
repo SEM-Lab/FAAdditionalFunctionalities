@@ -26,6 +26,11 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
                     ApplicationArea = All;
                 }
 
+                field("FA Depr. Profile Code INF"; Rec."FA Depr. Profile Code INF")
+                {
+                    ApplicationArea = All;
+                }
+
                 field("FA Conversion Count"; Rec."FA Conversion Count")
                 {
                     ApplicationArea = All;

@@ -46,5 +46,13 @@ tableextension 60022 "Fixed Asset Ext." extends "Fixed Asset"
             Editable = false;
             ToolTip = 'Specifies the description of the source item.';
         }
+        field(60006; "Current Location Type INF"; Enum "Location Type INF")
+        {
+            Caption = 'Current Location Type';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = lookup(Location."Location Type INF" where(Code = field("Current Location")));
+            ToolTip = 'Shows the location type derived from the fixed asset''s current location.';
+        }
     }
 }

@@ -18,5 +18,11 @@ tableextension 60003 "Transfer Receipt Line Ext." extends "Transfer Receipt Line
             CalcFormula = lookup(Item."FA No. Series" where("No." = field("Item No.")));
             AllowInCustomizations = Never;
         }
+        field(60002; "Auto FA Conversion Done INF"; Boolean)
+        {
+            Caption = 'Auto FA Conversion Completed';
+            Editable = false;
+            ToolTip = 'Specifies whether an automatic Fixed Asset conversion was triggered for this receipt line.';
+        }
     }
 }

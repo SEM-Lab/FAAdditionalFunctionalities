@@ -36,6 +36,12 @@ tableextension 60001 "Item Extension" extends Item
             Editable = false;
             ToolTip = 'Specifies how many Fixed Asset conversions have been created from this item.';
         }
+        field(60005; "FA Depr. Profile Code INF"; Code[20])
+        {
+            Caption = 'FA Depreciation Profile';
+            TableRelation = "FA Depreciation Profile".Code;
+            ToolTip = 'Selects the depreciation profile that controls the depreciation life for automatic FA conversions.';
+        }
 
     }
 }

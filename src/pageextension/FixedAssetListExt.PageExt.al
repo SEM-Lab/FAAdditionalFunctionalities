@@ -17,6 +17,10 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
             {
                 ApplicationArea = All;
             }
+            field("Current Location Type INF"; Rec."Current Location Type INF")
+            {
+                ApplicationArea = All;
+            }
             field("Source Item No."; Rec."Source Item No.")
             {
                 ApplicationArea = All;
@@ -96,6 +100,21 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
                     Page.Run(Page::"Item Ledger Entries", ItemLedgerEntry);
                 end;
             }
+            action(ShowLocationTypeAndCode)
+            {
+                ApplicationArea = All;
+                Caption = 'Location Type & Code';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = false;
+                Image = ViewDetails;
+                ToolTip = 'Show the current location code and its Location Type for the selected fixed asset.';
+
+                trigger OnAction()
+                begin
+                    ShowLocationInfo(Rec);
+                end;
+            }
             action(CreateBulkTransferOrder)
             {
                 ApplicationArea = All;
@@ -141,4 +160,22 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
     }
     var
         FATransferFunctions: Codeunit "FA Transfer Functions";
+
+    local procedure ShowLocationInfo(var FixedAsset: Record "Fixed Asset")
+    var
+        LocationRecord: Record Location;
+        MissingLocationErr: Label 'Current Location is not available for fixed asset %1.';
+        LocationNotFoundErr: Label 'Location %1 could not be found.';
+        LocationInfoMsg: Label 'Current Location Code: %1\\Location Type: %2';
+    begin
+        FixedAsset.CalcFields("Current Location", "Current Location Type INF");
+
+        if FixedAsset."Current Location" = '' then
+            Error(MissingLocationErr, FixedAsset."No.");
+
+        if not LocationRecord.Get(FixedAsset."Current Location") then
+            Error(LocationNotFoundErr, FixedAsset."Current Location");
+
+        Message(LocationInfoMsg, FixedAsset."Current Location", Format(LocationRecord."Location Type INF"));
+    end;
 }

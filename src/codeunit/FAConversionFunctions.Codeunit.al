@@ -110,6 +110,7 @@ codeunit 60000 "FA Conversion Functions"
         FADepreciationBook.Validate("Depreciation Book Code", FAConversionSetup."Depreciation Book Code");
         FADepreciationBook.Validate("FA Posting Group", Item."FA Posting Group");
         FADepreciationBook.Insert(true);
+        ApplyDepreciationProfile(Item, FAConversion, FADepreciationBook);
 
         FAConversion.Validate("FA No.", FixedAsset."No.");
         FAConversion.Validate("FA Description", FixedAsset.Description);
@@ -351,6 +352,70 @@ codeunit 60000 "FA Conversion Functions"
         GlobalFAConversion := FAConversion;
         GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
         Clear(GlobalFAConversion);
+    end;
+
+    local procedure ApplyDepreciationProfile(Item: Record Item; FAConversion: Record "FA Conversion"; var FADepreciationBook: Record "FA Depreciation Book")
+    var
+        DepreciationProfile: Record "FA Depreciation Profile";
+        StartDate: Date;
+        EndDate: Date;
+        YearCount: Decimal;
+    begin
+        if Item."FA Depr. Profile Code INF" = '' then
+            exit;
+
+        if not DepreciationProfile.Get(Item."FA Depr. Profile Code INF") then
+            exit;
+
+        DepreciationProfile.TestField("Depreciation Life Formula");
+
+        StartDate := GetDepreciationStartDate(FAConversion);
+        if StartDate = 0D then
+            exit;
+
+        EndDate := CalcDate(DepreciationProfile."Depreciation Life Formula", StartDate);
+        if EndDate <> 0D then
+            EndDate := EndDate - 1;
+
+        YearCount := CalculateYearCount(StartDate, DepreciationProfile."Depreciation Life Formula");
+
+        FADepreciationBook.Validate("Depreciation Starting Date", StartDate);
+
+        if EndDate <> 0D then
+            FADepreciationBook.Validate("Depreciation Ending Date", EndDate);
+
+        if YearCount <> 0 then
+            FADepreciationBook.Validate("No. of Depreciation Years", YearCount);
+
+        FADepreciationBook.Modify(true);
+    end;
+
+    local procedure GetDepreciationStartDate(FAConversion: Record "FA Conversion"): Date
+    var
+        PostingYear: Integer;
+    begin
+        if FAConversion."Posting Date" = 0D then
+            exit(0D);
+
+        PostingYear := Date2DMY(FAConversion."Posting Date", 3);
+        exit(DMY2Date(1, 1, PostingYear));
+    end;
+
+    local procedure CalculateYearCount(StartDate: Date; LifeFormula: DateFormula): Decimal
+    var
+        EndDateExclusive: Date;
+    begin
+        if StartDate = 0D then
+            exit(0);
+
+        if Format(LifeFormula) = '' then
+            exit(0);
+
+        EndDateExclusive := CalcDate(LifeFormula, StartDate);
+        if EndDateExclusive = 0D then
+            exit(0);
+
+        exit(Date2DMY(EndDateExclusive, 3) - Date2DMY(StartDate, 3));
     end;
 
     /// <summary>

@@ -278,6 +278,31 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field VAT Prod. Posting Group - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 227796887 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>FA Depreciation Profile</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 227796887 - Field 3004954119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 227796887 - Field 2234681691 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Defines the depreciation life that will be applied to fixed assets created from items linked to this profile.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Depreciation Life Formula - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 227796887 - Field 2234681691 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Depreciation Life Formula</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Depreciation Life Formula - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 227796887 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Description - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 1812270184 - NamedType 631801445" size-unit="char" translate="yes" xml:space="preserve">
           <source>Location %1 does not exist. Please create the location first or set a valid default location in FA Conversion Setup.</source>
           <note from="Developer" annotates="general" priority="2">%1 = Location Code</note>
@@ -312,6 +337,16 @@
           <source>FA Transfer Item has been already created.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method NewItemForTransfer - NamedType AlreadyCreatedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1899522374 - Method 971159013 - NamedType 243883307" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Automatic FA conversion failed for receipt %1 line %2. Details: %3</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Document No., %2 = Line No., %3 = Error Text</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Location Type Automation - Method OnAfterInsertTransRcptLine - NamedType AutoConversionFailedErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1899522374 - Method 1921803029 - NamedType 2944844904" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location %1 does not have a Location Type. Do you want to set it to Apartment?</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Location Type Automation - Method TransferLineOnAfterValidateTransferToCode - NamedType PromptTxt</note>
         </trans-unit>
         <trans-unit id="Page 1971911761 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Conversion</source>
@@ -467,6 +502,11 @@
           <source>Next</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Wizard - Action ActionNext - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3221626210 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>FA Depreciation Profiles</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page FA Depreciation Profiles - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3954217406 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Posted Direct Transfer Lines</source>
@@ -783,6 +823,21 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset Card Ext. - Action ShowItemLedgerEntries - Property Caption</note>
         </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Method 1624542188 - NamedType 4030903664" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 945892629">
+          <source>Current Location is not available for fixed asset %1.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Method ShowLocationInfo - NamedType MissingLocationErr</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Method 1624542188 - NamedType 631801445" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 945892629">
+          <source>Location %1 could not be found.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Method ShowLocationInfo - NamedType LocationNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Method 1624542188 - NamedType 3312942510" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 945892629">
+          <source>Current Location Code: %1\\Location Type: %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Method ShowLocationInfo - NamedType LocationInfoMsg</note>
+        </trans-unit>
         <trans-unit id="PageExtension 945892629 - Action 3161602747 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
           <source>Creates a transfer order for selected fixed assets with automatic serial number tracking.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -822,6 +877,16 @@
           <source>Item Ledger Entries</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action ShowItemLedgerEntries - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Action 1317407828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
+          <source>Show the current location code and its Location Type for the selected fixed asset.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action ShowLocationTypeAndCode - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Action 1317407828 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
+          <source>Location Type &amp; Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action ShowLocationTypeAndCode - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 742805820 - Action 2924160797 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
           <source>Executes the New FA Conversion action.</source>
@@ -872,6 +937,16 @@
           <source>Specifies the total number of Fixed Asset conversions created from this item variant.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Item Variants Ext. - Control FA Conversion Count - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2810367140 - Control 2545433312 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3870787835">
+          <source>Specifies whether the location acts as a warehouse or an apartment for FA conversions.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location Card Extension - Control Location Type INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2175567442 - Control 2545433312 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 105083977">
+          <source>Shows whether the location behaves as a warehouse or an apartment for FA conversions.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location List Extension - Control Location Type INF - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 3908294399 - Action 2018568690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3908294399">
           <source>Executes the Create Fixed Assets For Selected Lines action.</source>
@@ -938,6 +1013,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Ship-to Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 1557953399 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Shows the location type derived from the fixed asset's current location.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Type INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 1557953399 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Current Location Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Type INF - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 4121882914 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Specifies the description of the source item.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -988,6 +1073,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Conversion Count - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3061441615 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Selects the depreciation profile that controls the depreciation life for automatic FA conversions.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Depr. Profile Code INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3061441615 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>FA Depreciation Profile</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Depr. Profile Code INF - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3470007613 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Specifies the value of the FA No. Series field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1028,6 +1123,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Variant Ext. - Field FA Conversion Count - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3043936888 - Field 2545433312 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3891454143">
+          <source>Specifies whether the location behaves like a warehouse or an apartment for FA conversion.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Location Extension - Field Location Type INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3043936888 - Field 2545433312 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3891454143">
+          <source>Location Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Location Extension - Field Location Type INF - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3903578189 - Field 1454633904 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 348912950">
           <source>Specifies the value of the Current Location field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1058,6 +1163,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Resource Extension - Field Fixed Asset No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3810883434 - Field 403727747 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1903112923">
+          <source>Specifies whether an automatic Fixed Asset conversion was triggered for this receipt line.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Auto FA Conversion Done INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3810883434 - Field 403727747 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1903112923">
+          <source>Auto FA Conversion Completed</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Auto FA Conversion Done INF - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3810883434 - Field 3470007613 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1903112923">
           <source>FA No. Series</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1072,6 +1187,21 @@
           <source>Remaning Quantity</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Remaning Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2545433312 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source> </source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Location Type INF - EnumValue   - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2545433312 - EnumValue 3136522176 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Apartment</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Location Type INF - EnumValue Apartment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 2545433312 - EnumValue 1484878399 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Warehouse</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum Location Type INF - EnumValue Warehouse - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 282391907 - EnumValue 2667510389 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Finish</source>
