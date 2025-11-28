@@ -19,22 +19,22 @@
         //     "schemaUpdateMode": "ForceSync",
         //     //"startupCompany": "service item test"
         // },
-        // {
-        //     "name": "Pera - YILDIZ_ENV",
-        //     "type": "al",
-        //     "request": "launch",
-        //     "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
-        //     "environmentType": "Sandbox",
-        //     "environmentName": "YILDIZ_ENV",
-        //     "startupObjectId": 9301,
-        //     "breakOnError": "All",
-        //     "breakOnRecordWrite": "None",
-        //     "launchBrowser": false,
-        //     "enableSqlInformationDebugger": true,
-        //     "enableLongRunningSqlStatements": true,
-        //     "longRunningSqlStatementsThreshold": 500,
-        //     "schemaUpdateMode": "ForceSync"
-        // },
+        {
+            "name": "Pera - YILDIZ_ENV",
+            "type": "al",
+            "request": "launch",
+            "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
+            "environmentType": "Sandbox",
+            "environmentName": "YILDIZ_ENV",
+            "startupObjectId": 9301,
+            "breakOnError": "All",
+            "breakOnRecordWrite": "None",
+            "launchBrowser": false,
+            "enableSqlInformationDebugger": true,
+            "enableLongRunningSqlStatements": true,
+            "longRunningSqlStatementsThreshold": 500,
+            "schemaUpdateMode": "ForceSync"
+        },
         // {
         //     "name": "Pera Medikal - DARYO_TEST - Document Attachment",
         //     "request": "launch",

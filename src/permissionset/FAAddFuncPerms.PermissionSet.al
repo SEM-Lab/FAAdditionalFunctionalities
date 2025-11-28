@@ -15,5 +15,9 @@ permissionset 60000 "FA Add Func Perms"
         codeunit "FA Transfer Functions" = X,
         page "Posted Direct Transfer Lines" = X,
         codeunit "FA Location Sync Handler" = X,
-        page "Pstd Transfer RcptLns INF" = X;
+        page "Pstd Transfer RcptLns INF" = X,
+        tabledata "FA Depreciation Profile" = RIMD,
+        table "FA Depreciation Profile" = X,
+        codeunit "Location Type Automation" = X,
+        page "FA Depreciation Profiles" = X;
 }
