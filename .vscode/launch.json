@@ -81,6 +81,21 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             //"schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "Altium - HC_221225",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "tenant": "31139e4d-0687-4dc9-ada3-e46652ffbd94",
+            "environmentName": "HC_221225",
+            "startupObjectId": 60004,
+            "startupObjectType": "Page",
+            "breakOnError": "ExcludeTry",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
         }
     ]
 }
