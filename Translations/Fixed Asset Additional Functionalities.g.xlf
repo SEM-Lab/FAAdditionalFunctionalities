@@ -1083,6 +1083,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Depr. Profile Code INF - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3429167600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Sabit kıymete dönüşümde amortisman ömür yılını belirtir.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Life Years INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 2042781808 - Field 3429167600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
+          <source>Ömür Yılı</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Life Years INF - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3470007613 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
           <source>Specifies the value of the FA No. Series field.</source>
           <note from="Developer" annotates="general" priority="2"></note>

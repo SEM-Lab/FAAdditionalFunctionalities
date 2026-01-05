@@ -168,6 +168,56 @@ codeunit 60001 "FA Transfer Functions"
     local procedure OnAfterInsert_ILE(var Rec: Record "Item Ledger Entry")
     begin
         UpdateServiceItemLocationAfterTransferProcess(Rec);
+        UpdateFixedAssetLocationAfterTransferProcess(Rec);
+    end;
+
+    local procedure UpdateFixedAssetLocationAfterTransferProcess(var ItemLedgerEntry: Record "Item Ledger Entry")
+    var
+        FixedAsset: Record "Fixed Asset";
+        NewLocationCode: Code[10];
+    begin
+        if ItemLedgerEntry.IsTemporary() then
+            exit;
+
+        if ItemLedgerEntry."Entry Type" <> ItemLedgerEntry."Entry Type"::Transfer then
+            exit;
+
+        if not ItemLedgerEntry.Positive then
+            exit;
+
+        if ItemLedgerEntry."Serial No." = '' then
+            exit;
+
+        NewLocationCode := CopyStr(ItemLedgerEntry."Location Code", 1, MaxStrLen(NewLocationCode));
+        if NewLocationCode = '' then
+            exit;
+
+        if not FixedAsset.Get(CopyStr(ItemLedgerEntry."Serial No.", 1, MaxStrLen(FixedAsset."No."))) then
+            exit;
+
+        if FixedAsset."FA Location Code" = NewLocationCode then
+            exit;
+
+        EnsureFALocationExists(NewLocationCode);
+        FixedAsset.Validate("FA Location Code", NewLocationCode);
+        FixedAsset.Modify(true);
+    end;
+
+    local procedure EnsureFALocationExists(LocationCode: Code[10])
+    var
+        Location: Record Location;
+        FALocation: Record "FA Location";
+    begin
+        if LocationCode = '' then
+            exit;
+
+        if not FALocation.Get(LocationCode) then
+            if Location.Get(LocationCode) then begin
+                FALocation.Init();
+                FALocation.Code := LocationCode;
+                FALocation.Name := CopyStr(Location.Name, 1, MaxStrLen(FALocation.Name));
+                FALocation.Insert(true);
+            end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create E-Shipment NAV Doc. INF", OnAfterCreateEShipmentLineFromTransferShipment, '', false, false)]

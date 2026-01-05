@@ -43,5 +43,12 @@ tableextension 60001 "Item Extension" extends Item
             ToolTip = 'Selects the depreciation profile that controls the depreciation life for automatic FA conversions.';
         }
 
+        field(60006; "FA Life Years INF"; Integer)
+        {
+            Caption = 'Ömür Yılı';
+            MinValue = 0;
+            ToolTip = 'Sabit kıymete dönüşümde amortisman ömür yılını belirtir.';
+        }
+
     }
 }

@@ -31,6 +31,11 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
                     ApplicationArea = All;
                 }
 
+                field("FA Life Years INF"; Rec."FA Life Years INF")
+                {
+                    ApplicationArea = All;
+                }
+
                 field("FA Conversion Count"; Rec."FA Conversion Count")
                 {
                     ApplicationArea = All;
