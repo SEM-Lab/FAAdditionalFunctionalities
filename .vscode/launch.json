@@ -96,6 +96,21 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "PERA_DEV",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
+            "environmentName": "PERA_DEV2",
+            "startupObjectId": 60004,
+            "startupObjectType": "Page",
+            "breakOnError": "ExcludeTry", 
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
         }
     ]
 }

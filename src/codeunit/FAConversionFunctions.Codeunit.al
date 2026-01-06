@@ -351,6 +351,9 @@ codeunit 60000 "FA Conversion Functions"
 
         GlobalFAConversion := FAConversion;
         GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
+
+        OnAfterFAAcquisitionPosted(GlobalFAConversion);
+
         Clear(GlobalFAConversion);
     end;
 
@@ -739,6 +742,14 @@ codeunit 60000 "FA Conversion Functions"
             FALocation.Insert(true);
         end;
     end;
+
+
+    [IntegrationEvent(false, false)]
+    procedure OnAfterFAAcquisitionPosted(var FAConversion: Record "FA Conversion")
+    begin
+    end;
+
+
 
     var
         FAConversionSetup: Record "FA Conversion Setup";
