@@ -2,11 +2,11 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
 {
     layout
     {
-        // Make FA Location Code uneditable to enforce automatic location mapping
-        modify("FA Location Code")
-        {
-            Editable = false;
-        }
+        // // Make FA Location Code uneditable to enforce automatic location mapping
+        // modify("FA Location Code")
+        // {
+        //     Editable = false;
+        // }
 
         addafter("FA Location Code")
         {
