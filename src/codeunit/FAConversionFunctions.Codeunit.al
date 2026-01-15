@@ -351,16 +351,42 @@ codeunit 60000 "FA Conversion Functions"
 
         GlobalFAConversion := FAConversion;
         GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
+
+        OnAfterFAAcquisitionPosted(GlobalFAConversion);
+
         Clear(GlobalFAConversion);
     end;
 
     local procedure ApplyDepreciationProfile(Item: Record Item; FAConversion: Record "FA Conversion"; var FADepreciationBook: Record "FA Depreciation Book")
     var
         DepreciationProfile: Record "FA Depreciation Profile";
+        LifeFormula: DateFormula;
         StartDate: Date;
         EndDate: Date;
         YearCount: Decimal;
     begin
+        StartDate := GetDepreciationStartDate(FAConversion);
+        if StartDate = 0D then
+            exit;
+
+        // If Ömür Yılı is provided on the Item Card, copy it to the FA Depreciation Book.
+        // Depreciation ending date calculation is left to standard validation logic.
+        if Item."FA Life Years INF" <> 0 then begin
+            FADepreciationBook.Validate("Depreciation Starting Date", StartDate);
+            FADepreciationBook.Validate("No. of Depreciation Years", Item."FA Life Years INF");
+
+            // Make ending date explicit so the depreciation book shows the expected value.
+            Evaluate(LifeFormula, StrSubstNo('%1Y', Item."FA Life Years INF"));
+            EndDate := CalcDate(LifeFormula, StartDate);
+            if EndDate <> 0D then
+                EndDate := EndDate - 1;
+            if EndDate <> 0D then
+                FADepreciationBook.Validate("Depreciation Ending Date", EndDate);
+
+            FADepreciationBook.Modify(true);
+            exit;
+        end;
+
         if Item."FA Depr. Profile Code INF" = '' then
             exit;
 
@@ -368,10 +394,6 @@ codeunit 60000 "FA Conversion Functions"
             exit;
 
         DepreciationProfile.TestField("Depreciation Life Formula");
-
-        StartDate := GetDepreciationStartDate(FAConversion);
-        if StartDate = 0D then
-            exit;
 
         EndDate := CalcDate(DepreciationProfile."Depreciation Life Formula", StartDate);
         if EndDate <> 0D then
@@ -543,6 +565,7 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.Validate("Variant Code", TransferReceiptLine."Variant Code");
         FAConversion.Validate("Item Description", TransferReceiptLine.Description);
         FAConversion.Validate("Serial No.", UseSerialNo);
+        FAConversion.Validate("Posting Date", GetPostingDateFromTransferReceiptLine(TransferReceiptLine));
         // Populate Location Code from Transfer Receipt Line before creating the Fixed Asset
         FAConversion.Validate("Location Code", TransferReceiptLine."Transfer-to Code");
         CreateFixedAsset(Item, FAConversion);
@@ -554,6 +577,17 @@ codeunit 60000 "FA Conversion Functions"
             // All-or-nothing transaction: FA creation + Transfer item creation
             if not TryCreateCompleteFA(FAConversion) then
                 Error('Failed to create Fixed Asset and Transfer Item: %1', GetLastErrorText());
+    end;
+
+    local procedure GetPostingDateFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"): Date
+    var
+        TransferReceiptHeader: Record "Transfer Receipt Header";
+    begin
+        if TransferReceiptHeader.Get(TransferReceiptLine."Document No.") then
+            if TransferReceiptHeader."Posting Date" <> 0D then
+                exit(TransferReceiptHeader."Posting Date");
+
+        exit(WorkDate());
     end;
 
     /// <summary>
@@ -708,6 +742,14 @@ codeunit 60000 "FA Conversion Functions"
             FALocation.Insert(true);
         end;
     end;
+
+
+    [IntegrationEvent(false, false)]
+    procedure OnAfterFAAcquisitionPosted(var FAConversion: Record "FA Conversion")
+    begin
+    end;
+
+
 
     var
         FAConversionSetup: Record "FA Conversion Setup";

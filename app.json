@@ -2,7 +2,7 @@
   "id": "2589b784-1a55-4cb4-903b-095370d3de32",
   "name": "Fixed Asset Additional Functionalities",
   "publisher": "Infotek Yazilim ve Donanim A.S.",
-  "version": "27.0.0.0",
+  "version": "26.0.0.3",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -43,8 +43,8 @@
     }
   ],
   "screenshots": [],
-  "platform": "1.0.0.0",
-  "application": "27.0.0.0",
+  "platform": "26.0.0.0",
+  "application": "26.0.0.0",
   "idRanges": [
     {
       "from": 60000,
@@ -56,7 +56,7 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "16.0",
+  "runtime": "15.2",
   "features": [
     "NoImplicitWith",
     "TranslationFile"
