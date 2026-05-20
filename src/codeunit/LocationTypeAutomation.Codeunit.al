@@ -1,6 +1,12 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Location;
+using Microsoft.Inventory.Transfer;
+using System.Utilities;
+
 codeunit 60003 "Location Type Automation"
 {
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"TransferOrder-Post Receipt", 'OnAfterInsertTransRcptLine', '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"TransferOrder-Post Receipt", OnAfterInsertTransRcptLine, '', false, false)]
     local procedure OnAfterInsertTransRcptLine(var TransRcptLine: Record "Transfer Receipt Line"; TransLine: Record "Transfer Line"; CommitIsSuppressed: Boolean; TransferReceiptHeader: Record "Transfer Receipt Header")
     var
         AutoConversionFailedErr: Label 'Automatic FA conversion failed for receipt %1 line %2. Details: %3', Comment = '%1 = Document No., %2 = Line No., %3 = Error Text';
@@ -57,12 +63,12 @@ codeunit 60003 "Location Type Automation"
         FAConversionFunctions.CreateMultipleFAConversionsFromTransferReceiptLine(TransferReceiptLine);
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Transfer Line", OnAfterValidateEvent, 'Transfer-to Code', false, false)]
+    [EventSubscriber(ObjectType::Table, Database::"Transfer Line", OnAfterValidateEvent, "Transfer-to Code", false, false)]
     local procedure TransferLineOnAfterValidateTransferToCode(var Rec: Record "Transfer Line"; var xRec: Record "Transfer Line"; CurrFieldNo: Integer)
     var
         Location: Record Location;
         ConfirmManagement: Codeunit "Confirm Management";
-        PromptTxt: Label 'Location %1 does not have a Location Type. Do you want to set it to Apartment?';
+        PromptTxt: Label 'Location %1 does not have a Location Type. Do you want to set it to Apartment?', Comment = '%1 = Location Code';
     begin
         if Rec."Transfer-to Code" = '' then
             exit;

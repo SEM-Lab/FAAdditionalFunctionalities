@@ -1,3 +1,7 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+
 pageextension 60007 "Item List Ext." extends "Item List"
 {
     layout

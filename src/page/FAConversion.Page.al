@@ -1,3 +1,10 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.FixedAssets.Ledger;
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Ledger;
+
 page 60002 "FA Conversion"
 {
     ApplicationArea = All;

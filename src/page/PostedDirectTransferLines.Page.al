@@ -1,3 +1,8 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Transfer;
+
 page 60005 "Posted Direct Transfer Lines"
 {
     ApplicationArea = All;
@@ -22,33 +27,27 @@ page 60005 "Posted Direct Transfer Lines"
                 }
                 field("Item No."; Rec."Item No.")
                 {
-                    ToolTip = 'Specifies the number of the item.';
                 }
                 field("FA No. Series"; Rec."FA No. Series")
                 {
                 }
                 field(Quantity; Rec.Quantity)
                 {
-                    ToolTip = 'Specifies how many units of the record are processed.';
                 }
                 field("Unit of Measure"; Rec."Unit of Measure")
                 {
-                    ToolTip = 'Specifies the name of the item or resource''s unit of measure, such as piece or hour.';
                 }
                 field("Remaning Quantity"; Rec."Remaning Quantity")
                 {
                 }
                 field(Description; Rec.Description)
                 {
-                    ToolTip = 'Specifies the description associated with this line.';
                 }
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
-                    ToolTip = 'Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
                 }
                 field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
                 {
-                    ToolTip = 'Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
                 }
                 field("Gen. Prod. Posting Group"; Rec."Gen. Prod. Posting Group")
                 {
@@ -68,7 +67,6 @@ page 60005 "Posted Direct Transfer Lines"
                 }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
-                    ToolTip = 'Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.';
                 }
                 field("Gross Weight"; Rec."Gross Weight")
                 {
@@ -84,7 +82,6 @@ page 60005 "Posted Direct Transfer Lines"
                 }
                 field("Variant Code"; Rec."Variant Code")
                 {
-                    ToolTip = 'Specifies the variant of the item on the line.';
                 }
                 field("Units per Parcel"; Rec."Units per Parcel")
                 {
@@ -128,7 +125,6 @@ page 60005 "Posted Direct Transfer Lines"
                 }
                 field("Transfer-from Bin Code"; Rec."Transfer-from Bin Code")
                 {
-                    ToolTip = 'Specifies the code for the bin that the items are transferred from.';
                 }
                 field("Transfer-To Bin Code"; Rec."Transfer-To Bin Code")
                 {

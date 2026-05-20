@@ -1,3 +1,10 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Finance.Dimension;
+using Microsoft.Inventory.Location;
+using Microsoft.Inventory.Transfer;
+using Microsoft.Purchases.Document;
+
 page 60004 "Pstd Transfer RcptLns INF"
 {
     Caption = 'Posted Transfer Receipt Lines';
@@ -19,7 +26,6 @@ page 60004 "Pstd Transfer RcptLns INF"
                     ApplicationArea = Location;
                     HideValue = DocumentNoHideValue;
                     StyleExpr = 'Strong';
-                    ToolTip = 'Specifies the document number associated with this transfer line.';
                 }
                 field("Item No."; Rec."Item No.")
                 {
@@ -29,11 +35,9 @@ page 60004 "Pstd Transfer RcptLns INF"
                 field(Description; Rec.Description)
                 {
                     ApplicationArea = Location;
-                    ToolTip = 'Specifies the description of the item being transferred.';
                 }
                 field("Variant Code"; Rec."Variant Code")
                 {
-                    ToolTip = 'Specifies the variant of the item on the line.';
                 }
                 field("Transfer-from Code"; Rec."Transfer-from Code")
                 {
@@ -46,12 +50,12 @@ page 60004 "Pstd Transfer RcptLns INF"
                 field("FA Location Code"; Rec."Transfer-to Code")
                 {
                     Caption = 'FA Location Code';
-                    ToolTip = 'Shows the location code that will be used for Fixed Asset conversion (same as Transfer-to Code).';
+                    ToolTip = 'Specifies the location code that will be used for Fixed Asset conversion (same as Transfer-to Code).';
                 }
                 field("FA Location Name"; GetLocationName(Rec."Transfer-to Code"))
                 {
                     Caption = 'FA Location Name';
-                    ToolTip = 'Shows the location name that will be used for Fixed Asset conversion.';
+                    ToolTip = 'Specifies the location name that will be used for Fixed Asset conversion.';
                     Editable = false;
                 }
                 field("Item Category Code"; Rec."Item Category Code")
@@ -66,7 +70,6 @@ page 60004 "Pstd Transfer RcptLns INF"
                 field("Unit of Measure"; Rec."Unit of Measure")
                 {
                     ApplicationArea = Location;
-                    ToolTip = 'Specifies the name of the item or resource''s unit of measure, such as piece or hour.';
                 }
                 field("Remaning Quantity"; Rec."Remaning Quantity")
                 {
@@ -74,7 +77,6 @@ page 60004 "Pstd Transfer RcptLns INF"
                 field("Receipt Date"; Rec."Receipt Date")
                 {
                     ApplicationArea = Location;
-                    ToolTip = 'Specifies the receipt date of the transfer receipt line.';
                 }
             }
         }

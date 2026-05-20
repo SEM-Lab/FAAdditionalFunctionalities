@@ -1,3 +1,8 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Transfer;
+
 pageextension 60005 "Posted Direct Transfer Subform" extends "Posted Direct Transfer Subform"
 {
     actions

@@ -1,3 +1,11 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.FixedAssets.Setup;
+using Microsoft.Foundation.NoSeries;
+using Microsoft.Inventory.Item;
+
 tableextension 60001 "Item Extension" extends Item
 {
     fields

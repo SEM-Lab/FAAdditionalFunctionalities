@@ -1,3 +1,9 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Foundation.NoSeries;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Location;
+
 table 60001 "FA Conversion"
 {
     DataClassification = CustomerContent;

@@ -1,3 +1,14 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Finance.GeneralLedger.Journal;
+using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.Finance.VAT.Setup;
+using Microsoft.FixedAssets.Depreciation;
+using Microsoft.Foundation.NoSeries;
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Journal;
+using Microsoft.Inventory.Location;
+
 table 60000 "FA Conversion Setup"
 {
     DataClassification = CustomerContent;

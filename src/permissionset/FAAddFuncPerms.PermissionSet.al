@@ -1,3 +1,5 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
 permissionset 60000 "FA Add Func Perms"
 {
     Caption = 'FA Add. Functions', Locked = true;

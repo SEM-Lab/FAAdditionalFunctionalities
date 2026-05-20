@@ -1,3 +1,5 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
 page 60010 "FA Depreciation Profiles"
 {
     Caption = 'FA Depreciation Profiles';
@@ -14,15 +16,12 @@ page 60010 "FA Depreciation Profiles"
             {
                 field(Code; Rec.Code)
                 {
-                    ApplicationArea = All;
                 }
                 field(Description; Rec.Description)
                 {
-                    ApplicationArea = All;
                 }
                 field("Depreciation Life Formula"; Rec."Depreciation Life Formula")
                 {
-                    ApplicationArea = All;
                 }
             }
         }

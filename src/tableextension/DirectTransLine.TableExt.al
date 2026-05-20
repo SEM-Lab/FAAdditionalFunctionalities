@@ -1,3 +1,9 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Transfer;
+
 tableextension 60000 "Direct Trans. Line" extends "Direct Trans. Line"
 {
     fields

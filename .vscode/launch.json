@@ -1,116 +1,81 @@
 {
     "version": "0.2.0",
     "configurations": [
-        // {
-        //     "name": "DIRUI_TEST",
-        //     "request": "launch",
-        //     "type": "al",
-        //     "environmentType": "Sandbox",
-        //     //"tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
-        //     "tenant": "cc0e402e-bba8-4d63-9020-1ec47bd603a2",
-        //     //"environmentName": "PERA_DEV",
-        //     "environmentName": "DIRUI_TEST",
-        //     "startupObjectId": 60005,
-        //     "startupObjectType": "Page",
-        //     "breakOnError": "ExcludeTry",
-        //     "launchBrowser": true,
-        //     "enableLongRunningSqlStatements": true,
-        //     "enableSqlInformationDebugger": true,
-        //     "schemaUpdateMode": "ForceSync",
-        //     //"startupCompany": "service item test"
-        // },
         {
-            "name": "Pera - YILDIZ_ENV",
-            "type": "al",
-            "request": "launch",
-            "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
-            "environmentType": "Sandbox",
-            "environmentName": "YILDIZ_ENV",
-            "startupObjectId": 9301,
-            "breakOnError": "All",
-            "breakOnRecordWrite": "None",
-            "launchBrowser": false,
-            "enableSqlInformationDebugger": true,
-            "enableLongRunningSqlStatements": true,
-            "longRunningSqlStatementsThreshold": 500,
-            "schemaUpdateMode": "ForceSync"
-        },
-        // {
-        //     "name": "Pera Medikal - DARYO_TEST - Document Attachment",
-        //     "request": "launch",
-        //     "type": "al",
-        //     "environmentType": "Sandbox",
-        //     "server": "https://businesscentral.dynamics.com",
-        //     "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
-        //     "environmentName": "DARYO_TEST",
-        //     // "startupCompany": "Berker-Daryo",
-        //     // "startupObjectType": "Table",
-        //     // "startupObjectId":71018599, //Tender Sales Contract Comment Line - table
-        //     "startupObjectType": "Table",
-        //     "startupObjectId": 1173, //Document Attachment
-        //     // "startupObjectId":7015, //Sales Price List
-        //     // "startupObjectId":7017, //Purchase Price List
-        //     // "startupObjectId":71018600, //Tender Contract List
-        //     // "startupObjectId": 9300, //Sales Quote List
-        //     // "startupObjectId": 9305, //Sales Order List
-        //     // "startupObjectId": 143, //Posted Sales Invoices
-        //     // "startupObjectType": "Table",
-        //     // "startupObjectId":2000000110,
-        //     // "startupObjectId": 5404,
-        //     // "startupObjectId": 5741, //Tender List
-        //     // "startupObjectId": 31,
-        //     "breakOnError": true,
-        //     "launchBrowser": true,
-        //     "enableLongRunningSqlStatements": true,
-        //     "enableSqlInformationDebugger": true,
-        //     "schemaUpdateMode": "Synchronize"
-        //     // "schemaUpdateMode": "ForceSync"
-        //     // "schemaUpdateMode": "Recreate"
-        // },
-        {
-            "name": "ERRA_DEV",
+            "name": "ERRA_DEV2",
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
             "tenant": "8beae494-639b-461e-9d2e-ad58f9467cf9",
-            "environmentName": "ERRA_TESTY",
-            "startupObjectId": 60004,
-            "startupObjectType": "Page",
-            "breakOnError": "ExcludeTry", 
-            "launchBrowser": true,
-            "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true,
-            //"schemaUpdateMode": "ForceSync"
-        },
-        {
-            "name": "Altium - HC_221225",
-            "request": "launch",
-            "type": "al",
-            "environmentType": "Sandbox",
-            "tenant": "31139e4d-0687-4dc9-ada3-e46652ffbd94",
-            "environmentName": "HC_221225",
+            "environmentName": "ERRA_DEV2",
             "startupObjectId": 60004,
             "startupObjectType": "Page",
             "breakOnError": "ExcludeTry",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
-            "schemaUpdateMode": "ForceSync"
-        },
-        {
-            "name": "PERA_DEV",
-            "request": "launch",
-            "type": "al",
-            "environmentType": "Sandbox",
-            "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
-            "environmentName": "PERA_DEV2",
-            "startupObjectId": 60004,
-            "startupObjectType": "Page",
-            "breakOnError": "ExcludeTry", 
-            "launchBrowser": true,
-            "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true,
-            "schemaUpdateMode": "ForceSync"
+            //"schemaUpdateMode": "ForceSync"
         }
+        // {
+        //     "name": "Pera - YILDIZ_ENV",
+        //     "type": "al",
+        //     "request": "launch",
+        //     "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
+        //     "environmentType": "Sandbox",
+        //     "environmentName": "YILDIZ_ENV",
+        //     "startupObjectId": 9301,
+        //     "breakOnError": "All",
+        //     "breakOnRecordWrite": "None",
+        //     "launchBrowser": false,
+        //     "enableSqlInformationDebugger": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "longRunningSqlStatementsThreshold": 500,
+        //     "schemaUpdateMode": "ForceSync"
+        // },
+        // {
+        //     "name": "ERRA_DEV",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "Sandbox",
+        //     "tenant": "8beae494-639b-461e-9d2e-ad58f9467cf9",
+        //     "environmentName": "ERRA_TESTY",
+        //     "startupObjectId": 60004,
+        //     "startupObjectType": "Page",
+        //     "breakOnError": "ExcludeTry",
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true
+        //     //"schemaUpdateMode": "ForceSync"
+        // },
+        // {
+        //     "name": "Altium - HC_221225",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "Sandbox",
+        //     "tenant": "31139e4d-0687-4dc9-ada3-e46652ffbd94",
+        //     "environmentName": "HC_221225",
+        //     "startupObjectId": 60004,
+        //     "startupObjectType": "Page",
+        //     "breakOnError": "ExcludeTry",
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true,
+        //     "schemaUpdateMode": "ForceSync"
+        // },
+        // {
+        //     "name": "PERA_DEV",
+        //     "request": "launch",
+        //     "type": "al",
+        //     "environmentType": "Sandbox",
+        //     "tenant": "270c2df0-b681-41a1-b072-5aea0f64f459",
+        //     "environmentName": "PERA_DEV2",
+        //     "startupObjectId": 60004,
+        //     "startupObjectType": "Page",
+        //     "breakOnError": "ExcludeTry",
+        //     "launchBrowser": true,
+        //     "enableLongRunningSqlStatements": true,
+        //     "enableSqlInformationDebugger": true,
+        //     "schemaUpdateMode": "ForceSync"
+        // }
     ]
 }

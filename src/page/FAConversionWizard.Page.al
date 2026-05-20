@@ -1,3 +1,8 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using System.Environment;
+using System.Utilities;
+
 page 60000 "FA Conversion Wizard"
 {
     Caption = 'FA Conversion';

@@ -1,3 +1,5 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
 page 60003 "FA Conversion List"
 {
     ApplicationArea = All;

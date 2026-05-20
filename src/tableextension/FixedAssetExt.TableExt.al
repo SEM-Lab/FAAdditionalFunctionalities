@@ -1,3 +1,10 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Location;
+
 tableextension 60022 "Fixed Asset Ext." extends "Fixed Asset"
 {
     fields

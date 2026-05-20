@@ -1,3 +1,5 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
 enum 60001 "Wizard Step"
 {
     Extensible = true;

@@ -1,3 +1,9 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Transfer;
+
 tableextension 60003 "Transfer Receipt Line Ext." extends "Transfer Receipt Line"
 {
     fields
@@ -22,6 +28,7 @@ tableextension 60003 "Transfer Receipt Line Ext." extends "Transfer Receipt Line
         {
             Caption = 'Auto FA Conversion Completed';
             Editable = false;
+            AllowInCustomizations = Never;
             ToolTip = 'Specifies whether an automatic Fixed Asset conversion was triggered for this receipt line.';
         }
     }

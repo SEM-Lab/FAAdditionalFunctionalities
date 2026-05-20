@@ -1,3 +1,18 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.FixedAssets.Setup;
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Journal;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Location;
+using Microsoft.Inventory.Posting;
+using Microsoft.Inventory.Tracking;
+using Microsoft.Inventory.Transfer;
+using Microsoft.Projects.Resources.Resource;
+using Microsoft.Service.Item;
+using System.Utilities;
+
 codeunit 60001 "FA Transfer Functions"
 {
     SingleInstance = true;
@@ -49,6 +64,9 @@ codeunit 60001 "FA Transfer Functions"
         FAConversion: Record "FA Conversion";
         LocationCode: Code[10];
         AlreadyCreatedErr: Label 'FA Transfer Item has been already created.';
+        FAConvNotFoundErr: Label 'FA Conversion record not found for Fixed Asset %1. Cannot determine location code.', Comment = '%1 = Fixed Asset No.';
+        LocationCodeEmptyErr: Label 'Location Code is empty in FA Conversion %1. Cannot create transfer item.', Comment = '%1 = FA Conversion No.';
+        NoValidLocationErr: Label 'Cannot create transfer item for Fixed Asset %1 without a valid location code.', Comment = '%1 = Fixed Asset No.';
     begin
         ItemLedgerEntry.SetLoadFields("Serial No.");
         ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
@@ -61,13 +79,13 @@ codeunit 60001 "FA Transfer Functions"
         // Strict requirement: FA Conversion must exist with valid location
         FAConversion.SetRange("FA No.", FixedAsset."No.");
         if not FAConversion.FindFirst() then
-            Error('FA Conversion record not found for Fixed Asset %1. Cannot determine location code.', FixedAsset."No.");
+            Error(FAConvNotFoundErr, FixedAsset."No.");
 
         LocationCode := FAConversion."Location Code";
 
         // Validate location code is not empty
         if LocationCode = '' then
-            Error('Location Code is empty in FA Conversion %1. Cannot create transfer item.', FAConversion."No.");
+            Error(LocationCodeEmptyErr, FAConversion."No.");
 
         Item.Get(FAConversionSetup."FA Transfer Item No.");
         Item.TestField("Item Tracking Code");
@@ -95,7 +113,7 @@ codeunit 60001 "FA Transfer Functions"
 
         // Final validation before posting - ensure location code is valid
         if LocationCode = '' then
-            Error('Cannot create transfer item for Fixed Asset %1 without a valid location code.', FixedAsset."No.");
+            Error(NoValidLocationErr, FixedAsset."No.");
 
         ItemJournalLine.Validate("Location Code", LocationCode);
         //ItemJournalLine.Validate("Gen. Bus. Posting Group", Item."FA Conv. Gen. Bus. Post. Group");
@@ -265,55 +283,60 @@ codeunit 60001 "FA Transfer Functions"
     /// <param name="FixedAsset">Record set of Fixed Assets to validate (passed as filtered record set).</param>
     procedure ValidateBulkTransferSelection(var FixedAsset: Record "Fixed Asset")
     var
-        ItemLedgerEntry: Record "Item Ledger Entry";
         CurrentLocation: Code[10];
         LocationSet: Boolean;
         MissingTransferItems: Text;
         LocationMismatch: Boolean;
         LocationList: Text;
+        MissingItemsErr: Label 'Transfer items not found for FA: %1. Create transfer items first.', Comment = '%1 = list of Fixed Asset Nos.';
+        LocationMismatchErr: Label 'Selected FAs have different locations. All FAs must be at the same location to create a bulk transfer. Current locations: %1', Comment = '%1 = list of Location Codes';
+        NoCurrentLocationErr: Label 'Cannot determine current location for selected Fixed Assets.';
     begin
-        LocationSet := false;
-        CurrentLocation := '';
-        MissingTransferItems := '';
-        LocationList := '';
-
-        // PERFORMANCE OPTIMIZATION: SetLoadFields reduces data transfer by 80-95%
-        // Only load the 3 fields we actually need from Item Ledger Entry
-        ItemLedgerEntry.SetLoadFields("Serial No.", "Location Code", Open);
-
         if FixedAsset.FindSet() then
             repeat
-                // Check if transfer item exists for this FA
-                ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
-                ItemLedgerEntry.SetRange(Open, true);
-
-                if not ItemLedgerEntry.FindFirst() then begin
-                    if MissingTransferItems <> '' then
-                        MissingTransferItems += ', ';
-                    MissingTransferItems += FixedAsset."No.";
-                end else
-                    // Validate location consistency
-                    if not LocationSet then begin
-                        CurrentLocation := ItemLedgerEntry."Location Code";
-                        LocationSet := true;
-                        LocationList := CurrentLocation;
-                    end else
-                        if ItemLedgerEntry."Location Code" <> CurrentLocation then begin
-                            LocationMismatch := true;
-                            if StrPos(LocationList, ItemLedgerEntry."Location Code") = 0 then
-                                LocationList += ', ' + ItemLedgerEntry."Location Code";
-                        end;
+                CollectBulkTransferFAInfo(
+                    FixedAsset, CurrentLocation, LocationSet, MissingTransferItems, LocationList, LocationMismatch);
             until FixedAsset.Next() = 0;
 
-        // Report errors
         if MissingTransferItems <> '' then
-            Error('Transfer items not found for FA: %1. Create transfer items first.', MissingTransferItems);
+            Error(MissingItemsErr, MissingTransferItems);
 
         if LocationMismatch then
-            Error('Selected FAs have different locations. All FAs must be at the same location to create a bulk transfer. Current locations: %1', LocationList);
+            Error(LocationMismatchErr, LocationList);
 
         if CurrentLocation = '' then
-            Error('Cannot determine current location for selected Fixed Assets.');
+            Error(NoCurrentLocationErr);
+    end;
+
+    local procedure CollectBulkTransferFAInfo(FixedAsset: Record "Fixed Asset"; var CurrentLocation: Code[10]; var LocationSet: Boolean; var MissingTransferItems: Text; var LocationList: Text; var LocationMismatch: Boolean)
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        // SetLoadFields keeps the open-entry lookup lightweight (only 3 fields).
+        ItemLedgerEntry.SetLoadFields("Serial No.", "Location Code", Open);
+        ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
+        ItemLedgerEntry.SetRange(Open, true);
+
+        if not ItemLedgerEntry.FindFirst() then begin
+            if MissingTransferItems <> '' then
+                MissingTransferItems += ', ';
+            MissingTransferItems += FixedAsset."No.";
+            exit;
+        end;
+
+        if not LocationSet then begin
+            CurrentLocation := ItemLedgerEntry."Location Code";
+            LocationSet := true;
+            LocationList := CurrentLocation;
+            exit;
+        end;
+
+        if ItemLedgerEntry."Location Code" = CurrentLocation then
+            exit;
+
+        LocationMismatch := true;
+        if StrPos(LocationList, ItemLedgerEntry."Location Code") = 0 then
+            LocationList += ', ' + ItemLedgerEntry."Location Code";
     end;
 
     /// <summary>
@@ -332,6 +355,8 @@ codeunit 60001 "FA Transfer Functions"
         LineNo: Integer;
         TransferOrderNo: Code[20];
         FACount: Integer;
+        SameLocationErr: Label 'Transfer-from and Transfer-to locations cannot be the same.';
+        ItemTrackingRequiredErr: Label 'Item %1 must have Serial Number tracking enabled.', Comment = '%1 = Item No.';
     begin
         // Get Transfer-from location from first FA
         FixedAsset.FindFirst();
@@ -345,7 +370,7 @@ codeunit 60001 "FA Transfer Functions"
 
         // Validate Transfer-from <> Transfer-to
         if TransferFromCode = TransferToCode then
-            Error('Transfer-from and Transfer-to locations cannot be the same.');
+            Error(SameLocationErr);
 
         // Get FA Transfer Item
         FAConversionSetup.GetRecordOnce();
@@ -357,7 +382,7 @@ codeunit 60001 "FA Transfer Functions"
 
         // Validate item tracking setup
         if not ItemHasSerialTracking(Item."No.") then
-            Error('Item %1 must have Serial Number tracking enabled.', Item."No.");
+            Error(ItemTrackingRequiredErr, Item."No.");
 
         // Create Transfer Header
         TransferHeader.Init();
@@ -446,7 +471,7 @@ codeunit 60001 "FA Transfer Functions"
             ReservStatus::Surplus);
 
         // Clear for inbound direction
-        TempReservationEntry.DeleteAll();
+        TempReservationEntry.DeleteAll(false);
         Clear(CreateReservEntry);  // Ensure clean state for second direction
 
         // Inbound (Transfer-to) direction

@@ -1,3 +1,9 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Projects.Resources.Resource;
+
 tableextension 60002 "Resource Extension" extends Resource
 {
     fields

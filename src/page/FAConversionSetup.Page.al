@@ -1,3 +1,5 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
 page 60001 "FA Conversion Setup"
 {
     PageType = Card;

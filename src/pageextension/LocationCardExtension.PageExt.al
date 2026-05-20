@@ -1,3 +1,7 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Location;
+
 pageextension 60008 "Location Card Extension" extends "Location Card"
 {
     layout

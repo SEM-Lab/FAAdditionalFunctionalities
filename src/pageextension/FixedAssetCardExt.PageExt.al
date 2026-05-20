@@ -1,3 +1,8 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.Inventory.Ledger;
+
 pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
 {
     layout

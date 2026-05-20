@@ -1,3 +1,7 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Location;
+
 tableextension 60004 "Location Extension" extends Location
 {
     fields

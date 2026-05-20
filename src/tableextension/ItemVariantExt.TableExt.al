@@ -1,3 +1,7 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+
 tableextension 60023 "Item Variant Ext." extends "Item Variant"
 {
     fields

@@ -283,6 +283,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 227796887 - Field 3004954119 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the code that uniquely identifies the depreciation profile.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Code - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Table 227796887 - Field 3004954119 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -297,6 +302,11 @@
           <source>Depreciation Life Formula</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Depreciation Life Formula - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 227796887 - Field 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies a description of the depreciation profile.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Description - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Table 227796887 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Description</source>
@@ -313,6 +323,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CreateFAConversionFromItemCard - NamedType NoLocationsErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 4193061448 - NamedType 666224812" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to create Fixed Asset and Transfer Item: %1</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CreateFAConversionFromTransferReceiptLine - NamedType CompleteFAFailedErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 1058008714 - NamedType 2530530535" size-unit="char" translate="yes" xml:space="preserve">
           <source>Failed to post FA acquisition: %1</source>
           <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
@@ -328,6 +343,21 @@
           <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method NegativeAdjustment - NamedType ErrorHandlingLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 1400216895 - NamedType 2554600891" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Fixed Asset %1 not found after creation.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Fixed Asset No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method TryCreateCompleteFA - NamedType FANotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 3161602747 - NamedType 255132806" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transfer-from and Transfer-to locations cannot be the same.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method CreateBulkTransferOrder - NamedType SameLocationErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 3161602747 - NamedType 3606716954" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item %1 must have Serial Number tracking enabled.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Item No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method CreateBulkTransferOrder - NamedType ItemTrackingRequiredErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 118642255 - Method 1176824990 - NamedType 750120336" size-unit="char" translate="yes" xml:space="preserve">
           <source>Resource No.: %1 already exist. Do you want to view resource card?</source>
           <note from="Developer" annotates="general" priority="2">%1 = Resource No.</note>
@@ -338,6 +368,36 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method NewItemForTransfer - NamedType AlreadyCreatedErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 2671110355 - NamedType 1818454575" size-unit="char" translate="yes" xml:space="preserve">
+          <source>FA Conversion record not found for Fixed Asset %1. Cannot determine location code.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Fixed Asset No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method NewItemForTransfer - NamedType FAConvNotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 2671110355 - NamedType 96012796" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code is empty in FA Conversion %1. Cannot create transfer item.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Conversion No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method NewItemForTransfer - NamedType LocationCodeEmptyErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 2671110355 - NamedType 1270593529" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cannot create transfer item for Fixed Asset %1 without a valid location code.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Fixed Asset No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method NewItemForTransfer - NamedType NoValidLocationErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 4054954319 - NamedType 3752485865" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Transfer items not found for FA: %1. Create transfer items first.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = list of Fixed Asset Nos.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method ValidateBulkTransferSelection - NamedType MissingItemsErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 4054954319 - NamedType 3794945912" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Selected FAs have different locations. All FAs must be at the same location to create a bulk transfer. Current locations: %1</source>
+          <note from="Developer" annotates="general" priority="2">%1 = list of Location Codes</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method ValidateBulkTransferSelection - NamedType LocationMismatchErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - Method 4054954319 - NamedType 2538996428" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cannot determine current location for selected Fixed Assets.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method ValidateBulkTransferSelection - NamedType NoCurrentLocationErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1899522374 - Method 971159013 - NamedType 243883307" size-unit="char" translate="yes" xml:space="preserve">
           <source>Automatic FA conversion failed for receipt %1 line %2. Details: %3</source>
           <note from="Developer" annotates="general" priority="2">%1 = Document No., %2 = Line No., %3 = Error Text</note>
@@ -345,7 +405,7 @@
         </trans-unit>
         <trans-unit id="Codeunit 1899522374 - Method 1921803029 - NamedType 2944844904" size-unit="char" translate="yes" xml:space="preserve">
           <source>Location %1 does not have a Location Type. Do you want to set it to Apartment?</source>
-          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Developer" annotates="general" priority="2">%1 = Location Code</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit Location Type Automation - Method TransferLineOnAfterValidateTransferToCode - NamedType PromptTxt</note>
         </trans-unit>
         <trans-unit id="Page 1971911761 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
@@ -513,11 +573,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the description associated with this line.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Description - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 3954217406 - Control 47657272 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Description 2 field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -553,11 +608,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Item Category Code - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the number of the item.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Item No. - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 3954217406 - Control 3471167527 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Item Rcpt. Entry No. field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -588,25 +638,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Qty. per Unit of Measure - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies how many units of the record are processed.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Quantity - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 3954217406 - Control 3179217921 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Quantity (Base) field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Quantity (Base) - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 1577567912 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Shortcut Dimension 1 Code - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 1003760969 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Shortcut Dimension 2 Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 3954217406 - Control 577209412 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the SystemCreatedAt field.</source>
@@ -623,11 +658,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Transfer Order No. - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 1582893468 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the code for the bin that the items are transferred from.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Transfer-from Bin Code - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 3954217406 - Control 520660911 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Transfer-from Code field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -643,16 +673,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Transfer-to Code - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the name of the item or resource's unit of measure, such as piece or hour.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Unit of Measure - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 2385270358 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies how each unit of the item or resource is measured, such as in pieces or hours. By default, the value in the Base Unit of Measure field on the item or resource card is inserted.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Unit of Measure Code - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 3954217406 - Control 4034345114 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Unit Volume field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -662,11 +682,6 @@
           <source>Specifies the value of the Units per Parcel field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Units per Parcel - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 3954217406 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the variant of the item on the line.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Control Variant Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 3954217406 - Action 2018568690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Executes the Create Fixed Assets For Selected Lines action.</source>
@@ -683,18 +698,8 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Page 1938024015 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the description of the item being transferred.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Description - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1938024015 - Control 486908828 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the document number associated with this transfer line.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Document No. - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1938024015 - Control 2357346185 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Shows the location code that will be used for Fixed Asset conversion (same as Transfer-to Code).</source>
+          <source>Specifies the location code that will be used for Fixed Asset conversion (same as Transfer-to Code).</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control FA Location Code - Property ToolTip</note>
         </trans-unit>
@@ -704,7 +709,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control FA Location Code - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1938024015 - Control 3450403007 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Shows the location name that will be used for Fixed Asset conversion.</source>
+          <source>Specifies the location name that will be used for Fixed Asset conversion.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control FA Location Name - Property ToolTip</note>
         </trans-unit>
@@ -728,11 +733,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Quantity - Property ToolTip</note>
         </trans-unit>
-        <trans-unit id="Page 1938024015 - Control 358029708 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the receipt date of the transfer receipt line.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Receipt Date - Property ToolTip</note>
-        </trans-unit>
         <trans-unit id="Page 1938024015 - Control 520660911 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Transfer-from Code field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -742,16 +742,6 @@
           <source>Specifies the value of the Transfer-to Code field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Transfer-to Code - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1938024015 - Control 1920046521 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the name of the item or resource's unit of measure, such as piece or hour.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Unit of Measure - Property ToolTip</note>
-        </trans-unit>
-        <trans-unit id="Page 1938024015 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the variant of the item on the line.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Control Variant Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 1938024015 - Action 1402615620 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>&amp;Line</source>
@@ -825,17 +815,17 @@
         </trans-unit>
         <trans-unit id="PageExtension 945892629 - Method 1624542188 - NamedType 4030903664" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 945892629">
           <source>Current Location is not available for fixed asset %1.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Developer" annotates="general" priority="2">%1 = Fixed Asset No.</note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Method ShowLocationInfo - NamedType MissingLocationErr</note>
         </trans-unit>
         <trans-unit id="PageExtension 945892629 - Method 1624542188 - NamedType 631801445" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 945892629">
           <source>Location %1 could not be found.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Developer" annotates="general" priority="2">%1 = Location Code</note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Method ShowLocationInfo - NamedType LocationNotFoundErr</note>
         </trans-unit>
         <trans-unit id="PageExtension 945892629 - Method 1624542188 - NamedType 3312942510" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 945892629">
           <source>Current Location Code: %1\\Location Type: %2</source>
-          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Developer" annotates="general" priority="2">%1 = Location Code, %2 = Location Type</note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Method ShowLocationInfo - NamedType LocationInfoMsg</note>
         </trans-unit>
         <trans-unit id="PageExtension 945892629 - Action 3161602747 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
@@ -847,6 +837,11 @@
           <source>Create Bulk Transfer Order</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action CreateBulkTransferOrder - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 945892629 - Action 3161602747 - Method 1377591017 - NamedType 3910568712" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 945892629">
+          <source>Please select at least one Fixed Asset.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Fixed Asset List Ext. - Action CreateBulkTransferOrder - Method OnAction - NamedType NoSelectionErr</note>
         </trans-unit>
         <trans-unit id="PageExtension 945892629 - Action 2629517463 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 949348664">
           <source>Executes the Create FA Transfer Item action.</source>
@@ -944,7 +939,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location Card Extension - Control Location Type INF - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="PageExtension 2175567442 - Control 2545433312 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 105083977">
-          <source>Shows whether the location behaves as a warehouse or an apartment for FA conversions.</source>
+          <source>Specifies whether the location behaves as a warehouse or an apartment for FA conversions.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location List Extension - Control Location Type INF - Property ToolTip</note>
         </trans-unit>
@@ -1197,11 +1192,6 @@
           <source>Remaning Quantity</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Remaning Quantity - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Enum 2545433312 - EnumValue 1371923692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source> </source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Enum Location Type INF - EnumValue   - Property Caption</note>
         </trans-unit>
         <trans-unit id="Enum 2545433312 - EnumValue 3136522176 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Apartment</source>

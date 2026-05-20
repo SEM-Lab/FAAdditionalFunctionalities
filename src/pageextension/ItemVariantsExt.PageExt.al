@@ -1,3 +1,7 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+
 pageextension 60004 "Item Variants Ext." extends "Item Variants"
 {
     layout

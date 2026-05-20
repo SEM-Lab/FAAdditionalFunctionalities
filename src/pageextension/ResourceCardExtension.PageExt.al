@@ -1,3 +1,8 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.Projects.Resources.Resource;
+
 pageextension 60003 "Resource Card Extension" extends "Resource Card"
 {
     layout

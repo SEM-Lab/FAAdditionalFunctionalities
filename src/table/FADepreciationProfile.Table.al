@@ -1,7 +1,11 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
 table 60002 "FA Depreciation Profile"
 {
     Caption = 'FA Depreciation Profile';
     DataClassification = CustomerContent;
+    DrillDownPageId = "FA Depreciation Profiles";
+    LookupPageId = "FA Depreciation Profiles";
 
     fields
     {
@@ -9,10 +13,12 @@ table 60002 "FA Depreciation Profile"
         {
             Caption = 'Code';
             NotBlank = true;
+            ToolTip = 'Specifies the code that uniquely identifies the depreciation profile.';
         }
         field(2; Description; Text[100])
         {
             Caption = 'Description';
+            ToolTip = 'Specifies a description of the depreciation profile.';
         }
         field(3; "Depreciation Life Formula"; DateFormula)
         {

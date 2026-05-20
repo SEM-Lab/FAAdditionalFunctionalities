@@ -1,3 +1,24 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Finance.GeneralLedger.Journal;
+using Microsoft.Finance.GeneralLedger.Posting;
+using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.FixedAssets.Depreciation;
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.FixedAssets.Ledger;
+using Microsoft.FixedAssets.Setup;
+using Microsoft.Foundation.NoSeries;
+using Microsoft.Inventory.Costing;
+using Microsoft.Inventory.Item;
+using Microsoft.Inventory.Journal;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Location;
+using Microsoft.Inventory.Posting;
+using Microsoft.Inventory.Tracking;
+using Microsoft.Inventory.Transfer;
+using Microsoft.Service.Item;
+using Microsoft.Service.Setup;
+
 codeunit 60000 "FA Conversion Functions"
 {
     SingleInstance = true;
@@ -134,7 +155,6 @@ codeunit 60000 "FA Conversion Functions"
     /// </summary>
     /// <param name="FAConversion">The FA Conversion record to process.</param>
     /// <param name="SkipCosting">Whether to skip cost adjustment and posting to GL.</param>
-    /// <returns>True if successful, false otherwise.</returns>
     [TryFunction]
     procedure TryNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
     var
@@ -288,7 +308,6 @@ codeunit 60000 "FA Conversion Functions"
     /// Attempts to post Fixed Asset acquisition entry through General Journal.
     /// </summary>
     /// <param name="FAConversion">The FA Conversion record to process for acquisition.</param>
-    /// <returns>True if successful, false otherwise.</returns>
     [TryFunction]
     procedure TryFAAcquisition(var FAConversion: Record "FA Conversion")
     var
@@ -364,6 +383,7 @@ codeunit 60000 "FA Conversion Functions"
         StartDate: Date;
         EndDate: Date;
         YearCount: Decimal;
+        LifeFormulaTok: Label '%1Y', Locked = true, Comment = '%1 = number of depreciation years';
     begin
         StartDate := GetDepreciationStartDate(FAConversion);
         if StartDate = 0D then
@@ -376,7 +396,7 @@ codeunit 60000 "FA Conversion Functions"
             FADepreciationBook.Validate("No. of Depreciation Years", Item."FA Life Years INF");
 
             // Make ending date explicit so the depreciation book shows the expected value.
-            Evaluate(LifeFormula, StrSubstNo('%1Y', Item."FA Life Years INF"));
+            Evaluate(LifeFormula, StrSubstNo(LifeFormulaTok, Item."FA Life Years INF"));
             EndDate := CalcDate(LifeFormula, StartDate);
             if EndDate <> 0D then
                 EndDate := EndDate - 1;
@@ -419,7 +439,7 @@ codeunit 60000 "FA Conversion Functions"
         if FAConversion."Posting Date" = 0D then
             exit(0D);
 
-        PostingYear := Date2DMY(FAConversion."Posting Date", 3);
+        PostingYear := FAConversion."Posting Date".Year();
         exit(DMY2Date(1, 1, PostingYear));
     end;
 
@@ -437,7 +457,7 @@ codeunit 60000 "FA Conversion Functions"
         if EndDateExclusive = 0D then
             exit(0);
 
-        exit(Date2DMY(EndDateExclusive, 3) - Date2DMY(StartDate, 3));
+        exit(EndDateExclusive.Year() - StartDate.Year());
     end;
 
     /// <summary>
@@ -546,6 +566,7 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion: Record "FA Conversion";
         Item: Record Item;
         UseSerialNo: Text[50];
+        CompleteFAFailedErr: Label 'Failed to create Fixed Asset and Transfer Item: %1', Comment = '%1 = Error message';
     begin
         Item.Get(TransferReceiptLine."Item No.");
 
@@ -576,7 +597,7 @@ codeunit 60000 "FA Conversion Functions"
         else
             // All-or-nothing transaction: FA creation + Transfer item creation
             if not TryCreateCompleteFA(FAConversion) then
-                Error('Failed to create Fixed Asset and Transfer Item: %1', GetLastErrorText());
+                Error(CompleteFAFailedErr, GetLastErrorText());
     end;
 
     local procedure GetPostingDateFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"): Date
@@ -677,12 +698,12 @@ codeunit 60000 "FA Conversion Functions"
     /// All operations succeed or all fail together (all-or-nothing).
     /// </summary>
     /// <param name="FAConversion">The FA Conversion record to process.</param>
-    /// <returns>True if all operations succeeded, false otherwise.</returns>
     [TryFunction]
     local procedure TryCreateCompleteFA(var FAConversion: Record "FA Conversion")
     var
         FixedAsset: Record "Fixed Asset";
         FATransferFunctions: Codeunit "FA Transfer Functions";
+        FANotFoundErr: Label 'Fixed Asset %1 not found after creation.', Comment = '%1 = Fixed Asset No.';
     begin
         // Step 1: Post negative adjustment (remove from inventory)
         NegativeAdjustment(FAConversion, true);
@@ -692,7 +713,7 @@ codeunit 60000 "FA Conversion Functions"
 
         // Step 3: Create transfer item (NEW - required for all FAs from Transfer Receipt)
         if not FixedAsset.Get(FAConversion."FA No.") then
-            Error('Fixed Asset %1 not found after creation.', FAConversion."FA No.");
+            Error(FANotFoundErr, FAConversion."FA No.");
 
         // This will error if location is missing or transfer item creation fails
         FATransferFunctions.NewItemForTransfer(FixedAsset);
@@ -745,7 +766,7 @@ codeunit 60000 "FA Conversion Functions"
 
 
     [IntegrationEvent(false, false)]
-    procedure OnAfterFAAcquisitionPosted(var FAConversion: Record "FA Conversion")
+    local procedure OnAfterFAAcquisitionPosted(var FAConversion: Record "FA Conversion")
     begin
     end;
 

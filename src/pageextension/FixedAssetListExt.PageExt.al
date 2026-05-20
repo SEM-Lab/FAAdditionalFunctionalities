@@ -1,3 +1,9 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Location;
+
 pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
 {
     layout
@@ -131,12 +137,13 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
                     TransferToLocation: Record Location;
                     LocationList: Page "Location List";
                     TransferToCode: Code[10];
+                    NoSelectionErr: Label 'Please select at least one Fixed Asset.';
                 begin
                     // Get selected Fixed Assets
                     CurrPage.SetSelectionFilter(FixedAsset);
 
                     if not FixedAsset.FindSet() then
-                        Error('Please select at least one Fixed Asset.');
+                        Error(NoSelectionErr);
 
                     // Validate selection and get Transfer-from location
                     FATransferFunctions.ValidateBulkTransferSelection(FixedAsset);
@@ -164,18 +171,20 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
     local procedure ShowLocationInfo(var FixedAsset: Record "Fixed Asset")
     var
         LocationRecord: Record Location;
-        MissingLocationErr: Label 'Current Location is not available for fixed asset %1.';
-        LocationNotFoundErr: Label 'Location %1 could not be found.';
-        LocationInfoMsg: Label 'Current Location Code: %1\\Location Type: %2';
+        CurrentLocationCode: Code[10];
+        MissingLocationErr: Label 'Current Location is not available for fixed asset %1.', Comment = '%1 = Fixed Asset No.';
+        LocationNotFoundErr: Label 'Location %1 could not be found.', Comment = '%1 = Location Code';
+        LocationInfoMsg: Label 'Current Location Code: %1\\Location Type: %2', Comment = '%1 = Location Code, %2 = Location Type';
     begin
         FixedAsset.CalcFields("Current Location", "Current Location Type INF");
 
         if FixedAsset."Current Location" = '' then
             Error(MissingLocationErr, FixedAsset."No.");
 
-        if not LocationRecord.Get(FixedAsset."Current Location") then
-            Error(LocationNotFoundErr, FixedAsset."Current Location");
+        CurrentLocationCode := CopyStr(FixedAsset."Current Location", 1, MaxStrLen(CurrentLocationCode));
+        if not LocationRecord.Get(CurrentLocationCode) then
+            Error(LocationNotFoundErr, CurrentLocationCode);
 
-        Message(LocationInfoMsg, FixedAsset."Current Location", Format(LocationRecord."Location Type INF"));
+        Message(LocationInfoMsg, CurrentLocationCode, Format(LocationRecord."Location Type INF"));
     end;
 }

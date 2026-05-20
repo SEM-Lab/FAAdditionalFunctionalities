@@ -1,10 +1,12 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
 enum 60002 "Location Type INF"
 {
     Extensible = true;
 
     value(0; " ")
     {
-        Caption = ' ';
+        Caption = ' ', Locked = true;
     }
     value(1; Warehouse)
     {

@@ -1,3 +1,9 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.FixedAssets.FixedAsset;
+using Microsoft.FixedAssets.Setup;
+using Microsoft.Inventory.Location;
+
 codeunit 60002 "FA Location Sync Handler"
 {
     [EventSubscriber(ObjectType::Table, Database::"Fixed Asset", OnAfterModifyEvent, '', false, false)]

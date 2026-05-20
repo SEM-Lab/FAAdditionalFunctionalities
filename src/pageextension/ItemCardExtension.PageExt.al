@@ -1,3 +1,7 @@
+namespace Infotek.FAAdditionalFunctionalities;
+
+using Microsoft.Inventory.Item;
+
 pageextension 60002 "Item Card Extension" extends "Item Card"
 {
     layout
