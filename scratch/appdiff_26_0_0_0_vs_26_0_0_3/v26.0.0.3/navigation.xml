@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NavigationDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:schemas-microsoft-com:dynamics:NAV:MetaObjects">
+  <ActionContainers ActionContainerType="Departments">
+    <Actions xsi:type="ActionGroupDefinition" Caption="Fixed Asset Additional Functionalities" ControlGUID="{f3774095-e61f-48f3-b559-c8ba2af360f4}">
+      <Actions xsi:type="ActionDefinition" PushAction="RunObject" RunObjectType="Page" TargetID="60003" DepartmentCategory="Lists" RunObjectSrcTable="60001" ControlGUID="{367c8daf-091d-4cfd-8f82-854f6c70f428}" Name="FA Conversion List" CaptionML="ENU=FA Conversions;TRK=Sabit Kıymet Dönüşümleri" ApplicationArea="#All" AdditionalSearchTermsML="ENU=FA Conversion List" CaptionTranslationKey="Page 1850502279 - Property 2879900210" AdditionalSearchTermsTranslationKey="Page 1850502279 - Property 3863440606" />
+      <Actions xsi:type="ActionDefinition" PushAction="RunObject" RunObjectType="Page" TargetID="60001" DepartmentCategory="Administration" RunObjectSrcTable="60000" ControlGUID="{aa36d736-babd-4925-94f3-d437000fdb0c}" Name="FA Conversion Setup" CaptionML="ENU=FA Conversion Setup;TRK=Sabit Kıymet Dönüşümü Kurulumu" ApplicationArea="#All" AdditionalSearchTermsML="ENU=FA Conversion Setup" CaptionTranslationKey="Page 1809950204 - Property 2879900210" AdditionalSearchTermsTranslationKey="Page 1809950204 - Property 3863440606" />
+      <Actions xsi:type="ActionDefinition" PushAction="RunObject" RunObjectType="Page" TargetID="60005" DepartmentCategory="Lists" RunObjectSrcTable="5857" ControlGUID="{ea62aae6-a622-4b16-b332-4c9718354899}" Name="Posted Direct Transfer Lines" CaptionML="ENU=Posted Direct Transfer Lines;TRK=Deftere Nakledilen Doğrudan Transfer Satırları" ApplicationArea="#All" AdditionalSearchTermsML="ENU=Posted Direct Transfer Lines" CaptionTranslationKey="Page 3954217406 - Property 2879900210" AdditionalSearchTermsTranslationKey="Page 3954217406 - Property 3863440606" />
+      <Actions xsi:type="ActionDefinition" PushAction="RunObject" RunObjectType="Page" TargetID="60010" DepartmentCategory="Lists" RunObjectSrcTable="60002" ControlGUID="{ea6c1396-66f7-4302-8a81-13d71cfc8760}" Name="FA Depreciation Profiles" CaptionML="ENU=FA Depreciation Profiles" ApplicationArea="#All" AdditionalSearchTermsML="ENU=FA Depreciation Profiles" CaptionTranslationKey="Page 3221626210 - Property 2879900210" AdditionalSearchTermsTranslationKey="Page 3221626210 - Property 3863440606" />
+      <Actions xsi:type="ActionDefinition" PushAction="RunObject" RunObjectType="Page" TargetID="60004" DepartmentCategory="History" RunObjectSrcTable="5747" ControlGUID="{13953dd5-5ce3-4297-a892-a645f00fd057}" Name="Pstd Transfer RcptLns INF" CaptionML="ENU=Posted Transfer Receipt Lines" ApplicationArea="#All" AdditionalSearchTermsML="ENU=Pstd Transfer RcptLns INF" CaptionTranslationKey="Page 1938024015 - Property 2879900210" AdditionalSearchTermsTranslationKey="Page 1938024015 - Property 3863440606" />
+    </Actions>
+  </ActionContainers>
+  <NavigationChanges>
+    <ActionChange TargetID="15" TargetType="Page" />
+    <ActionChange TargetID="5600" TargetType="Page" />
+    <ActionChange TargetID="76" TargetType="Page" />
+    <ActionChange TargetID="5601" TargetType="Page" />
+    <ActionChange TargetID="5401" TargetType="Page" />
+    <ActionChange TargetID="40" TargetType="Page" />
+    <ActionChange TargetID="5703" TargetType="Page" />
+    <ActionChange TargetID="31" TargetType="Page" />
+    <ActionChange TargetID="6782" TargetType="Page" />
+    <ActionChange TargetID="30" TargetType="Page" />
+  </NavigationChanges>
+</NavigationDefinition>

@@ -7,7 +7,7 @@
             "type": "al",
             "environmentType": "Sandbox",
             "tenant": "8beae494-639b-461e-9d2e-ad58f9467cf9",
-            "environmentName": "ERRA_DEV2",
+            "environmentName": "ErraDev2",
             "startupObjectId": 60004,
             "startupObjectType": "Page",
             "breakOnError": "ExcludeTry",

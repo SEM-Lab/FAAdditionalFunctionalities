@@ -1,0 +1,27 @@
+<Package xmlns="http://schemas.microsoft.com/navx/2015/manifest">
+  <App Id="2589b784-1a55-4cb4-903b-095370d3de32" Name="Fixed Asset Additional Functionalities" Publisher="Infotek Yazilim ve Donanim A.S." Brief="" Description="" Version="26.0.0.3" CompatibilityId="0.0.0.0" PrivacyStatement="" EULA="" Help="" HelpBaseUrl="" Url="" Logo="" Platform="26.0.0.0" Application="26.0.0.0" Runtime="15.2" Target="Cloud" ShowMyCode="False" />
+  <IdRanges>
+    <IdRange MinObjectId="60000" MaxObjectId="60500" />
+  </IdRanges>
+  <Dependencies>
+    <Dependency Id="90a4fa8d-fa01-4e48-ae5f-3c7da235e84a" Name="Turkish Localization by İnfotek" Publisher="Infotek Yazilim ve Donanim A.S." MinVersion="24.4.0.0" CompatibilityId="0.0.0.0" />
+    <Dependency Id="f43e5dc3-0cd5-4d96-a989-8fb17d7978d4" Name="E-Shipment by İnfotek" Publisher="Infotek Yazilim ve Donanim A.S." MinVersion="20.4.1.0" CompatibilityId="0.0.0.0" />
+    <Dependency Id="703b7c78-8339-4bad-b753-e7b14faf7cb4" Name="Consignment Management by İnfotek" Publisher="Infotek Yazilim ve Donanim A.S." MinVersion="21.1.1.0" CompatibilityId="0.0.0.0" />
+    <Dependency Id="48ec6a78-9cb7-47c4-9dfa-771457ea247b" Name="İnfotek Add-On Infrastructure" Publisher="Infotek Yazilim ve Donanim A.S." MinVersion="21.2.23.5" CompatibilityId="0.0.0.0" />
+    <Dependency Id="b8d5fa23-614a-40de-a41b-44f62d690a04" Name="Device Transfer Management by İnfotek" Publisher="Infotek Yazilim ve Donanim A.S." MinVersion="26.0.1.2" CompatibilityId="0.0.0.0" />
+  </Dependencies>
+  <InternalsVisibleTo />
+  <ScreenShots />
+  <SupportedLocales />
+  <Features>
+    <Feature>TRANSLATIONFILE</Feature>
+    <Feature>NOIMPLICITWITH</Feature>
+  </Features>
+  <PreprocessorSymbols />
+  <SuppressWarnings />
+  <ResourceExposurePolicy AllowDebugging="true" AllowDownloadingSource="true" IncludeSourceInSymbolFile="true" ApplyToDevExtension="false" />
+  <KeyVaultUrls />
+  <Source />
+  <Build By="AL Language Extension,16.3.2065053" Timestamp="2026-03-17T06:46:45.2086835Z" CompilerVersion="16.3.31.33499" />
+  <AlternateIds />
+</Package>
