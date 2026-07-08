@@ -135,6 +135,8 @@ table 60001 "FA Conversion"
             Rec."No." := NoSeries.GetNextNo(FAConversionSetup."FA Conversion No. Series", WorkDate());
         end;
 
+        // Default to the operation day. Kept intentionally consistent with the transfer-receipt
+        // conversion flow (see FA Conversion Functions.CreateFAConversionFromTransferReceiptLine, NDIT-5968).
         "Posting Date" := WorkDate();
         Rec."E-Book Description INF" := FAConversionSetup."E-Book Description INF";
     end;

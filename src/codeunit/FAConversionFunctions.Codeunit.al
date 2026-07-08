@@ -586,7 +586,10 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.Validate("Variant Code", TransferReceiptLine."Variant Code");
         FAConversion.Validate("Item Description", TransferReceiptLine.Description);
         FAConversion.Validate("Serial No.", UseSerialNo);
-        FAConversion.Validate("Posting Date", GetPostingDateFromTransferReceiptLine(TransferReceiptLine));
+        // Posting Date must be the operation day (WorkDate), NOT the original Transfer Receipt
+        // posting date. Using the stale transfer date (e.g. a prior year) forces the item/gen
+        // journal into a closed period / wrong No. Series and blocks posting (NDIT-5968).
+        FAConversion.Validate("Posting Date", WorkDate());
         // Populate Location Code from Transfer Receipt Line before creating the Fixed Asset
         FAConversion.Validate("Location Code", TransferReceiptLine."Transfer-to Code");
         CreateFixedAsset(Item, FAConversion);
@@ -598,17 +601,6 @@ codeunit 60000 "FA Conversion Functions"
             // All-or-nothing transaction: FA creation + Transfer item creation
             if not TryCreateCompleteFA(FAConversion) then
                 Error(CompleteFAFailedErr, GetLastErrorText());
-    end;
-
-    local procedure GetPostingDateFromTransferReceiptLine(TransferReceiptLine: Record "Transfer Receipt Line"): Date
-    var
-        TransferReceiptHeader: Record "Transfer Receipt Header";
-    begin
-        if TransferReceiptHeader.Get(TransferReceiptLine."Document No.") then
-            if TransferReceiptHeader."Posting Date" <> 0D then
-                exit(TransferReceiptHeader."Posting Date");
-
-        exit(WorkDate());
     end;
 
     /// <summary>
