@@ -8,6 +8,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Method 3152277940 - NamedType 1497532416" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cannot delete FA Conversion %1 because it has already been posted. Reverse the related entries first.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Conversion No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Method OnDelete - NamedType CannotDeletePostedConversionErr</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 3551146098 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the E-Book Description field.</source>
           <note from="Developer" annotates="general" priority="2"></note>

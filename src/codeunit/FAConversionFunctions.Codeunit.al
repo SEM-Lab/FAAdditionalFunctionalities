@@ -39,6 +39,7 @@ codeunit 60000 "FA Conversion Functions"
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
         Item.TestField("FA Subclass Code");
+        Item.TestField("FA Life Years INF");
 
         // Get default location code from setup or item
         DefaultLocationCode := GetDefaultLocationCode();
@@ -82,6 +83,7 @@ codeunit 60000 "FA Conversion Functions"
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
+        Item.TestField("FA Life Years INF");
 
         FAConversion.Init();
         FAConversion.Insert(true);
@@ -389,8 +391,8 @@ codeunit 60000 "FA Conversion Functions"
         if StartDate = 0D then
             exit;
 
-        // If Ömür Yılı is provided on the Item Card, copy it to the FA Depreciation Book.
-        // Depreciation ending date calculation is left to standard validation logic.
+        // If Ömür Yılı is provided on the Item Card, copy it to the FA Depreciation Book and
+        // explicitly compute the Depreciation Ending Date from the life-years formula below.
         if Item."FA Life Years INF" <> 0 then begin
             FADepreciationBook.Validate("Depreciation Starting Date", StartDate);
             FADepreciationBook.Validate("No. of Depreciation Years", Item."FA Life Years INF");
@@ -573,6 +575,7 @@ codeunit 60000 "FA Conversion Functions"
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
+        Item.TestField("FA Life Years INF");
 
         // Use provided serial number or get from Transfer Receipt Line
         if SerialNo <> '' then

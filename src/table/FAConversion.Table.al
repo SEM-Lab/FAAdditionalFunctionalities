@@ -141,6 +141,14 @@ table 60001 "FA Conversion"
         Rec."E-Book Description INF" := FAConversionSetup."E-Book Description INF";
     end;
 
+    trigger OnDelete()
+    var
+        CannotDeletePostedConversionErr: Label 'Cannot delete FA Conversion %1 because it has already been posted. Reverse the related entries first.', Comment = '%1 = FA Conversion No.';
+    begin
+        if (Rec."Negative Adjmt. ILE Entry No." <> 0) or (Rec."FA Acquisition Entry No." <> 0) then
+            Error(CannotDeletePostedConversionErr, Rec."No.");
+    end;
+
     var
         FAConversionSetup: Record "FA Conversion Setup";
 }
