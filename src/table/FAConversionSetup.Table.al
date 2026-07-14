@@ -100,6 +100,12 @@ table 60000 "FA Conversion Setup"
             Caption = 'E-Book Description';
             ToolTip = 'Specifies the value of the E-Book Description field.';
         }
+        field(15; "Auto Create FA Transfer Item"; Boolean)
+        {
+            Caption = 'Auto Create FA Transfer Item';
+            InitValue = true;
+            ToolTip = 'Specifies whether the FA Transfer Item is created automatically when converting from a Transfer Receipt Line. If disabled, use the Create FA Transfer Item action.';
+        }
     }
 
     keys

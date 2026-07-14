@@ -68,6 +68,9 @@ page 60001 "FA Conversion Setup"
                 field("FA Trans. Pos. Adjmt. Loc."; Rec."FA Trans. Pos. Adjmt. Loc.")
                 {
                 }
+                field("Auto Create FA Transfer Item"; Rec."Auto Create FA Transfer Item")
+                {
+                }
             }
             group(ResourceSetup)
             {

@@ -163,6 +163,18 @@
           <target>Sabit Kıymet Dönüşümü Kurulumu</target>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 1652145534 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether the FA Transfer Item is created automatically when converting from a Transfer Receipt Line. If disabled, use the Create FA Transfer Item action.</source>
+          <target>Transfer Alış İrsaliyesi Satırından dönüştürülürken Sabit Kıymet Transfer Maddesinin otomatik oluşturulup oluşturulmayacağını belirtir. Devre dışı bırakılırsa Sabit Kıymet Transfer Maddesi Oluştur eylemini kullanın.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Auto Create FA Transfer Item - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 1652145534 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Auto Create FA Transfer Item</source>
+          <target>Sabit Kıymet Transfer Maddesini Otomatik Oluştur</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Auto Create FA Transfer Item - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 2223214263 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Depreciation Book Code field.</source>
           <target>Amortisman Defteri Kodu alanının değerini belirtir.</target>
@@ -367,8 +379,8 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CreateFAConversionFromItemCard - NamedType NoLocationsErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 4193061448 - NamedType 666224812" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Failed to create Fixed Asset and Transfer Item: %1</source>
-          <target>Sabit Kıymet ve Transfer Maddesi oluşturulamadı: %1</target>
+          <source>Failed to complete FA Conversion: %1</source>
+          <target>Sabit Kıymet Dönüşümü tamamlanamadı: %1</target>
           <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CreateFAConversionFromTransferReceiptLine - NamedType CompleteFAFailedErr</note>
         </trans-unit>

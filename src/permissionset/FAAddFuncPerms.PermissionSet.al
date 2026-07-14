@@ -21,5 +21,6 @@ permissionset 60000 "FA Add Func Perms"
         tabledata "FA Depreciation Profile" = RIMD,
         table "FA Depreciation Profile" = X,
         codeunit "Location Type Automation" = X,
-        page "FA Depreciation Profiles" = X;
+        page "FA Depreciation Profiles" = X,
+        codeunit "FA Add Func Upgrade" = X;
 }
