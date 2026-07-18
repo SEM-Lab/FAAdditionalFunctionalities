@@ -62,6 +62,9 @@ page 60001 "FA Conversion Setup"
             {
                 Caption = 'FA Transfer Setup';
 
+                field("Enable FA Transfer"; Rec."Enable FA Transfer")
+                {
+                }
                 field("FA Transfer Item No."; Rec."FA Transfer Item No.")
                 {
                 }

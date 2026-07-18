@@ -17,6 +17,21 @@ codeunit 60001 "FA Transfer Functions"
 {
     SingleInstance = true;
     Access = Public;
+
+    /// <summary>
+    /// Returns whether the FA transfer features are enabled in FA Conversion Setup.
+    /// Reads the setup with a fresh Get so toggling takes effect without recycling the session.
+    /// </summary>
+    /// <returns>True if the Enable FA Transfer field is set in FA Conversion Setup, false otherwise.</returns>
+    procedure IsFATransferEnabled(): Boolean
+    var
+        LocalFAConversionSetup: Record "FA Conversion Setup";
+    begin
+        if not LocalFAConversionSetup.Get() then
+            exit(false);
+        exit(LocalFAConversionSetup."Enable FA Transfer");
+    end;
+
     /// <summary>
     /// Creates a Resource Card based on Fixed Asset data.
     /// </summary>
@@ -27,6 +42,9 @@ codeunit 60001 "FA Transfer Functions"
         ConfirmManagement: Codeunit "Confirm Management";
         ConfirmQst: Label 'Resource No.: %1 already exist. Do you want to view resource card?', Comment = '%1 = Resource No.';
     begin
+        if not IsFATransferEnabled() then
+            Error(FATransferDisabledErr);
+
         if Resource.Get(FixedAsset."No.") then begin
             if not ConfirmManagement.GetResponseOrDefault(ConfirmQst, true) then
                 exit;
@@ -68,6 +86,9 @@ codeunit 60001 "FA Transfer Functions"
         LocationCodeEmptyErr: Label 'Location Code is empty in FA Conversion %1. Cannot create transfer item.', Comment = '%1 = FA Conversion No.';
         NoValidLocationErr: Label 'Cannot create transfer item for Fixed Asset %1 without a valid location code.', Comment = '%1 = Fixed Asset No.';
     begin
+        if not IsFATransferEnabled() then
+            Error(FATransferDisabledErr);
+
         ItemLedgerEntry.SetLoadFields("Serial No.");
         ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
         if not ItemLedgerEntry.IsEmpty() then
@@ -185,6 +206,18 @@ codeunit 60001 "FA Transfer Functions"
     [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', true, true)]
     local procedure OnAfterInsert_ILE(var Rec: Record "Item Ledger Entry")
     begin
+        // This fires on every Item Ledger Entry insert company-wide, so run the cheap
+        // in-memory filters first and only inbound Transfer entries pay for the setup read.
+        if Rec.IsTemporary() then
+            exit;
+        if Rec."Entry Type" <> Rec."Entry Type"::Transfer then
+            exit;
+        if not Rec.Positive then
+            exit;
+
+        if not IsFATransferEnabled() then
+            exit;
+
         UpdateServiceItemLocationAfterTransferProcess(Rec);
         UpdateFixedAssetLocationAfterTransferProcess(Rec);
     end;
@@ -244,6 +277,9 @@ codeunit 60001 "FA Transfer Functions"
         ItemLedgerEntry: Record "Item Ledger Entry";
         ServiceItem: Record "Service Item";
     begin
+        if not IsFATransferEnabled() then
+            exit;
+
         ItemLedgerEntry.SetRange("Document No.", TransferShipmentLine."Document No.");
         ItemLedgerEntry.SetRange("Document Line No.", TransferShipmentLine."Line No.");
         if not ItemLedgerEntry.FindLast() then
@@ -260,6 +296,9 @@ codeunit 60001 "FA Transfer Functions"
     [EventSubscriber(ObjectType::Table, Database::"EShipmentLineTracking ESHP INF", OnBeforeInsertEvent, '', false, false)]
     local procedure OnBeforeInsertEvent_EShipmentLineTrackingESHPINF(var Rec: Record "EShipmentLineTracking ESHP INF")
     begin
+        if not IsFATransferEnabled() then
+            exit;
+
         UpdateSerialNoOnBeforeInsertEShipmentLineTracking(Rec);
     end;
 
@@ -292,6 +331,9 @@ codeunit 60001 "FA Transfer Functions"
         LocationMismatchErr: Label 'Selected FAs have different locations. All FAs must be at the same location to create a bulk transfer. Current locations: %1', Comment = '%1 = list of Location Codes';
         NoCurrentLocationErr: Label 'Cannot determine current location for selected Fixed Assets.';
     begin
+        if not IsFATransferEnabled() then
+            Error(FATransferDisabledErr);
+
         if FixedAsset.FindSet() then
             repeat
                 CollectBulkTransferFAInfo(
@@ -358,6 +400,9 @@ codeunit 60001 "FA Transfer Functions"
         SameLocationErr: Label 'Transfer-from and Transfer-to locations cannot be the same.';
         ItemTrackingRequiredErr: Label 'Item %1 must have Serial Number tracking enabled.', Comment = '%1 = Item No.';
     begin
+        if not IsFATransferEnabled() then
+            Error(FATransferDisabledErr);
+
         // Get Transfer-from location from first FA
         FixedAsset.FindFirst();
 
@@ -530,4 +575,5 @@ codeunit 60001 "FA Transfer Functions"
 
     var
         FAConversionSetup: Record "FA Conversion Setup";
+        FATransferDisabledErr: Label 'FA transfer features are disabled. To use this function, enable the Enable FA Transfer field in FA Conversion Setup.';
 }

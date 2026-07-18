@@ -18,18 +18,22 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
             field("Current Location"; Rec."Current Location")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Current Location Name"; Rec."Current Location Name")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Current Location Ship-to Code"; Rec."Current Location Ship-to Code")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Current Location Type INF"; Rec."Current Location Type INF")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Source Item No."; Rec."Source Item No.")
             {
@@ -54,6 +58,7 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
                 PromotedIsBig = true;
                 Image = NewItem;
                 ToolTip = 'Executes the Create FA Transfer Item action.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 begin
@@ -69,6 +74,7 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
                 PromotedIsBig = true;
                 Image = NewResource;
                 ToolTip = 'Executes the Create Resource Card action.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 begin
@@ -84,6 +90,7 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
                 PromotedIsBig = true;
                 Image = ItemLedger;
                 ToolTip = 'View item ledger entries filtered by the selected fixed asset''s serial number.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 var
@@ -98,4 +105,10 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
     }
     var
         FATransferFunctions: Codeunit "FA Transfer Functions";
+        FATransferEnabled: Boolean;
+
+    trigger OnOpenPage()
+    begin
+        FATransferEnabled := FATransferFunctions.IsFATransferEnabled();
+    end;
 }

@@ -31,8 +31,17 @@ pageextension 60003 "Resource Card Extension" extends "Resource Card"
                 field("Current Location"; Rec."Current Location")
                 {
                     ApplicationArea = All;
+                    Visible = FATransferEnabled;
                 }
             }
         }
     }
+    var
+        FATransferFunctions: Codeunit "FA Transfer Functions";
+        FATransferEnabled: Boolean;
+
+    trigger OnOpenPage()
+    begin
+        FATransferEnabled := FATransferFunctions.IsFATransferEnabled();
+    end;
 }

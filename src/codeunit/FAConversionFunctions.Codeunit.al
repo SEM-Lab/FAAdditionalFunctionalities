@@ -697,6 +697,7 @@ codeunit 60000 "FA Conversion Functions"
     local procedure TryCreateCompleteFA(var FAConversion: Record "FA Conversion")
     var
         FixedAsset: Record "Fixed Asset";
+        LocalFAConversionSetup: Record "FA Conversion Setup";
         FATransferFunctions: Codeunit "FA Transfer Functions";
         FANotFoundErr: Label 'Fixed Asset %1 not found after creation.', Comment = '%1 = Fixed Asset No.';
     begin
@@ -706,17 +707,20 @@ codeunit 60000 "FA Conversion Functions"
         // Step 2: Post FA acquisition
         FAAcquisition(FAConversion);
 
-        // Step 3: Create transfer item, only when enabled in setup (NDIT-5968).
-        // When disabled, the user can still create it manually via the Create FA Transfer Item
-        // action on the Fixed Asset card.
-        FAConversionSetup.GetRecordOnce();
-        if FAConversionSetup."Auto Create FA Transfer Item" then begin
-            if not FixedAsset.Get(FAConversion."FA No.") then
-                Error(FANotFoundErr, FAConversion."FA No.");
+        // Step 3: Create transfer item, only when the FA Transfer master switch and the
+        // auto-create toggle are both enabled in setup (NDIT-5968). Read fresh (not via
+        // GetRecordOnce/the global setup var) so toggling the master switch takes effect
+        // without recycling the session. When disabled, the user can still create the
+        // transfer item manually via the Create FA Transfer Item action on the Fixed Asset
+        // card (guarded by the same master switch).
+        if LocalFAConversionSetup.Get() then
+            if LocalFAConversionSetup."Enable FA Transfer" and LocalFAConversionSetup."Auto Create FA Transfer Item" then begin
+                if not FixedAsset.Get(FAConversion."FA No.") then
+                    Error(FANotFoundErr, FAConversion."FA No.");
 
-            // This will error if location is missing or transfer item creation fails
-            FATransferFunctions.NewItemForTransfer(FixedAsset);
-        end;
+                // This will error if location is missing or transfer item creation fails
+                FATransferFunctions.NewItemForTransfer(FixedAsset);
+            end;
 
         // If we reach here, all steps succeeded
     end;

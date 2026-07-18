@@ -106,6 +106,12 @@ table 60000 "FA Conversion Setup"
             InitValue = true;
             ToolTip = 'Specifies whether the FA Transfer Item is created automatically when converting from a Transfer Receipt Line. If disabled, use the Create FA Transfer Item action.';
         }
+        field(16; "Enable FA Transfer"; Boolean)
+        {
+            Caption = 'Enable FA Transfer';
+            InitValue = false;
+            ToolTip = 'Specifies whether FA transfer features (transfer item, resource card, bulk transfers, sync) are enabled. Disable this to use the Device Transfer Management app.';
+        }
     }
 
     keys

@@ -178,6 +178,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field E-Book Description INF - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 634012015 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether FA transfer features (transfer item, resource card, bulk transfers, sync) are enabled. Disable this to use the Device Transfer Management app.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Enable FA Transfer - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1809950204 - Field 634012015 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Enable FA Transfer</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Field Enable FA Transfer - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 3007540741 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the FA Conversion No. Series field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -362,6 +372,11 @@
           <source>Fixed Asset %1 not found after creation.</source>
           <note from="Developer" annotates="general" priority="2">%1 = Fixed Asset No.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method TryCreateCompleteFA - NamedType FANotFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - NamedType 1230236867" size-unit="char" translate="yes" xml:space="preserve">
+          <source>FA transfer features are disabled. To use this function, enable the Enable FA Transfer field in FA Conversion Setup.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - NamedType FATransferDisabledErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 118642255 - Method 3161602747 - NamedType 255132806" size-unit="char" translate="yes" xml:space="preserve">
           <source>Transfer-from and Transfer-to locations cannot be the same.</source>

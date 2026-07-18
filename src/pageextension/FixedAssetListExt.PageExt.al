@@ -14,18 +14,22 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
             field("Current Location"; Rec."Current Location")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Current Location Name"; Rec."Current Location Name")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Current Location Ship-to Code"; Rec."Current Location Ship-to Code")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Current Location Type INF"; Rec."Current Location Type INF")
             {
                 ApplicationArea = All;
+                Visible = FATransferEnabled;
             }
             field("Source Item No."; Rec."Source Item No.")
             {
@@ -54,6 +58,7 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
                 PromotedIsBig = true;
                 Image = NewItem;
                 ToolTip = 'Executes the Create FA Transfer Item action.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 var
@@ -75,6 +80,7 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
                 PromotedIsBig = true;
                 Image = NewResource;
                 ToolTip = 'Executes the Create Resource Card action.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 var
@@ -97,6 +103,7 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
                 PromotedIsBig = true;
                 Image = ItemLedger;
                 ToolTip = 'View item ledger entries filtered by the selected fixed asset''s serial number.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 var
@@ -115,6 +122,7 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
                 PromotedIsBig = false;
                 Image = ViewDetails;
                 ToolTip = 'Show the current location code and its Location Type for the selected fixed asset.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 begin
@@ -130,6 +138,7 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
                 PromotedIsBig = true;
                 Image = TransferOrder;
                 ToolTip = 'Creates a transfer order for selected fixed assets with automatic serial number tracking.';
+                Visible = FATransferEnabled;
 
                 trigger OnAction()
                 var
@@ -167,6 +176,12 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
     }
     var
         FATransferFunctions: Codeunit "FA Transfer Functions";
+        FATransferEnabled: Boolean;
+
+    trigger OnOpenPage()
+    begin
+        FATransferEnabled := FATransferFunctions.IsFATransferEnabled();
+    end;
 
     local procedure ShowLocationInfo(var FixedAsset: Record "Fixed Asset")
     var
