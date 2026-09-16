@@ -1,9 +1,16 @@
 {
+    "NAB.UseTargetStates": true,
     "al.codeAnalyzers": [
         "${CodeCop}",
         "${UICop}",
         "${PerTenantExtensionCop}",
-        "${analyzerFolder}BusinessCentral.LinterCop.dll"
+        "${analyzerFolder}ALCops.ApplicationCop.dll",
+        "${analyzerFolder}ALCops.DocumentationCop.dll",
+        "${analyzerFolder}ALCops.FormattingCop.dll",
+        "${analyzerFolder}ALCops.LinterCop.dll",
+        "${analyzerFolder}ALCops.PlatformCop.dll",
+        "${analyzerFolder}ALCops.TestAutomationCop.dll",
+        "${analyzerFolder}ALCops.Common.dll"
     ],
     "al.ruleSetPath": "LinterCop.ruleset.json",
     "alOutline.activeBuildConfiguration": ""
