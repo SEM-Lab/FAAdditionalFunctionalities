@@ -35,6 +35,7 @@ codeunit 60000 "FA Conversion Functions"
                   tabledata "FA Location" = ri,
                   tabledata "Fixed Asset" = rim,
                   tabledata "Gen. Journal Line" = imd,
+                  tabledata "General Ledger Setup" = r,
                   tabledata "General Posting Setup" = r,
                   tabledata Item = r,
                   tabledata "Item Journal Line" = imd,
@@ -433,23 +434,49 @@ codeunit 60000 "FA Conversion Functions"
     /// entry. SendToPosting does not raise when the posting fails: it commits, runs the posting codeunit with its
     /// errors captured and only lists them on the Error Messages page. A posting that left no new entry is therefore
     /// raised here, so that the dependent apps are not told about an acquisition that does not exist (NDIT-6082, D2).
+    /// The check applies only when the line is posted synchronously: with General Ledger Setup "Post with Job Queue"
+    /// the posting codeunit only schedules the line and nothing is posted yet, so there is nothing to verify and the
+    /// call returns as it always did (NDIT-6082, D20).
     /// </summary>
     /// <param name="GenJournalLine">The acquisition journal line, still carrying the journal batch filters.</param>
     /// <param name="FAConversion">The FA Conversion the acquisition belongs to; it is handed to the posting subscribers through the global.</param>
     local procedure PostAcquisitionJournalLine(var GenJournalLine: Record "Gen. Journal Line"; FAConversion: Record "FA Conversion")
     var
         LastAcquisitionEntryNoBefore: Integer;
+        PostedSynchronously: Boolean;
         AcquisitionNotPostedErr: Label 'The acquisition of fixed asset %2 for FA Conversion %1 was not posted. Check the errors of the posting, correct the cause and post the FA acquisition again.', Comment = '%1 = FA Conversion No., %2 = Fixed Asset No.';
     begin
+        PostedSynchronously := not IsPostWithJobQueue();
         LastAcquisitionEntryNoBefore := GetLastAcquisitionCostEntryNo(FAConversion."FA No.");
         GlobalFAConversion := FAConversion;
         GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
+
+        // Gen. Jnl.-Post only enqueued the line (Job Queue Entry, journal line "Scheduled for Posting"): no entry exists
+        // yet and none is expected, so there is nothing to verify and no error (NDIT-6082, D20).
+        if not PostedSynchronously then
+            exit;
 
         // The conversion is cleared before the Error: the caller's own cleanup is skipped by it (NDIT-6082, LD-7).
         if GetLastAcquisitionCostEntryNo(FAConversion."FA No.") = LastAcquisitionEntryNoBefore then begin
             Clear(GlobalFAConversion);
             Error(AcquisitionNotPostedErr, FAConversion."No.", FAConversion."FA No.");
         end;
+    end;
+
+    /// <summary>
+    /// Tells whether the standard journal posting only schedules a general journal line instead of posting it. Gen. Jnl.-Post
+    /// decides this from General Ledger Setup "Post with Job Queue" alone, read at the moment it runs.
+    /// </summary>
+    /// <returns>True when Gen. Jnl.-Post enqueues the line (nothing is posted before the job runs); false when it posts the line at once, or when General Ledger Setup does not exist (the posting then raises its own error, which the check after it reports).</returns>
+    local procedure IsPostWithJobQueue(): Boolean
+    var
+        GeneralLedgerSetup: Record "General Ledger Setup";
+    begin
+        GeneralLedgerSetup.SetLoadFields("Post with Job Queue");
+        if not GeneralLedgerSetup.Get() then
+            exit(false);
+
+        exit(GeneralLedgerSetup."Post with Job Queue");
     end;
 
     /// <summary>
@@ -884,6 +911,9 @@ codeunit 60000 "FA Conversion Functions"
     /// Raised after the FA acquisition of an FA Conversion has been posted through the general journal,
     /// inside the same transaction and before the conversion's global state is cleared. It is not raised
     /// when the posting did not produce the acquisition: the FA acquisition then raises an error instead.
+    /// With General Ledger Setup "Post with Job Queue" the journal line is only scheduled: the event is raised
+    /// right after it was scheduled, before any acquisition exists, with the conversion as it was handed in
+    /// (this call does not stamp FA Acquisition Entry No.).
     /// </summary>
     /// <param name="FAConversion">The FA Conversion whose acquisition was posted.</param>
     [IntegrationEvent(false, false)]
