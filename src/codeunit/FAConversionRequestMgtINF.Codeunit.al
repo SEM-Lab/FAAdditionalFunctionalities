@@ -486,18 +486,19 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
     var
         FAConversion: Record "FA Conversion";
         SerialNo: Code[50];
+        SourceEntryNo: Integer;
         AppliesToEntryNo: Integer;
     begin
         CurrentStepName := AvailabilityCheckStepLbl;
-        SerialNo := CheckAvailability(TempFAConvSourceLine);
-        AppliesToEntryNo := GetOpenEntryToApply(TempFAConvSourceLine);
+        CheckAvailability(TempFAConvSourceLine);
+        SourceEntryNo := GetSourceEntryOfUnit(TempFAConvSourceLine, SerialNo, AppliesToEntryNo);
 
         CurrentStepName := CreateStepLbl;
         FAConversionFunctions.CreateFAConversionFromSourceLine(TempFAConvSourceLine, SerialNo, AcquisitionDate, FAConversion);
         CurrentFANo := FAConversion."FA No.";
 
         CurrentStepName := NegativeAdjustmentStepLbl;
-        FAConversionFunctions.NegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo);
+        FAConversionFunctions.NegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo, SourceEntryNo);
 
         CurrentStepName := FAAcquisitionStepLbl;
         FAConversionFunctions.FAAcquisition(FAConversion);
@@ -509,14 +510,12 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
     // Step 0: the posting of the previous unit committed, so the converted count and the open quantities are read
     // again; a unit whose line has nothing left is refused before anything is created.
-    local procedure CheckAvailability(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary): Code[50]
+    local procedure CheckAvailability(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary)
     begin
         RefreshQuantities(TempFAConvSourceLine, TempFAConvSourceLine."Received Quantity (Base)", GetConvertedQuantity(TempFAConvSourceLine));
         TempFAConvSourceLine.Modify(false);
         if TempFAConvSourceLine."Convertible Quantity" < 1 then
             RaiseNothingToConvertError(TempFAConvSourceLine);
-
-        exit(GetOpenSerialNo(TempFAConvSourceLine));
     end;
 
     local procedure GetConvertedQuantity(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary): Integer
@@ -530,46 +529,34 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         exit(FAConversion.Count());
     end;
 
-    // The open serial pick: the inbound entry of the line with the lowest entry number that has a serial number
-    // and a remaining quantity. Blank for a line without serial numbers.
-    local procedure GetOpenSerialNo(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary): Code[50]
+    // The inbound entry of the line a unit is taken from: the entry with the lowest entry number that still has a remaining
+    // quantity, for a serial-tracked line the lowest one with a serial number (the open serial pick). The unit carries the cost of
+    // that entry (NDIT-6082, D27; review finding F1: a serial number too, not the cost of the first open entry at the location).
+    // A unit without a serial number is also applied to it (Applies-to Entry): without that the negative adjustment would apply by
+    // the costing method to any open entry of the item at the location (FIFO: the oldest), and a unit counted on this line would
+    // use up the stock of another received line, which then has nothing left to convert (NDIT-6082, review). A serial number is
+    // applied through its own item tracking, and an entry with other item tracking can only be applied through its tracking, so
+    // neither gets an entry to apply to. Returns 0 (and a blank serial number) when the line has no such entry.
+    local procedure GetSourceEntryOfUnit(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary; var SerialNo: Code[50]; var AppliesToEntryNo: Integer): Integer
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
     begin
-        if not TempFAConvSourceLine."Serial Tracked" then
-            exit('');
-
-        ItemLedgerEntry.SetLoadFields("Serial No.");
-        SetInboundEntryFilters(ItemLedgerEntry, TempFAConvSourceLine);
-        ItemLedgerEntry.SetFilter("Serial No.", '<>%1', '');
-        ItemLedgerEntry.SetFilter("Remaining Quantity", '>0');
-        if ItemLedgerEntry.FindFirst() then
-            exit(ItemLedgerEntry."Serial No.");
-
-        exit('');
-    end;
-
-    // The entry a unit without a serial number is taken from: the inbound entry of the line with the lowest entry number that
-    // still has a remaining quantity, the same order as the serial pick. Without it the negative adjustment would apply by the
-    // costing method to any open entry of the item at the location (FIFO: the oldest), and a unit counted on this line would use
-    // up the stock of another received line, which then has nothing left to convert (NDIT-6082, review). 0 for a serial-tracked
-    // line (the reservation of its serial number decides the application) and for an entry with item tracking, which can only be
-    // applied through its tracking.
-    local procedure GetOpenEntryToApply(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary): Integer
-    var
-        ItemLedgerEntry: Record "Item Ledger Entry";
-    begin
-        if TempFAConvSourceLine."Serial Tracked" then
-            exit(0);
+        SerialNo := '';
+        AppliesToEntryNo := 0;
 
         ItemLedgerEntry.SetLoadFields("Serial No.", "Lot No.", "Package No.");
         SetInboundEntryFilters(ItemLedgerEntry, TempFAConvSourceLine);
+        if TempFAConvSourceLine."Serial Tracked" then
+            ItemLedgerEntry.SetFilter("Serial No.", '<>%1', '');
         ItemLedgerEntry.SetFilter("Remaining Quantity", '>0');
         if not ItemLedgerEntry.FindFirst() then
             exit(0);
 
-        if ItemLedgerEntry.TrackingExists() then
-            exit(0);
+        if TempFAConvSourceLine."Serial Tracked" then
+            SerialNo := ItemLedgerEntry."Serial No."
+        else
+            if not ItemLedgerEntry.TrackingExists() then
+                AppliesToEntryNo := ItemLedgerEntry."Entry No.";
 
         exit(ItemLedgerEntry."Entry No.");
     end;

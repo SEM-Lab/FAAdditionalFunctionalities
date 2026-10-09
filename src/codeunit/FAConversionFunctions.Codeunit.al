@@ -195,21 +195,23 @@ codeunit 60000 "FA Conversion Functions"
     [TryFunction]
     procedure TryNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
     begin
-        PostNegativeAdjustment(FAConversion, SkipCosting, 0);
+        PostNegativeAdjustment(FAConversion, SkipCosting, 0, 0);
     end;
 
     /// <summary>
-    /// Posts the negative inventory adjustment of one unit of a conversion request, without cost adjustment, taken from a
-    /// given open inbound item ledger entry: the item journal line is applied to that entry and carries its unit cost. With
-    /// no entry it is the same as NegativeAdjustment without cost adjustment (application by the costing method).
+    /// Posts the negative inventory adjustment of one unit of a conversion request, without cost adjustment, taken from the
+    /// unit's own inbound item ledger entry: the item journal line carries the unit cost of that entry and, when an entry to
+    /// apply to is given, is applied to it. With no entries it is the same as NegativeAdjustment without cost adjustment
+    /// (application by the costing method, unit cost of the first open entry at the location).
     /// </summary>
     /// <param name="FAConversion">The FA Conversion of the unit.</param>
-    /// <param name="AppliesToEntryNo">The open inbound item ledger entry the unit is taken from; 0 applies by the costing method.</param>
-    internal procedure NegativeAdjustmentFromEntry(var FAConversion: Record "FA Conversion"; AppliesToEntryNo: Integer)
+    /// <param name="AppliesToEntryNo">The open inbound item ledger entry the unit is applied to; 0 leaves the application to the costing method or, for a serial number, to its item tracking.</param>
+    /// <param name="CostEntryNo">The inbound item ledger entry the unit comes from, whose unit cost the unit carries; 0 takes the cost of the first open entry at the location.</param>
+    internal procedure NegativeAdjustmentFromEntry(var FAConversion: Record "FA Conversion"; AppliesToEntryNo: Integer; CostEntryNo: Integer)
     var
         ErrorHandlingLbl: Label 'Failed to create negative adjustment: %1', Comment = '%1 = Error message';
     begin
-        if not TryNegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo) then begin
+        if not TryNegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo, CostEntryNo) then begin
             // Same cleanup as NegativeAdjustment: the SingleInstance global must not outlive the failed call (NDIT-6082, LD-7).
             Clear(GlobalFAConversion);
             Error(ErrorHandlingLbl, GetLastErrorText());
@@ -217,12 +219,12 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
     [TryFunction]
-    local procedure TryNegativeAdjustmentFromEntry(var FAConversion: Record "FA Conversion"; AppliesToEntryNo: Integer)
+    local procedure TryNegativeAdjustmentFromEntry(var FAConversion: Record "FA Conversion"; AppliesToEntryNo: Integer; CostEntryNo: Integer)
     begin
-        PostNegativeAdjustment(FAConversion, true, AppliesToEntryNo);
+        PostNegativeAdjustment(FAConversion, true, AppliesToEntryNo, CostEntryNo);
     end;
 
-    local procedure PostNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean; AppliesToEntryNo: Integer)
+    local procedure PostNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean; AppliesToEntryNo: Integer; CostEntryNo: Integer)
     var
         ItemJournalLine: Record "Item Journal Line";
         ItemJournalBatch: Record "Item Journal Batch";
@@ -268,7 +270,7 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine.Validate(Quantity, 1);
         ItemJournalLine.Validate("Location Code", FAConversion."Location Code");
         ItemJournalLine.Validate("Gen. Bus. Posting Group", Item."FA Conv. Gen. Bus. Post. Group");
-        SetApplicationAndUnitCost(ItemJournalLine, AppliesToEntryNo);
+        SetApplicationAndUnitCost(ItemJournalLine, AppliesToEntryNo, CostEntryNo);
         ItemJournalLine.Modify(true);
 
         CreateReservationEntry(ItemJournalLine, FAConversion);
@@ -295,18 +297,20 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
     // A unit of a conversion request is taken from an inbound entry of its own source line, so that it does not use up the
-    // stock of another received line of the item at the location, and it carries the cost of that entry (NDIT-6082, review).
-    // Without an entry the line applies by the costing method and takes the cost of the first open entry at the location, as it
-    // always did.
-    local procedure SetApplicationAndUnitCost(var ItemJournalLine: Record "Item Journal Line"; AppliesToEntryNo: Integer)
+    // stock of another received line of the item at the location, and it carries the cost of that entry (NDIT-6082, review;
+    // D27). A serial number is applied through its item tracking, not through Applies-to Entry, but still carries the cost of
+    // its own entry: without it the cost of the first open entry at the location was used, which is another receipt's cost
+    // whenever the cost is not adjusted before the acquisition reads it (review finding F1). Without entries the line applies by
+    // the costing method and takes the cost of the first open entry at the location, as it always did.
+    local procedure SetApplicationAndUnitCost(var ItemJournalLine: Record "Item Journal Line"; AppliesToEntryNo: Integer; CostEntryNo: Integer)
     begin
-        if AppliesToEntryNo = 0 then begin
-            ItemJournalLine.Validate("Unit Cost", GetUnitCostFromItemJnlLine(ItemJournalLine));
-            exit;
-        end;
+        if AppliesToEntryNo <> 0 then
+            ItemJournalLine.Validate("Applies-to Entry", AppliesToEntryNo);
 
-        ItemJournalLine.Validate("Applies-to Entry", AppliesToEntryNo);
-        ItemJournalLine.Validate("Unit Cost", GetUnitCostOfEntry(AppliesToEntryNo));
+        if CostEntryNo = 0 then
+            ItemJournalLine.Validate("Unit Cost", GetUnitCostFromItemJnlLine(ItemJournalLine))
+        else
+            ItemJournalLine.Validate("Unit Cost", GetUnitCostOfEntry(CostEntryNo));
     end;
 
     local procedure GetUnitCostOfEntry(ItemLedgerEntryNo: Integer): Decimal
