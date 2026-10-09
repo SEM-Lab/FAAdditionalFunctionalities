@@ -24,8 +24,8 @@ pageextension 60003 "Resource Card Extension" extends "Resource Card"
                     var
                         FixedAsset: Record "Fixed Asset";
                     begin
-                        if not FAPageFunctions.GetFixedAsset(Rec."No.", FixedAsset) then
-                            Error(RecordDoesNotExistErr, FixedAsset.TableCaption(), Rec."No.");
+                        if not FAPageFunctions.GetFixedAsset(Rec."Fixed Asset No.", FixedAsset) then
+                            Error(RecordDoesNotExistErr, FixedAsset.TableCaption(), Rec."Fixed Asset No.");
                         Page.Run(Page::"Fixed Asset Card", FixedAsset);
                     end;
                 }
