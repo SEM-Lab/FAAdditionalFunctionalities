@@ -80,6 +80,9 @@ page 60004 "Pstd Transfer RcptLns INF"
                 field("Remaning Quantity"; Rec."Remaning Quantity")
                 {
                 }
+                field("FA Converted Qty. INF"; Rec."FA Converted Qty. INF")
+                {
+                }
                 field("Receipt Date"; Rec."Receipt Date")
                 {
                     ApplicationArea = Location;
@@ -162,7 +165,7 @@ page 60004 "Pstd Transfer RcptLns INF"
             {
                 ApplicationArea = All;
                 Caption = 'Create Fixed Assets For Selected Lines';
-                ToolTip = 'Executes the Create Fixed Assets For Selected Lines action.';
+                ToolTip = 'Opens a dialog to choose the acquisition date and the quantity, then creates fixed assets for the selected lines.';
                 Image = FixedAssets;
 
                 trigger OnAction()
@@ -170,10 +173,8 @@ page 60004 "Pstd Transfer RcptLns INF"
                     TransferReceiptLine: Record "Transfer Receipt Line";
                 begin
                     CurrPage.SetSelectionFilter(TransferReceiptLine);
-                    if TransferReceiptLine.FindSet() then
-                        repeat
-                            FAConversionFunctions.CreateMultipleFAConversionsFromTransferReceiptLine(TransferReceiptLine);
-                        until TransferReceiptLine.Next() = 0;
+                    FAConversionRequestMgt.RunForTransferReceiptLines(TransferReceiptLine);
+                    CurrPage.Update(false);
                 end;
             }
         }
@@ -196,7 +197,7 @@ page 60004 "Pstd Transfer RcptLns INF"
         TempTransferReceiptLine: Record "Transfer Receipt Line" temporary;
         TempItemChargeAssignmentPurch: Record "Item Charge Assignment (Purch)" temporary;
         ItemChargeAssgntPurch: Codeunit "Item Charge Assgnt. (Purch.)";
-        FAConversionFunctions: Codeunit "FA Conversion Functions";
+        FAConversionRequestMgt: Codeunit "FA Conversion Request Mgt. INF";
         UnitCost: Decimal;
         CreateCostDistrib: Boolean;
         DocumentNoHideValue: Boolean;

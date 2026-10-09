@@ -31,5 +31,13 @@ tableextension 60003 "Transfer Receipt Line Ext." extends "Transfer Receipt Line
             AllowInCustomizations = Never;
             ToolTip = 'Specifies whether an automatic Fixed Asset conversion was triggered for this receipt line.';
         }
+        field(60003; "FA Converted Qty. INF"; Integer)
+        {
+            Caption = 'FA Converted Quantity';
+            ToolTip = 'Specifies how many fixed assets were already created from this line.';
+            FieldClass = FlowField;
+            CalcFormula = count("FA Conversion" where("Source Document Type" = const("Transfer Receipt"), "Source Document No." = field("Document No."), "Source Document Line No." = field("Line No.")));
+            Editable = false;
+        }
     }
 }

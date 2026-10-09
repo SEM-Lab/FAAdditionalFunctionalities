@@ -4,6 +4,7 @@ using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.FixedAssets.Ledger;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Transfer;
 
 /// <summary>
 /// Card of one FA Conversion, with the Negative Adjustment and FA Acquisition actions.
@@ -15,10 +16,12 @@ page 60002 "FA Conversion"
     PageType = Card;
     SourceTable = "FA Conversion";
     UsageCategory = None;
-    Permissions = tabledata "FA Ledger Entry" = r,
+    Permissions = tabledata "Direct Trans. Header" = r,
+                  tabledata "FA Ledger Entry" = r,
                   tabledata "Fixed Asset" = r,
                   tabledata Item = r,
-                  tabledata "Item Ledger Entry" = r;
+                  tabledata "Item Ledger Entry" = r,
+                  tabledata "Transfer Receipt Header" = r;
     //Editable = false;
 
     layout
@@ -56,6 +59,19 @@ page 60002 "FA Conversion"
                 field("FA Description"; Rec."FA Description")
                 {
                 }
+                field("Source Document Type"; Rec."Source Document Type")
+                {
+                }
+                field("Source Document No."; Rec."Source Document No.")
+                {
+                    trigger OnDrillDown()
+                    begin
+                        ShowSourceDocument();
+                    end;
+                }
+                field("Source Document Line No."; Rec."Source Document Line No.")
+                {
+                }
             }
             group("Negative Adjustment Information")
             {
@@ -63,6 +79,7 @@ page 60002 "FA Conversion"
 
                 field("Posting Date"; Rec."Posting Date")
                 {
+                    Editable = not PostingDateLocked;
                 }
                 field("Location Code"; Rec."Location Code")
                 {
@@ -152,6 +169,8 @@ page 60002 "FA Conversion"
     trigger OnAfterGetRecord()
     begin
         SerialNoEditable := false;
+        // The posting date drives the posted entries and the depreciation dates: it is fixed once anything is posted
+        PostingDateLocked := (Rec."Negative Adjmt. ILE Entry No." <> 0) or (Rec."FA Acquisition Entry No." <> 0);
 
         if not Item.Get(Rec."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), Rec."Item No.");
@@ -159,9 +178,25 @@ page 60002 "FA Conversion"
             SerialNoEditable := true;
     end;
 
+    local procedure ShowSourceDocument()
+    var
+        DirectTransHeader: Record "Direct Trans. Header";
+        TransferReceiptHeader: Record "Transfer Receipt Header";
+    begin
+        case Rec."Source Document Type" of
+            Rec."Source Document Type"::"Transfer Receipt":
+                if TransferReceiptHeader.Get(Rec."Source Document No.") then
+                    Page.Run(Page::"Posted Transfer Receipt", TransferReceiptHeader);
+            Rec."Source Document Type"::"Direct Transfer":
+                if DirectTransHeader.Get(Rec."Source Document No.") then
+                    Page.Run(Page::"Posted Direct Transfer", DirectTransHeader);
+        end;
+    end;
+
     var
         Item: Record Item;
         FAConversionFunctions: Codeunit "FA Conversion Functions";
+        PostingDateLocked: Boolean;
         SerialNoEditable: Boolean;
         RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
 }

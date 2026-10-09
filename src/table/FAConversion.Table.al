@@ -3,6 +3,7 @@ namespace Infotek.FAAdditionalFunctionalities;
 using Microsoft.Foundation.NoSeries;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Inventory.Location;
+using Microsoft.Inventory.Transfer;
 
 /// <summary>
 /// One item-to-fixed-asset conversion: the source item/variant and serial number, the created Fixed
@@ -77,7 +78,15 @@ table 60001 "FA Conversion"
         field(9; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
-            ToolTip = 'Specifies the value of the Posting Date field.';
+            ToolTip = 'Specifies the acquisition date used as the posting date of the negative adjustment and of the FA acquisition; depreciation starts on 1 January of its year.';
+
+            trigger OnValidate()
+            var
+                FAConversionFunctions: Codeunit "FA Conversion Functions";
+            begin
+                if ("FA No." <> '') and ("Negative Adjmt. ILE Entry No." = 0) and ("FA Acquisition Entry No." = 0) then
+                    FAConversionFunctions.RecalculateDepreciationDates(Rec);
+            end;
         }
         field(10; "FA Acquisition Entry No."; Integer)
         {
@@ -106,6 +115,27 @@ table 60001 "FA Conversion"
         //     Caption = 'GIB Document Type';
         //     ToolTip = 'Specifies the value of the GIB Document Type field.';
         // }
+        field(20; "Source Document Type"; Enum "FA Conv. Source Doc. Type INF")
+        {
+            Caption = 'Source Document Type';
+            ToolTip = 'Specifies the type of the posted transfer document that the item was converted from.';
+            Editable = false;
+        }
+        field(21; "Source Document No."; Code[20])
+        {
+            Caption = 'Source Document No.';
+            ToolTip = 'Specifies the number of the posted transfer document that the item was converted from.';
+            Editable = false;
+            TableRelation = if ("Source Document Type" = const("Transfer Receipt")) "Transfer Receipt Header"."No."
+            else
+            if ("Source Document Type" = const("Direct Transfer")) "Direct Trans. Header"."No.";
+        }
+        field(22; "Source Document Line No."; Integer)
+        {
+            Caption = 'Source Document Line No.';
+            ToolTip = 'Specifies the line number of the posted transfer document that the item was converted from.';
+            Editable = false;
+        }
         field(107; "No. Series"; Code[20])
         {
             Caption = 'No. Series';
@@ -120,6 +150,9 @@ table 60001 "FA Conversion"
         key(PK; "No.")
         {
             Clustered = true;
+        }
+        key(SourceDoc; "Source Document Type", "Source Document No.", "Source Document Line No.")
+        {
         }
     }
 

@@ -1,6 +1,5 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
-using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Transfer;
 
 /// <summary>
@@ -13,7 +12,6 @@ page 60005 "Posted Direct Transfer Lines"
     PageType = List;
     SourceTable = "Direct Trans. Line";
     UsageCategory = Lists;
-    Permissions = tabledata "Item Variant" = r;
 
     layout
     {
@@ -42,6 +40,9 @@ page 60005 "Posted Direct Transfer Lines"
                 {
                 }
                 field("Remaning Quantity"; Rec."Remaning Quantity")
+                {
+                }
+                field("FA Converted Qty. INF"; Rec."FA Converted Qty. INF")
                 {
                 }
                 field(Description; Rec.Description)
@@ -153,32 +154,21 @@ page 60005 "Posted Direct Transfer Lines"
             {
                 ApplicationArea = All;
                 Caption = 'Create Fixed Assets For Selected Lines';
-                ToolTip = 'Executes the Create Fixed Assets For Selected Lines action.';
+                ToolTip = 'Opens a dialog to choose the acquisition date and the quantity, then creates fixed assets for the selected lines.';
                 Image = FixedAssets;
 
                 trigger OnAction()
                 var
                     DirectTransLine: Record "Direct Trans. Line";
-                    ItemVariant: Record "Item Variant";
-                    i: Integer;
                 begin
                     CurrPage.SetSelectionFilter(DirectTransLine);
-                    DirectTransLine.FindSet();
-                    repeat
-                        i := 0;
-                        repeat
-                            if not ItemVariant.Get(DirectTransLine."Item No.", DirectTransLine."Variant Code") then
-                                Error(RecordWithTwoKeysDoesNotExistErr, ItemVariant.TableCaption(), DirectTransLine."Item No.", DirectTransLine."Variant Code");
-                            FAConversionFunctions.CreateFAConversionFromItemVariant(ItemVariant, false, DirectTransLine."Transfer-to Code");
-                            i += 1;
-                        until i = DirectTransLine.Quantity;
-                    until DirectTransLine.Next() = 0;
+                    FAConversionRequestMgt.RunForDirectTransferLines(DirectTransLine);
+                    CurrPage.Update(false);
                 end;
             }
 
         }
     }
     var
-        FAConversionFunctions: Codeunit "FA Conversion Functions";
-        RecordWithTwoKeysDoesNotExistErr: Label '%1 %2, %3 does not exist.', Comment = '%1 = Table caption, %2 = First key value, %3 = Second key value';
+        FAConversionRequestMgt: Codeunit "FA Conversion Request Mgt. INF";
 }

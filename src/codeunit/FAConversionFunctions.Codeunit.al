@@ -29,7 +29,7 @@ codeunit 60000 "FA Conversion Functions"
     Access = Public;
     Permissions = tabledata "FA Conversion" = im,
                   tabledata "FA Conversion Setup" = r,
-                  tabledata "FA Depreciation Book" = im,
+                  tabledata "FA Depreciation Book" = rim,
                   tabledata "FA Depreciation Profile" = r,
                   tabledata "FA Ledger Entry" = r,
                   tabledata "FA Location" = ri,
@@ -38,6 +38,7 @@ codeunit 60000 "FA Conversion Functions"
                   tabledata "General Ledger Setup" = r,
                   tabledata "General Posting Setup" = r,
                   tabledata Item = r,
+                  tabledata "Item Journal Batch" = r,
                   tabledata "Item Journal Line" = imd,
                   tabledata "Item Ledger Entry" = r,
                   tabledata Location = r,
@@ -195,10 +196,12 @@ codeunit 60000 "FA Conversion Functions"
     procedure TryNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
     var
         ItemJournalLine: Record "Item Journal Line";
+        ItemJournalBatch: Record "Item Journal Batch";
         Item: Record Item;
         FixedAsset: Record "Fixed Asset";
         FAConversionSetup: Record "FA Conversion Setup";
         ItemJnlPostBatch: Codeunit "Item Jnl.-Post Batch";
+        NoSeries: Codeunit "No. Series";
     begin
         FAConversion.TestField("Location Code");
         FAConversion.TestField("Posting Date");
@@ -222,6 +225,14 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine.SetUpNewLine(ItemJournalLine);
         ItemJournalLine.Insert(true);
         ItemJournalLine.Validate("Posting Date", FAConversion."Posting Date");
+
+        // The batch number series is date-bound: SetUpNewLine peeked the number for the operation day. Peek it
+        // again for the posting date, otherwise the batch posting refuses a posting date in another series period.
+        ItemJournalBatch.SetLoadFields("No. Series");
+        if ItemJournalBatch.Get(FAConversionSetup."Item Journal Template Name", FAConversionSetup."Item Journal Batch Name") then
+            if ItemJournalBatch."No. Series" <> '' then
+                ItemJournalLine.Validate("Document No.", NoSeries.PeekNextNo(ItemJournalBatch."No. Series", FAConversion."Posting Date"));
+
         ItemJournalLine.Validate("Entry Type", ItemJournalLine."Entry Type"::"Negative Adjmt.");
         ItemJournalLine.Validate("Item No.", FAConversion."Item No.");
         ItemJournalLine.Validate("Variant Code", FAConversion."Variant Code");
@@ -596,6 +607,35 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
     /// <summary>
+    /// Recalculates the depreciation dates of the fixed asset of an FA Conversion from its posting date: the
+    /// depreciation starts on 1 January of the posting date year and ends according to the life years of the item
+    /// or to its depreciation profile. Does nothing when the conversion has no fixed asset yet, when the negative
+    /// adjustment or the FA acquisition is already posted, or when the item or the depreciation book does not exist.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion whose posting date drives the depreciation dates; it is not modified.</param>
+    procedure RecalculateDepreciationDates(var FAConversion: Record "FA Conversion")
+    var
+        FADepreciationBook: Record "FA Depreciation Book";
+        Item: Record Item;
+        FAConversionSetup: Record "FA Conversion Setup";
+    begin
+        if FAConversion."FA No." = '' then
+            exit;
+
+        if (FAConversion."Negative Adjmt. ILE Entry No." <> 0) or (FAConversion."FA Acquisition Entry No." <> 0) then
+            exit;
+
+        if not Item.Get(FAConversion."Item No.") then
+            exit;
+
+        FAConversionSetup.GetRecordOnce();
+        if not FADepreciationBook.Get(FAConversion."FA No.", FAConversionSetup."Depreciation Book Code") then
+            exit;
+
+        ApplyDepreciationProfile(Item, FAConversion, FADepreciationBook);
+    end;
+
+    /// <summary>
     /// Creates a Service Item based on the FA Conversion data.
     /// </summary>
     /// <param name="FAConversion">The FA Conversion record to create Service Item from.</param>
@@ -732,6 +772,10 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.Validate("Posting Date", WorkDate());
         // Populate Location Code from Transfer Receipt Line before creating the Fixed Asset
         FAConversion.Validate("Location Code", TransferReceiptLine."Transfer-to Code");
+        // Record the receipt line the conversion comes from, so that later requests see this conversion
+        FAConversion.Validate("Source Document Type", FAConversion."Source Document Type"::"Transfer Receipt");
+        FAConversion.Validate("Source Document No.", TransferReceiptLine."Document No.");
+        FAConversion.Validate("Source Document Line No.", TransferReceiptLine."Line No.");
         CreateFixedAsset(Item, FAConversion);
         FAConversion.Modify(true);
 
@@ -741,6 +785,43 @@ codeunit 60000 "FA Conversion Functions"
             // All-or-nothing transaction: FA creation + Transfer item creation
             if not TryCreateCompleteFA(FAConversion) then
                 Error(CompleteFAFailedErr, GetLastErrorText());
+    end;
+
+    /// <summary>
+    /// Creates the FA Conversion, the Fixed Asset and its depreciation book for one unit of a source line of a
+    /// conversion request. The acquisition date becomes the posting date of the FA Conversion, so the depreciation
+    /// starts on 1 January of its year. Nothing is posted and nothing is committed.
+    /// </summary>
+    /// <param name="TempFAConvSourceLine">The request row, positioned on the source line the unit is converted from.</param>
+    /// <param name="SerialNo">The serial number of the unit; blank for a unit without a serial number.</param>
+    /// <param name="AcquisitionDate">The acquisition date of the unit.</param>
+    /// <param name="FAConversion">Receives the stored FA Conversion with its fixed asset.</param>
+    internal procedure CreateFAConversionFromSourceLine(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary; SerialNo: Code[50]; AcquisitionDate: Date; var FAConversion: Record "FA Conversion")
+    var
+        Item: Record Item;
+    begin
+        if not Item.Get(TempFAConvSourceLine."Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), TempFAConvSourceLine."Item No.");
+
+        Item.TestField("FA No. Series");
+        Item.TestField("FA Conv. Gen. Bus. Post. Group");
+        Item.TestField("FA Posting Group");
+        Item.TestField("FA Life Years INF");
+
+        FAConversion.Init();
+        FAConversion.Insert(true);
+        FAConversion.Validate("Item No.", Item."No.");
+        FAConversion.Validate("Variant Code", TempFAConvSourceLine."Variant Code");
+        FAConversion.Validate("Item Description", TempFAConvSourceLine.Description);
+        FAConversion.Validate("Serial No.", SerialNo);
+        // The acquisition date, not the operation day: the depreciation dates of CreateFixedAsset derive from it
+        FAConversion.Validate("Posting Date", AcquisitionDate);
+        FAConversion.Validate("Location Code", TempFAConvSourceLine."Location Code");
+        FAConversion.Validate("Source Document Type", TempFAConvSourceLine."Source Document Type");
+        FAConversion.Validate("Source Document No.", TempFAConvSourceLine."Source Document No.");
+        FAConversion.Validate("Source Document Line No.", TempFAConvSourceLine."Source Document Line No.");
+        CreateFixedAsset(Item, FAConversion);
+        FAConversion.Modify(true);
     end;
 
     /// <summary>

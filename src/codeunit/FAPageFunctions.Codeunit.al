@@ -1,7 +1,6 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
 using Microsoft.FixedAssets.FixedAsset;
-using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Location;
 
 /// <summary>
@@ -12,7 +11,6 @@ codeunit 60016 "FA Page Functions"
 {
     Access = Internal;
     Permissions = tabledata "Fixed Asset" = r,
-                  tabledata "Item Variant" = r,
                   tabledata Location = r;
 
     /// <summary>
@@ -24,18 +22,6 @@ codeunit 60016 "FA Page Functions"
     internal procedure GetFixedAsset(FixedAssetNo: Code[20]; var FixedAsset: Record "Fixed Asset"): Boolean
     begin
         exit(FixedAsset.Get(FixedAssetNo));
-    end;
-
-    /// <summary>
-    /// Reads an item variant.
-    /// </summary>
-    /// <param name="ItemNo">The item number of the variant.</param>
-    /// <param name="VariantCode">The variant code.</param>
-    /// <param name="ItemVariant">Receives the item variant when it exists.</param>
-    /// <returns>True when the item variant exists.</returns>
-    internal procedure GetItemVariant(ItemNo: Code[20]; VariantCode: Code[10]; var ItemVariant: Record "Item Variant"): Boolean
-    begin
-        exit(ItemVariant.Get(ItemNo, VariantCode));
     end;
 
     /// <summary>

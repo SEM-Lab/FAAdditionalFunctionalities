@@ -26,5 +26,13 @@ tableextension 60000 "Direct Trans. Line" extends "Direct Trans. Line"
             AllowInCustomizations = Never;
             ToolTip = 'Specifies the value of the FA No. Series field.';
         }
+        field(60002; "FA Converted Qty. INF"; Integer)
+        {
+            Caption = 'FA Converted Quantity';
+            ToolTip = 'Specifies how many fixed assets were already created from this line.';
+            FieldClass = FlowField;
+            CalcFormula = count("FA Conversion" where("Source Document Type" = const("Direct Transfer"), "Source Document No." = field("Document No."), "Source Document Line No." = field("Line No.")));
+            Editable = false;
+        }
     }
 }

@@ -33,6 +33,18 @@ page 60003 "FA Conversion List"
                 field("FA Description"; Rec."FA Description")
                 {
                 }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                }
+                field("Source Document Type"; Rec."Source Document Type")
+                {
+                }
+                field("Source Document No."; Rec."Source Document No.")
+                {
+                }
+                field("Source Document Line No."; Rec."Source Document Line No.")
+                {
+                }
             }
         }
     }
