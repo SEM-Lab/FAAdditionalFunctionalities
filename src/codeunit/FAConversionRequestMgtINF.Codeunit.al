@@ -265,7 +265,9 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
     end;
 
     /// <summary>
-    /// Sets the quantities of the current row from the inbound item ledger entries of its source line.
+    /// Sets the quantities of the current row from the inbound item ledger entries of its source line. Only the free part of
+    /// an entry counts as open: its remaining quantity minus what is reserved from it (a sales or transfer order, for example),
+    /// because a unit cannot be taken from reserved stock (review finding F2).
     /// </summary>
     /// <param name="TempFAConvSourceLine">The request row; its source document reference, item, variant and location must be set.</param>
     /// <param name="ReceivedBase">The received quantity of the source line in base units.</param>
@@ -273,23 +275,40 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
     local procedure RefreshQuantities(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary; ReceivedBase: Decimal; ConvertedQuantity: Integer)
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
+        FreeQuantity: Decimal;
         OpenInboundQuantity: Decimal;
         OpenSerialCount: Integer;
         SerialTracked: Boolean;
     begin
         ItemLedgerEntry.SetLoadFields("Serial No.", "Remaining Quantity");
+        ItemLedgerEntry.SetAutoCalcFields("Reserved Quantity");
         SetInboundEntryFilters(ItemLedgerEntry, TempFAConvSourceLine);
         if ItemLedgerEntry.FindSet() then
             repeat
-                OpenInboundQuantity += ItemLedgerEntry."Remaining Quantity";
+                FreeQuantity := GetFreeQuantity(ItemLedgerEntry);
+                OpenInboundQuantity += FreeQuantity;
                 if ItemLedgerEntry."Serial No." <> '' then begin
                     SerialTracked := true;
-                    if ItemLedgerEntry."Remaining Quantity" > 0 then
+                    if FreeQuantity >= 1 then
                         OpenSerialCount += 1;
                 end;
             until ItemLedgerEntry.Next() = 0;
 
         TempFAConvSourceLine.SetQuantities(ReceivedBase, ConvertedQuantity, OpenInboundQuantity, OpenSerialCount, SerialTracked);
+    end;
+
+    // The part of an inbound entry that a unit can be taken from: its remaining quantity minus the quantity reserved from it
+    // ("Reserved Quantity" must be calculated). The posting refuses to apply a unit to an entry whose remaining quantity is
+    // reserved (Item Jnl.-Post Line, ReservationPreventsApplication).
+    local procedure GetFreeQuantity(var ItemLedgerEntry: Record "Item Ledger Entry"): Decimal
+    var
+        FreeQuantity: Decimal;
+    begin
+        FreeQuantity := ItemLedgerEntry."Remaining Quantity" - ItemLedgerEntry."Reserved Quantity";
+        if FreeQuantity < 0 then
+            exit(0);
+
+        exit(FreeQuantity);
     end;
 
     local procedure SetInboundEntryFilters(var ItemLedgerEntry: Record "Item Ledger Entry"; var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary)
@@ -529,14 +548,15 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         exit(FAConversion.Count());
     end;
 
-    // The inbound entry of the line a unit is taken from: the entry with the lowest entry number that still has a remaining
-    // quantity, for a serial-tracked line the lowest one with a serial number (the open serial pick). The unit carries the cost of
-    // that entry (NDIT-6082, D27; review finding F1: a serial number too, not the cost of the first open entry at the location).
-    // A unit without a serial number is also applied to it (Applies-to Entry): without that the negative adjustment would apply by
-    // the costing method to any open entry of the item at the location (FIFO: the oldest), and a unit counted on this line would
-    // use up the stock of another received line, which then has nothing left to convert (NDIT-6082, review). A serial number is
-    // applied through its own item tracking, and an entry with other item tracking can only be applied through its tracking, so
-    // neither gets an entry to apply to. Returns 0 (and a blank serial number) when the line has no such entry.
+    // The inbound entry of the line a unit is taken from: the entry with the lowest entry number that still has a free quantity
+    // (remaining minus reserved) of at least one unit, for a serial-tracked line the lowest such one with a serial number (the open
+    // serial pick); reserved stock is skipped (review finding F2). The unit carries the cost of that entry (NDIT-6082, D27; review
+    // finding F1: a serial number too, not the cost of the first open entry at the location). A unit without a serial number is
+    // also applied to it (Applies-to Entry): without that the negative adjustment would apply by the costing method to any open
+    // entry of the item at the location (FIFO: the oldest), and a unit counted on this line would use up the stock of another
+    // received line, which then has nothing left to convert (NDIT-6082, review). A serial number is applied through its own item
+    // tracking, and an entry with other item tracking can only be applied through its tracking, so neither gets an entry to apply
+    // to. Returns 0 (and a blank serial number) when the line has no such entry.
     local procedure GetSourceEntryOfUnit(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary; var SerialNo: Code[50]; var AppliesToEntryNo: Integer): Integer
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
@@ -544,12 +564,13 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         SerialNo := '';
         AppliesToEntryNo := 0;
 
-        ItemLedgerEntry.SetLoadFields("Serial No.", "Lot No.", "Package No.");
+        ItemLedgerEntry.SetLoadFields("Serial No.", "Lot No.", "Package No.", "Remaining Quantity");
+        ItemLedgerEntry.SetAutoCalcFields("Reserved Quantity");
         SetInboundEntryFilters(ItemLedgerEntry, TempFAConvSourceLine);
         if TempFAConvSourceLine."Serial Tracked" then
             ItemLedgerEntry.SetFilter("Serial No.", '<>%1', '');
         ItemLedgerEntry.SetFilter("Remaining Quantity", '>0');
-        if not ItemLedgerEntry.FindFirst() then
+        if not FindFreeEntry(ItemLedgerEntry) then
             exit(0);
 
         if TempFAConvSourceLine."Serial Tracked" then
@@ -559,6 +580,19 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
                 AppliesToEntryNo := ItemLedgerEntry."Entry No.";
 
         exit(ItemLedgerEntry."Entry No.");
+    end;
+
+    // Positions the filtered entries (with "Reserved Quantity" calculated) on the first one in entry number order that has a free
+    // quantity of at least one unit.
+    local procedure FindFreeEntry(var ItemLedgerEntry: Record "Item Ledger Entry"): Boolean
+    begin
+        if ItemLedgerEntry.FindSet() then
+            repeat
+                if GetFreeQuantity(ItemLedgerEntry) >= 1 then
+                    exit(true);
+            until ItemLedgerEntry.Next() = 0;
+
+        exit(false);
     end;
 
     // FA Conversion Functions.FAAcquisition raises when the posting leaves no new acquisition cost entry (NDIT-6082,
@@ -640,7 +674,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         QuantityMustBePositiveErr: Label 'Quantity to convert must be at least 1.';
         QuantityExceedsErr: Label 'Quantity to convert (%1) exceeds the convertible quantity (%2) of %3 %4 (item %5).', Comment = '%1 = quantity per line, %2 = convertible quantity, %3 = source document no., %4 = source document line no., %5 = item no.';
         OneUnitWithJobQueueErr: Label '%1 units were requested, but only one unit can be converted per request while general journals are posted with the job queue (Post with Job Queue in General Ledger Setup). Convert one unit, and the next one after the job queue has posted its FA acquisition.', Comment = '%1 = number of units requested';
-        NothingToConvertErr: Label '%1 %2 (item %3) has no convertible units: received %4, already converted %5, open in inventory %6.', Comment = '%1 = source document no., %2 = source document line no., %3 = item no., %4 = received quantity (base), %5 = already converted quantity, %6 = open inbound quantity';
+        NothingToConvertErr: Label '%1 %2 (item %3) has no convertible units: received %4, already converted %5, open in inventory and not reserved %6.', Comment = '%1 = source document no., %2 = source document line no., %3 = item no., %4 = received quantity (base), %5 = already converted quantity, %6 = open inbound quantity that is not reserved';
         FAConversionStoppedErr: Label 'FA conversion stopped after %1 of %2 unit(s). Unit %3 (%4 %5, item %6) failed in step "%7": %8', Comment = '%1 = completed units, %2 = requested units, %3 = ordinal of the failing unit, %4 = source document no., %5 = source document line no., %6 = item no., %7 = step name, %8 = error text';
         FAConversionStoppedPostedErr: Label 'FA conversion stopped after %1 of %2 unit(s). Unit %3 (%4 %5, item %6) failed in step "%7": %8 The fixed asset %9 was already created and posted; create its transfer item from the Fixed Asset card.', Comment = '%1 = completed units, %2 = requested units, %3 = ordinal of the failing unit, %4 = source document no., %5 = source document line no., %6 = item no., %7 = step name, %8 = error text, %9 = fixed asset no.';
         FixedAssetNotFoundErr: Label 'Fixed asset %1 does not exist.', Comment = '%1 = fixed asset no.';

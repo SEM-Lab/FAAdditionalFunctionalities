@@ -171,12 +171,12 @@ table 60013 "FA Conv. Source Line INF"
     /// <summary>
     /// Sets the quantities of the current row and calculates its convertible quantity: the number of open serial
     /// numbers for a serial tracked line, otherwise the received base units that are neither converted yet nor
-    /// consumed from inventory, rounded down to whole units.
+    /// consumed from inventory nor reserved, rounded down to whole units.
     /// </summary>
     /// <param name="ReceivedBase">The received quantity of the line in base units.</param>
     /// <param name="Converted">The number of fixed assets already created from the line.</param>
-    /// <param name="OpenInbound">The remaining quantity of the inbound item ledger entries of the line.</param>
-    /// <param name="OpenSerials">The number of inbound entries of the line with a serial number and a remaining quantity.</param>
+    /// <param name="OpenInbound">The free quantity of the inbound item ledger entries of the line: their remaining quantity minus what is reserved from them.</param>
+    /// <param name="OpenSerials">The number of inbound entries of the line with a serial number whose remaining quantity is not reserved.</param>
     /// <param name="SerialTracked">Whether the inbound entries of the line carry serial numbers.</param>
     procedure SetQuantities(ReceivedBase: Decimal; Converted: Integer; OpenInbound: Decimal; OpenSerials: Integer; SerialTracked: Boolean)
     begin

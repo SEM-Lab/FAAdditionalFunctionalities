@@ -589,8 +589,8 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NoLinesSelectedErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 417445024" size-unit="char" translate="yes" xml:space="preserve">
-          <source>%1 %2 (item %3) has no convertible units: received %4, already converted %5, open in inventory %6.</source>
-          <note from="Developer" annotates="general" priority="2">%1 = source document no., %2 = source document line no., %3 = item no., %4 = received quantity (base), %5 = already converted quantity, %6 = open inbound quantity</note>
+          <source>%1 %2 (item %3) has no convertible units: received %4, already converted %5, open in inventory and not reserved %6.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = source document no., %2 = source document line no., %3 = item no., %4 = received quantity (base), %5 = already converted quantity, %6 = open inbound quantity that is not reserved</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NothingToConvertErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 1933533873" size-unit="char" translate="yes" xml:space="preserve">
