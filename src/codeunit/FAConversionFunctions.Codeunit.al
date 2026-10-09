@@ -300,8 +300,10 @@ codeunit 60000 "FA Conversion Functions"
     // stock of another received line of the item at the location, and it carries the cost of that entry (NDIT-6082, review;
     // D27). A serial number is applied through its item tracking, not through Applies-to Entry, but still carries the cost of
     // its own entry: without it the cost of the first open entry at the location was used, which is another receipt's cost
-    // whenever the cost is not adjusted before the acquisition reads it (review finding F1). Without entries the line applies by
-    // the costing method and takes the cost of the first open entry at the location, as it always did.
+    // whenever the cost is not adjusted before the acquisition reads it (review finding F1). The request engine gives that entry
+    // only when the serial number is applied to it, which needs SN Specific Tracking on the item tracking code (second review,
+    // finding 1). Without entries the line applies by the costing method and takes the cost of the first open entry at the
+    // location, as it always did.
     local procedure SetApplicationAndUnitCost(var ItemJournalLine: Record "Item Journal Line"; AppliesToEntryNo: Integer; CostEntryNo: Integer)
     begin
         if AppliesToEntryNo <> 0 then

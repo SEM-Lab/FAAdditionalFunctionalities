@@ -5,8 +5,10 @@ using Microsoft.Finance.VAT.Calculation;
 using Microsoft.Finance.VAT.Reporting;
 using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.FixedAssets.Setup;
+using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Inventory.Setup;
+using Microsoft.Inventory.Tracking;
 using Microsoft.Inventory.Transfer;
 using System.Security.User;
 
@@ -26,7 +28,9 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
                   tabledata "FA Setup" = r,
                   tabledata "Fixed Asset" = r,
                   tabledata "General Ledger Setup" = r,
+                  tabledata Item = r,
                   tabledata "Item Ledger Entry" = r,
+                  tabledata "Item Tracking Code" = r,
                   tabledata "Transfer Receipt Header" = r,
                   tabledata "Transfer Receipt Line" = r,
                   tabledata "User Setup" = r;
@@ -517,17 +521,19 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         SerialNo: Code[50];
         SourceEntryNo: Integer;
         AppliesToEntryNo: Integer;
+        CostEntryNo: Integer;
     begin
         CurrentStepName := AvailabilityCheckStepLbl;
         CheckAvailability(TempFAConvSourceLine);
         SourceEntryNo := GetSourceEntryOfUnit(TempFAConvSourceLine, SerialNo, AppliesToEntryNo);
+        CostEntryNo := GetCostEntryOfUnit(TempFAConvSourceLine, SourceEntryNo);
 
         CurrentStepName := CreateStepLbl;
         FAConversionFunctions.CreateFAConversionFromSourceLine(TempFAConvSourceLine, SerialNo, AcquisitionDate, FAConversion);
         CurrentFANo := FAConversion."FA No.";
 
         CurrentStepName := NegativeAdjustmentStepLbl;
-        FAConversionFunctions.NegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo, SourceEntryNo);
+        FAConversionFunctions.NegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo, CostEntryNo);
 
         CurrentStepName := FAAcquisitionStepLbl;
         FAConversionFunctions.FAAcquisition(FAConversion);
@@ -560,8 +566,8 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
     // The inbound entry of the line a unit is taken from: the entry with the lowest entry number that still has a free quantity
     // (remaining minus reserved) of at least one unit, for a serial-tracked line the lowest such one with a serial number (the open
-    // serial pick); reserved stock is skipped (review finding F2). The unit carries the cost of that entry (NDIT-6082, D27; review
-    // finding F1: a serial number too, not the cost of the first open entry at the location). A unit without a serial number is
+    // serial pick); reserved stock is skipped (review finding F2). The unit carries the cost of that entry when the posting takes it
+    // from that entry (NDIT-6082, D27; review finding F1; see GetCostEntryOfUnit). A unit without a serial number is
     // also applied to it (Applies-to Entry): without that the negative adjustment would apply by the costing method to any open
     // entry of the item at the location (FIFO: the oldest), and a unit counted on this line would use up the stock of another
     // received line, which then has nothing left to convert (NDIT-6082, review). A serial number is applied through its own item
@@ -590,6 +596,40 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
                 AppliesToEntryNo := ItemLedgerEntry."Entry No.";
 
         exit(ItemLedgerEntry."Entry No.");
+    end;
+
+    // The inbound entry whose unit cost the unit carries: its own entry (GetSourceEntryOfUnit), unless the posting may take the unit
+    // from another entry. A serial number is applied to its own entry only when the item tracking code of the item has SN Specific
+    // Tracking; without it the posting applies the serial number by the costing method to any open entry of the item at the location
+    // (Item Jnl.-Post Line, ApplyItemLedgEntrySetFilters, Base Application 28.5), so the cost of the serial's own entry and the entry
+    // the posting applies could disagree. Such a unit keeps the cost of the first open entry at the location (0), as before review
+    // finding F1 (second review, finding 1).
+    local procedure GetCostEntryOfUnit(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary; SourceEntryNo: Integer): Integer
+    begin
+        if TempFAConvSourceLine."Serial Tracked" then
+            if not IsSNSpecificTracked(TempFAConvSourceLine."Item No.") then
+                exit(0);
+
+        exit(SourceEntryNo);
+    end;
+
+    local procedure IsSNSpecificTracked(ItemNo: Code[20]): Boolean
+    var
+        Item: Record Item;
+        ItemTrackingCode: Record "Item Tracking Code";
+    begin
+        Item.SetLoadFields("Item Tracking Code");
+        if not Item.Get(ItemNo) then
+            exit(false);
+
+        if Item."Item Tracking Code" = '' then
+            exit(false);
+
+        ItemTrackingCode.SetLoadFields("SN Specific Tracking");
+        if not ItemTrackingCode.Get(Item."Item Tracking Code") then
+            exit(false);
+
+        exit(ItemTrackingCode."SN Specific Tracking");
     end;
 
     // Positions the filtered entries (with "Reserved Quantity" calculated) on the first one in entry number order that has a free
