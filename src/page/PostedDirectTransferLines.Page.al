@@ -3,6 +3,9 @@ namespace Infotek.FAAdditionalFunctionalities;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Transfer;
 
+/// <summary>
+/// List of posted direct transfer lines with an action that converts the selected lines into fixed assets.
+/// </summary>
 page 60005 "Posted Direct Transfer Lines"
 {
     ApplicationArea = All;
@@ -10,6 +13,7 @@ page 60005 "Posted Direct Transfer Lines"
     PageType = List;
     SourceTable = "Direct Trans. Line";
     UsageCategory = Lists;
+    Permissions = tabledata "Item Variant" = r;
 
     layout
     {
@@ -163,7 +167,8 @@ page 60005 "Posted Direct Transfer Lines"
                     repeat
                         i := 0;
                         repeat
-                            ItemVariant.Get(DirectTransLine."Item No.", DirectTransLine."Variant Code");
+                            if not ItemVariant.Get(DirectTransLine."Item No.", DirectTransLine."Variant Code") then
+                                Error(RecordWithTwoKeysDoesNotExistErr, ItemVariant.TableCaption(), DirectTransLine."Item No.", DirectTransLine."Variant Code");
                             FAConversionFunctions.CreateFAConversionFromItemVariant(ItemVariant, false, DirectTransLine."Transfer-to Code");
                             i += 1;
                         until i = DirectTransLine.Quantity;
@@ -175,4 +180,5 @@ page 60005 "Posted Direct Transfer Lines"
     }
     var
         FAConversionFunctions: Codeunit "FA Conversion Functions";
+        RecordWithTwoKeysDoesNotExistErr: Label '%1 %2, %3 does not exist.', Comment = '%1 = Table caption, %2 = First key value, %3 = Second key value';
 }

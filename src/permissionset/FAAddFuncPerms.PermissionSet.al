@@ -1,26 +1,30 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+/// <summary>
+/// Full access to the objects of the Fixed Asset Additional Functionalities extension.
+/// </summary>
 permissionset 60000 "FA Add Func Perms"
 {
     Caption = 'FA Add. Functions', Locked = true;
     Assignable = true;
     Access = Public;
-    Permissions = tabledata "FA Conversion" = RIMD,
-        tabledata "FA Conversion Setup" = RIMD,
-        table "FA Conversion" = X,
+    Permissions = table "FA Conversion" = X,
+        tabledata "FA Conversion" = RIMD,
         table "FA Conversion Setup" = X,
+        tabledata "FA Conversion Setup" = RIMD,
+        table "FA Depreciation Profile" = X,
+        tabledata "FA Depreciation Profile" = RIMD,
+        codeunit "FA Add Func Upgrade" = X,
         codeunit "FA Conversion Functions" = X,
+        codeunit "FA Location Sync Handler" = X,
+        codeunit "FA Page Functions" = X,
+        codeunit "FA Transfer Functions" = X,
+        codeunit "Location Type Automation" = X,
         page "FA Conversion" = X,
+        page "FA Conversion List" = X,
         page "FA Conversion Setup" = X,
         page "FA Conversion Wizard" = X,
-        page "FA Conversion List" = X,
-        codeunit "FA Transfer Functions" = X,
-        page "Posted Direct Transfer Lines" = X,
-        codeunit "FA Location Sync Handler" = X,
-        page "Pstd Transfer RcptLns INF" = X,
-        tabledata "FA Depreciation Profile" = RIMD,
-        table "FA Depreciation Profile" = X,
-        codeunit "Location Type Automation" = X,
         page "FA Depreciation Profiles" = X,
-        codeunit "FA Add Func Upgrade" = X;
+        page "Posted Direct Transfer Lines" = X,
+        page "Pstd Transfer RcptLns INF" = X;
 }

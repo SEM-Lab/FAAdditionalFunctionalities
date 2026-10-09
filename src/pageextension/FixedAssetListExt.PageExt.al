@@ -126,7 +126,7 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
 
                 trigger OnAction()
                 begin
-                    ShowLocationInfo(Rec);
+                    ShowLocationInfo();
                 end;
             }
             action(CreateBulkTransferOrder)
@@ -176,6 +176,7 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
     }
     var
         FATransferFunctions: Codeunit "FA Transfer Functions";
+        FAPageFunctions: Codeunit "FA Page Functions";
         FATransferEnabled: Boolean;
 
     trigger OnOpenPage()
@@ -183,23 +184,23 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
         FATransferEnabled := FATransferFunctions.IsFATransferEnabled();
     end;
 
-    local procedure ShowLocationInfo(var FixedAsset: Record "Fixed Asset")
+    local procedure ShowLocationInfo()
     var
-        LocationRecord: Record Location;
+        CurrentLocationType: Enum "Location Type INF";
         CurrentLocationCode: Code[10];
         MissingLocationErr: Label 'Current Location is not available for fixed asset %1.', Comment = '%1 = Fixed Asset No.';
         LocationNotFoundErr: Label 'Location %1 could not be found.', Comment = '%1 = Location Code';
         LocationInfoMsg: Label 'Current Location Code: %1\\Location Type: %2', Comment = '%1 = Location Code, %2 = Location Type';
     begin
-        FixedAsset.CalcFields("Current Location", "Current Location Type INF");
+        Rec.CalcFields("Current Location", "Current Location Type INF");
 
-        if FixedAsset."Current Location" = '' then
-            Error(MissingLocationErr, FixedAsset."No.");
+        if Rec."Current Location" = '' then
+            Error(MissingLocationErr, Rec."No.");
 
-        CurrentLocationCode := CopyStr(FixedAsset."Current Location", 1, MaxStrLen(CurrentLocationCode));
-        if not LocationRecord.Get(CurrentLocationCode) then
+        CurrentLocationCode := CopyStr(Rec."Current Location", 1, MaxStrLen(CurrentLocationCode));
+        if not FAPageFunctions.GetLocationType(CurrentLocationCode, CurrentLocationType) then
             Error(LocationNotFoundErr, CurrentLocationCode);
 
-        Message(LocationInfoMsg, CurrentLocationCode, Format(LocationRecord."Location Type INF"));
+        Message(LocationInfoMsg, CurrentLocationCode, Format(CurrentLocationType));
     end;
 }

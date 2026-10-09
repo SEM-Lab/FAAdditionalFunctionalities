@@ -4,6 +4,10 @@ using Microsoft.Foundation.NoSeries;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Inventory.Location;
 
+/// <summary>
+/// One item-to-fixed-asset conversion: the source item/variant and serial number, the created Fixed
+/// Asset, and the entry numbers of the posted negative adjustment and FA acquisition.
+/// </summary>
 table 60001 "FA Conversion"
 {
     DataClassification = CustomerContent;
@@ -25,7 +29,7 @@ table 60001 "FA Conversion"
                 NoSeries: Codeunit "No. Series";
             begin
                 if "No." <> xRec."No." then begin
-                    FAConversionSetup.Get();
+                    FAConversionSetup.GetRecordOnce();
                     NoSeries.TestManual(FAConversionSetup."FA Conversion No. Series");
                     "No. Series" := '';
                 end;
@@ -131,14 +135,15 @@ table 60001 "FA Conversion"
             //FAConversionSetup.Get();
             FAConversionSetup.TestField("FA Conversion No. Series");
             //NoSeriesManagement.InitSeries(FAConversionSetup."FA Conversion No. Series", xRec."No. Series", 0D, "No.", "No. Series");
-            Rec."No. Series" := FAConversionSetup."FA Conversion No. Series";
-            Rec."No." := NoSeries.GetNextNo(FAConversionSetup."FA Conversion No. Series", WorkDate());
+            Rec.Validate("No. Series", FAConversionSetup."FA Conversion No. Series");
+            // Direct assignment on purpose: the field OnValidate (TestManual) must not run for series-assigned numbers.
+            "No." := NoSeries.GetNextNo(FAConversionSetup."FA Conversion No. Series", WorkDate());
         end;
 
         // Default to the operation day. Kept intentionally consistent with the transfer-receipt
         // conversion flow (see FA Conversion Functions.CreateFAConversionFromTransferReceiptLine, NDIT-5968).
         "Posting Date" := WorkDate();
-        Rec."E-Book Description INF" := FAConversionSetup."E-Book Description INF";
+        Rec.Validate("E-Book Description INF", FAConversionSetup."E-Book Description INF");
     end;
 
     trigger OnDelete()

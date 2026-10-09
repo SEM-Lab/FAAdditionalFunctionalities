@@ -13,10 +13,29 @@ using Microsoft.Projects.Resources.Resource;
 using Microsoft.Service.Item;
 using System.Utilities;
 
+/// <summary>
+/// Fixed asset transfer functions (active only when Enable FA Transfer is set in FA Conversion Setup):
+/// FA transfer items with serial tracking, resource cards, bulk transfer orders and the location
+/// synchronisation of fixed assets and service items after transfers.
+/// </summary>
 codeunit 60001 "FA Transfer Functions"
 {
     SingleInstance = true;
     Access = Public;
+    Permissions = tabledata "E-Shipment Line INF" = m,
+                  tabledata "FA Conversion" = r,
+                  tabledata "FA Conversion Setup" = r,
+                  tabledata "FA Location" = ri,
+                  tabledata "Fixed Asset" = rm,
+                  tabledata Item = r,
+                  tabledata "Item Journal Line" = imd,
+                  tabledata "Item Ledger Entry" = r,
+                  tabledata "Item Tracking Code" = r,
+                  tabledata Location = r,
+                  tabledata Resource = rim,
+                  tabledata "Service Item" = rm,
+                  tabledata "Transfer Header" = im,
+                  tabledata "Transfer Line" = im;
 
     /// <summary>
     /// Returns whether the FA transfer features are enabled in FA Conversion Setup.
@@ -76,7 +95,6 @@ codeunit 60001 "FA Transfer Functions"
     procedure NewItemForTransfer(FixedAsset: Record "Fixed Asset")
     var
         Item: Record Item;
-        ItemTrackingCode: Record "Item Tracking Code";
         ItemJournalLine: Record "Item Journal Line";
         ItemLedgerEntry: Record "Item Ledger Entry";
         FAConversion: Record "FA Conversion";
@@ -98,6 +116,7 @@ codeunit 60001 "FA Transfer Functions"
         FAConversionSetup.TestField("FA Transfer Item No.");
 
         // Strict requirement: FA Conversion must exist with valid location
+        FAConversion.SetLoadFields("Location Code");
         FAConversion.SetRange("FA No.", FixedAsset."No.");
         if not FAConversion.FindFirst() then
             Error(FAConvNotFoundErr, FixedAsset."No.");
@@ -108,11 +127,7 @@ codeunit 60001 "FA Transfer Functions"
         if LocationCode = '' then
             Error(LocationCodeEmptyErr, FAConversion."No.");
 
-        Item.Get(FAConversionSetup."FA Transfer Item No.");
-        Item.TestField("Item Tracking Code");
-
-        ItemTrackingCode.Get(Item."Item Tracking Code");
-        ItemTrackingCode.TestField("SN Specific Tracking", true);
+        GetSerialTrackedFATransferItem(Item);
 
         FAConversionSetup.TestField("Item Journal Template Name");
         FAConversionSetup.TestField("Item Journal Batch Name");
@@ -122,9 +137,9 @@ codeunit 60001 "FA Transfer Functions"
         ItemJournalLine.DeleteAll(true);
 
         ItemJournalLine.Init();
-        ItemJournalLine."Journal Template Name" := FAConversionSetup."Item Journal Template Name";
-        ItemJournalLine."Journal Batch Name" := FAConversionSetup."Item Journal Batch Name";
-        ItemJournalLine."Line No." := 10000;
+        ItemJournalLine.Validate("Journal Template Name", FAConversionSetup."Item Journal Template Name");
+        ItemJournalLine.Validate("Journal Batch Name", FAConversionSetup."Item Journal Batch Name");
+        ItemJournalLine.Validate("Line No.", 10000);
         ItemJournalLine.SetUpNewLine(ItemJournalLine);
         ItemJournalLine.Insert(true);
         ItemJournalLine.Validate("Posting Date", WorkDate());
@@ -143,6 +158,26 @@ codeunit 60001 "FA Transfer Functions"
         CreateReservationEntryForPositiveAdjmt(ItemJournalLine, FixedAsset);
 
         Codeunit.Run(Codeunit::"Item Jnl.-Post Batch", ItemJournalLine);
+    end;
+
+    /// <summary>
+    /// Reads the FA transfer item from FA Conversion Setup and checks that it exists, has an item tracking
+    /// code and that the code tracks serial numbers specifically.
+    /// </summary>
+    /// <param name="Item">Receives the FA transfer item; only the item tracking code is loaded besides the key.</param>
+    local procedure GetSerialTrackedFATransferItem(var Item: Record Item)
+    var
+        ItemTrackingCode: Record "Item Tracking Code";
+    begin
+        Item.SetLoadFields("Item Tracking Code");
+        if not Item.Get(FAConversionSetup."FA Transfer Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), FAConversionSetup."FA Transfer Item No.");
+        Item.TestField("Item Tracking Code");
+
+        ItemTrackingCode.SetLoadFields("SN Specific Tracking");
+        if not ItemTrackingCode.Get(Item."Item Tracking Code") then
+            Error(RecordDoesNotExistErr, ItemTrackingCode.TableCaption(), Item."Item Tracking Code");
+        ItemTrackingCode.TestField("SN Specific Tracking", true);
     end;
 
     local procedure CreateReservationEntryForPositiveAdjmt(ItemJournalLine: Record "Item Journal Line"; FixedAsset: Record "Fixed Asset")
@@ -170,15 +205,10 @@ codeunit 60001 "FA Transfer Functions"
         Location: Record Location;
         ServiceItem: Record "Service Item";
     begin
-        if ItemLedgerEntry.IsTemporary() then
+        if not IsInboundTransferEntry(ItemLedgerEntry) then
             exit;
 
-        if ItemLedgerEntry."Entry Type" <> ItemLedgerEntry."Entry Type"::Transfer then
-            exit;
-
-        if not ItemLedgerEntry.Positive then
-            exit;
-
+        Location.SetLoadFields("Consignment Customer No. INF", "Consignment Ship-to Code INF");
         if not Location.Get(ItemLedgerEntry."Location Code") then
             exit;
 
@@ -195,6 +225,23 @@ codeunit 60001 "FA Transfer Functions"
         ServiceItem.Modify(true);
     end;
 
+    /// <summary>
+    /// Checks the guards that both location update procedures share: the entry is not a temporary record,
+    /// is a Transfer entry and is the positive (inbound) side of the transfer.
+    /// </summary>
+    /// <param name="ItemLedgerEntry">The item ledger entry to check.</param>
+    /// <returns>True when the entry is a persisted, positive Transfer entry; false otherwise.</returns>
+    local procedure IsInboundTransferEntry(var ItemLedgerEntry: Record "Item Ledger Entry"): Boolean
+    begin
+        if ItemLedgerEntry.IsTemporary() then
+            exit(false);
+
+        if ItemLedgerEntry."Entry Type" <> ItemLedgerEntry."Entry Type"::Transfer then
+            exit(false);
+
+        exit(ItemLedgerEntry.Positive);
+    end;
+
 
 
     // Removed deprecated event subscriber for NoSeriesManagement.OnAfterSetParametersBeforeRun
@@ -204,7 +251,7 @@ codeunit 60001 "FA Transfer Functions"
 
 
     [EventSubscriber(ObjectType::Table, Database::"Item Ledger Entry", OnAfterInsertEvent, '', true, true)]
-    local procedure OnAfterInsert_ILE(var Rec: Record "Item Ledger Entry")
+    local procedure "Item Ledger Entry_OnAfterInsertEvent"(var Rec: Record "Item Ledger Entry")
     begin
         // This fires on every Item Ledger Entry insert company-wide, so run the cheap
         // in-memory filters first and only inbound Transfer entries pay for the setup read.
@@ -227,13 +274,7 @@ codeunit 60001 "FA Transfer Functions"
         FixedAsset: Record "Fixed Asset";
         NewLocationCode: Code[10];
     begin
-        if ItemLedgerEntry.IsTemporary() then
-            exit;
-
-        if ItemLedgerEntry."Entry Type" <> ItemLedgerEntry."Entry Type"::Transfer then
-            exit;
-
-        if not ItemLedgerEntry.Positive then
+        if not IsInboundTransferEntry(ItemLedgerEntry) then
             exit;
 
         if ItemLedgerEntry."Serial No." = '' then
@@ -262,17 +303,18 @@ codeunit 60001 "FA Transfer Functions"
         if LocationCode = '' then
             exit;
 
+        Location.SetLoadFields(Name);
         if not FALocation.Get(LocationCode) then
             if Location.Get(LocationCode) then begin
                 FALocation.Init();
-                FALocation.Code := LocationCode;
-                FALocation.Name := CopyStr(Location.Name, 1, MaxStrLen(FALocation.Name));
+                FALocation.Validate(Code, LocationCode);
+                FALocation.Validate(Name, CopyStr(Location.Name, 1, MaxStrLen(FALocation.Name)));
                 FALocation.Insert(true);
             end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Create E-Shipment NAV Doc. INF", OnAfterCreateEShipmentLineFromTransferShipment, '', false, false)]
-    local procedure "Create E-Shipment NAV Doc. INF_OnAfterCreateEShipmentLineFromTransferShipment"(TransferShipmentHeader: Record "Transfer Shipment Header"; TransferShipmentLine: Record "Transfer Shipment Line"; var EShipmentLine: Record "E-Shipment Line INF")
+    local procedure "Create E-Shipment NAV Doc. INF_OnAfterCreateEShipmentLineFromTransferShipment"(TransferShipmentLine: Record "Transfer Shipment Line"; var EShipmentLine: Record "E-Shipment Line INF")
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
         ServiceItem: Record "Service Item";
@@ -280,11 +322,13 @@ codeunit 60001 "FA Transfer Functions"
         if not IsFATransferEnabled() then
             exit;
 
+        ItemLedgerEntry.SetLoadFields("Serial No.");
         ItemLedgerEntry.SetRange("Document No.", TransferShipmentLine."Document No.");
         ItemLedgerEntry.SetRange("Document Line No.", TransferShipmentLine."Line No.");
         if not ItemLedgerEntry.FindLast() then
             exit;
 
+        ServiceItem.SetLoadFields("Item No.", Description);
         if not ServiceItem.Get(CopyStr(ItemLedgerEntry."Serial No.", 1, MaxStrLen(ServiceItem."No."))) then
             exit;
 
@@ -294,7 +338,7 @@ codeunit 60001 "FA Transfer Functions"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"EShipmentLineTracking ESHP INF", OnBeforeInsertEvent, '', false, false)]
-    local procedure OnBeforeInsertEvent_EShipmentLineTrackingESHPINF(var Rec: Record "EShipmentLineTracking ESHP INF")
+    local procedure "EShipmentLineTracking ESHP INF_OnBeforeInsertEvent"(var Rec: Record "EShipmentLineTracking ESHP INF")
     begin
         if not IsFATransferEnabled() then
             exit;
@@ -306,13 +350,14 @@ codeunit 60001 "FA Transfer Functions"
     var
         ServiceItem: Record "Service Item";
     begin
+        ServiceItem.SetLoadFields("Serial No.");
         if not ServiceItem.Get(CopyStr(Rec."Serial No.", 1, MaxStrLen(ServiceItem."No."))) then
             exit;
 
         if ServiceItem."Serial No." = '' then
             exit;
 
-        Rec."Serial No." := CopyStr(ServiceItem."Serial No.", 1, MaxStrLen(Rec."Serial No."));
+        Rec.Validate("Serial No.", CopyStr(ServiceItem."Serial No.", 1, MaxStrLen(Rec."Serial No.")));
     end;
 
     /// <summary>
@@ -391,7 +436,6 @@ codeunit 60001 "FA Transfer Functions"
     var
         TransferHeader: Record "Transfer Header";
         TransferLine: Record "Transfer Line";
-        ItemLedgerEntry: Record "Item Ledger Entry";
         Item: Record Item;
         TransferFromCode: Code[10];
         LineNo: Integer;
@@ -404,14 +448,7 @@ codeunit 60001 "FA Transfer Functions"
             Error(FATransferDisabledErr);
 
         // Get Transfer-from location from first FA
-        FixedAsset.FindFirst();
-
-        // PERFORMANCE OPTIMIZATION: SetLoadFields for Item Ledger Entry lookup
-        ItemLedgerEntry.SetLoadFields("Serial No.", "Location Code", Open);
-        ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
-        ItemLedgerEntry.SetRange(Open, true);
-        ItemLedgerEntry.FindFirst();
-        TransferFromCode := ItemLedgerEntry."Location Code";
+        TransferFromCode := GetTransferFromCode(FixedAsset);
 
         // Validate Transfer-from <> Transfer-to
         if TransferFromCode = TransferToCode then
@@ -423,15 +460,15 @@ codeunit 60001 "FA Transfer Functions"
 
         // PERFORMANCE OPTIMIZATION: SetLoadFields for Item - only need tracking code and UOM
         Item.SetLoadFields("No.", "Item Tracking Code", "Base Unit of Measure");
-        Item.Get(FAConversionSetup."FA Transfer Item No.");
+        if not Item.Get(FAConversionSetup."FA Transfer Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), FAConversionSetup."FA Transfer Item No.");
 
         // Validate item tracking setup
         if not ItemHasSerialTracking(Item."No.") then
             Error(ItemTrackingRequiredErr, Item."No.");
 
-        // Create Transfer Header
+        // Create Transfer Header ("No." of the fresh record is blank: OnInsert assigns it from the No. Series)
         TransferHeader.Init();
-        TransferHeader."No." := '';  // Auto-assign from No. Series
         TransferHeader.Insert(true);
 
         TransferHeader.Validate("Transfer-from Code", TransferFromCode);
@@ -451,8 +488,8 @@ codeunit 60001 "FA Transfer Functions"
                 FACount += 1;
 
                 TransferLine.Init();
-                TransferLine."Document No." := TransferHeader."No.";
-                TransferLine."Line No." := LineNo;
+                TransferLine.Validate("Document No.", TransferHeader."No.");
+                TransferLine.Validate("Line No.", LineNo);
                 TransferLine.Insert(true);
 
                 TransferLine.Validate("Item No.", Item."No.");
@@ -470,6 +507,28 @@ codeunit 60001 "FA Transfer Functions"
 
         // Open the created transfer order
         Page.Run(Page::"Transfer Order", TransferHeader);
+    end;
+
+    /// <summary>
+    /// Returns the location of the open item ledger entry of the first selected Fixed Asset. The Fixed
+    /// Asset record set of the caller is positioned on its first record.
+    /// </summary>
+    /// <param name="FixedAsset">The selected Fixed Assets; positioned on the first record.</param>
+    /// <returns>The location code of the open item ledger entry that carries the first Fixed Asset's number as serial number.</returns>
+    local procedure GetTransferFromCode(var FixedAsset: Record "Fixed Asset"): Code[10]
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        if not FixedAsset.FindFirst() then
+            Error(NothingInFilterErr, FixedAsset.TableCaption(), FixedAsset.GetFilters());
+
+        // PERFORMANCE OPTIMIZATION: SetLoadFields for Item Ledger Entry lookup
+        ItemLedgerEntry.SetLoadFields("Serial No.", "Location Code", Open);
+        ItemLedgerEntry.SetRange("Serial No.", FixedAsset."No.");
+        ItemLedgerEntry.SetRange(Open, true);
+        if not ItemLedgerEntry.FindFirst() then
+            Error(NothingInFilterErr, ItemLedgerEntry.TableCaption(), ItemLedgerEntry.GetFilters());
+        exit(ItemLedgerEntry."Location Code");
     end;
 
     /// <summary>
@@ -561,12 +620,14 @@ codeunit 60001 "FA Transfer Functions"
         Item: Record Item;
         ItemTrackingCode: Record "Item Tracking Code";
     begin
+        Item.SetLoadFields("Item Tracking Code");
         if not Item.Get(ItemNo) then
             exit(false);
 
         if Item."Item Tracking Code" = '' then
             exit(false);
 
+        ItemTrackingCode.SetLoadFields("SN Specific Tracking");
         if not ItemTrackingCode.Get(Item."Item Tracking Code") then
             exit(false);
 
@@ -576,4 +637,6 @@ codeunit 60001 "FA Transfer Functions"
     var
         FAConversionSetup: Record "FA Conversion Setup";
         FATransferDisabledErr: Label 'FA transfer features are disabled. To use this function, enable the Enable FA Transfer field in FA Conversion Setup.';
+        RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
+        NothingInFilterErr: Label 'There is no %1 within the filter. Filters: %2', Comment = '%1 = Table caption, %2 = Filters';
 }

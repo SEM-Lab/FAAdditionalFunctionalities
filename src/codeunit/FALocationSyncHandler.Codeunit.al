@@ -4,10 +4,19 @@ using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.FixedAssets.Setup;
 using Microsoft.Inventory.Location;
 
+/// <summary>
+/// Keeps the location of FA Conversion records and their Fixed Assets in sync and makes sure the
+/// matching FA Location exists.
+/// </summary>
 codeunit 60002 "FA Location Sync Handler"
 {
+    Permissions = tabledata "FA Conversion" = m,
+                  tabledata "FA Location" = ri,
+                  tabledata "Fixed Asset" = rm,
+                  tabledata Location = r;
+
     [EventSubscriber(ObjectType::Table, Database::"Fixed Asset", OnAfterModifyEvent, '', false, false)]
-    local procedure OnAfterModifyFixedAsset(var Rec: Record "Fixed Asset"; var xRec: Record "Fixed Asset"; RunTrigger: Boolean)
+    local procedure "Fixed Asset_OnAfterModifyEvent"(var Rec: Record "Fixed Asset"; var xRec: Record "Fixed Asset"; RunTrigger: Boolean)
     begin
         if not RunTrigger then
             exit;
@@ -17,7 +26,7 @@ codeunit 60002 "FA Location Sync Handler"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"FA Conversion", OnAfterInsertEvent, '', false, false)]
-    local procedure OnAfterInsertFAConversion(var Rec: Record "FA Conversion"; RunTrigger: Boolean)
+    local procedure "FA Conversion_OnAfterInsertEvent"(var Rec: Record "FA Conversion"; RunTrigger: Boolean)
     begin
         if not RunTrigger then
             exit;
@@ -27,7 +36,7 @@ codeunit 60002 "FA Location Sync Handler"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"FA Conversion", OnAfterModifyEvent, '', false, false)]
-    local procedure OnAfterModifyFAConversion(var Rec: Record "FA Conversion"; var xRec: Record "FA Conversion"; RunTrigger: Boolean)
+    local procedure "FA Conversion_OnAfterModifyEvent"(var Rec: Record "FA Conversion"; var xRec: Record "FA Conversion"; RunTrigger: Boolean)
     var
         FixedAsset: Record "Fixed Asset";
     begin
@@ -56,15 +65,12 @@ codeunit 60002 "FA Location Sync Handler"
         // Ensure FA Location exists (similar to existing EnsureFALocationExists logic)
         EnsureFALocationExists(FixedAsset."FA Location Code");
 
-        // Update related FA Conversion records to maintain consistency
+        // Update related FA Conversion records to maintain consistency. ModifyAll never runs
+        // OnValidate (no Location table-relation check - an FA Location need not be an inventory
+        // Location), exactly like the former assignment + Modify(false) loop.
         FAConversion.SetRange("FA No.", FixedAsset."No.");
-        if FAConversion.FindSet(true) then
-            repeat
-                if FAConversion."Location Code" <> FixedAsset."FA Location Code" then begin
-                    FAConversion."Location Code" := FixedAsset."FA Location Code";
-                    FAConversion.Modify(false);
-                end;
-            until FAConversion.Next() = 0;
+        FAConversion.SetFilter("Location Code", '<>%1', FixedAsset."FA Location Code");
+        FAConversion.ModifyAll("Location Code", FixedAsset."FA Location Code", false);
 
         // The Current Location field is a FlowField that looks up from Item Ledger Entry
         // We cannot directly modify it, but we can trigger a recalculation by modifying the record
@@ -80,11 +86,12 @@ codeunit 60002 "FA Location Sync Handler"
         if LocationCode = '' then
             exit;
 
+        Location.SetLoadFields(Name);
         if not FALocation.Get(LocationCode) then
             if Location.Get(LocationCode) then begin
                 FALocation.Init();
-                FALocation.Code := LocationCode;
-                FALocation.Name := CopyStr(Location.Name, 1, MaxStrLen(FALocation.Name));
+                FALocation.Validate(Code, LocationCode);
+                FALocation.Validate(Name, CopyStr(Location.Name, 1, MaxStrLen(FALocation.Name)));
                 FALocation.Insert(true);
             end;
     end;

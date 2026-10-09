@@ -1,5 +1,9 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+/// <summary>
+/// Depreciation profile that an item can reference to set the depreciation life of the fixed assets
+/// created from it when the item has no FA life years.
+/// </summary>
 table 60002 "FA Depreciation Profile"
 {
     Caption = 'FA Depreciation Profile';
@@ -23,7 +27,7 @@ table 60002 "FA Depreciation Profile"
         field(3; "Depreciation Life Formula"; DateFormula)
         {
             Caption = 'Depreciation Life Formula';
-            ToolTip = 'Defines the depreciation life that will be applied to fixed assets created from items linked to this profile.';
+            ToolTip = 'Specifies the depreciation life that is applied to fixed assets created from items linked to this profile.';
         }
     }
 

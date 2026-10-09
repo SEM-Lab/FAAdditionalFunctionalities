@@ -1,5 +1,8 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+/// <summary>
+/// List of FA depreciation profiles that items can reference.
+/// </summary>
 page 60010 "FA Depreciation Profiles"
 {
     Caption = 'FA Depreciation Profiles';

@@ -1,5 +1,8 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+/// <summary>
+/// Steps of the FA Conversion setup wizard (page FA Conversion Wizard).
+/// </summary>
 enum 60001 "Wizard Step"
 {
     Extensible = true;

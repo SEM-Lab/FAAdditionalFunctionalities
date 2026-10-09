@@ -11,6 +11,7 @@ codeunit 60004 "FA Add Func Upgrade"
 {
     Subtype = Upgrade;
     Access = Internal;
+    Permissions = tabledata "FA Conversion Setup" = rm;
 
     trigger OnUpgradePerCompany()
     begin
@@ -18,7 +19,7 @@ codeunit 60004 "FA Add Func Upgrade"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Upgrade Tag", OnGetPerCompanyUpgradeTags, '', false, false)]
-    local procedure OnGetPerCompanyUpgradeTags(var PerCompanyUpgradeTags: List of [Code[250]])
+    local procedure "Upgrade Tag_OnGetPerCompanyUpgradeTags"(var PerCompanyUpgradeTags: List of [Code[250]])
     begin
         PerCompanyUpgradeTags.Add(AutoCreateFATransferItemTagTok);
     end;
@@ -37,7 +38,7 @@ codeunit 60004 "FA Add Func Upgrade"
             exit;
 
         if FAConversionSetup.Get() then begin
-            FAConversionSetup."Auto Create FA Transfer Item" := true;
+            FAConversionSetup.Validate("Auto Create FA Transfer Item", true);
             FAConversionSetup.Modify(false);
         end;
 

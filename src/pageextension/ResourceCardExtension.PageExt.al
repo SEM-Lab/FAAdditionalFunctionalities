@@ -24,7 +24,8 @@ pageextension 60003 "Resource Card Extension" extends "Resource Card"
                     var
                         FixedAsset: Record "Fixed Asset";
                     begin
-                        FixedAsset.Get(Rec."No.");
+                        if not FAPageFunctions.GetFixedAsset(Rec."No.", FixedAsset) then
+                            Error(RecordDoesNotExistErr, FixedAsset.TableCaption(), Rec."No.");
                         Page.Run(Page::"Fixed Asset Card", FixedAsset);
                     end;
                 }
@@ -38,7 +39,9 @@ pageextension 60003 "Resource Card Extension" extends "Resource Card"
     }
     var
         FATransferFunctions: Codeunit "FA Transfer Functions";
+        FAPageFunctions: Codeunit "FA Page Functions";
         FATransferEnabled: Boolean;
+        RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
 
     trigger OnOpenPage()
     begin

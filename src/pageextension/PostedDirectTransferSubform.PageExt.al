@@ -27,7 +27,8 @@ pageextension 60005 "Posted Direct Transfer Subform" extends "Posted Direct Tran
                     repeat
                         i := 0;
                         repeat
-                            ItemVariant.Get(Rec."Item No.", Rec."Variant Code");
+                            if not FAPageFunctions.GetItemVariant(Rec."Item No.", Rec."Variant Code", ItemVariant) then
+                                Error(RecordWithTwoKeysDoesNotExistErr, ItemVariant.TableCaption(), Rec."Item No.", Rec."Variant Code");
                             FAConversionFunctions.CreateFAConversionFromItemVariant(ItemVariant, false, Rec."Transfer-to Code");
                             i += 1;
                         until i >= Rec.Quantity;
@@ -38,4 +39,6 @@ pageextension 60005 "Posted Direct Transfer Subform" extends "Posted Direct Tran
     }
     var
         FAConversionFunctions: Codeunit "FA Conversion Functions";
+        FAPageFunctions: Codeunit "FA Page Functions";
+        RecordWithTwoKeysDoesNotExistErr: Label '%1 %2, %3 does not exist.', Comment = '%1 = Table caption, %2 = First key value, %3 = Second key value';
 }

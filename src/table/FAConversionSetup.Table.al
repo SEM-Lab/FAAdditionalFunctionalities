@@ -9,11 +9,16 @@ using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Journal;
 using Microsoft.Inventory.Location;
 
+/// <summary>
+/// Single-record setup of the FA conversion: number series, depreciation book, item and general
+/// journal templates/batches, VAT groups, and the FA transfer switches.
+/// </summary>
 table 60000 "FA Conversion Setup"
 {
     DataClassification = CustomerContent;
     Caption = 'FA Conversion Setup';
     Access = Public;
+    Permissions = tabledata "FA Conversion Setup" = ri;
     fields
     {
         field(1; "Primary Key"; Code[10])
@@ -124,15 +129,24 @@ table 60000 "FA Conversion Setup"
 
     var
         RecordHasBeenRead: Boolean;
+        SetupDoesNotExistErr: Label 'The %1 does not exist.', Comment = '%1 = FA Conversion Setup table caption';
 
+    /// <summary>
+    /// Reads the setup record once per record variable instance; later calls on the same instance reuse the
+    /// values already read. Raises an error when the setup record does not exist.
+    /// </summary>
     procedure GetRecordOnce()
     begin
         if RecordHasBeenRead then
             exit;
-        Get();
+        if not Get() then
+            Error(SetupDoesNotExistErr, TableCaption());
         RecordHasBeenRead := true;
     end;
 
+    /// <summary>
+    /// Inserts the empty setup record when it does not exist yet; an existing record is left unchanged.
+    /// </summary>
     procedure InsertIfNotExists()
     begin
         Reset();

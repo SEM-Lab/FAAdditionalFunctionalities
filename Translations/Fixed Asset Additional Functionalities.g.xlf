@@ -148,6 +148,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1809950204 - NamedType 2997565235" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The %1 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Conversion Setup table caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion Setup - NamedType SetupDoesNotExistErr</note>
+        </trans-unit>
         <trans-unit id="Table 1809950204 - Field 1652145534 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies whether the FA Transfer Item is created automatically when converting from a Transfer Receipt Line. If disabled, use the Create FA Transfer Item action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -319,7 +324,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Code - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 227796887 - Field 2234681691 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Defines the depreciation life that will be applied to fixed assets created from items linked to this profile.</source>
+          <source>Specifies the depreciation life that is applied to fixed assets created from items linked to this profile.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Depreciation Life Formula - Property ToolTip</note>
         </trans-unit>
@@ -337,6 +342,16 @@
           <source>Description</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Depreciation Profile - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - NamedType 3086330205" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = Key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - NamedType RecordDoesNotExistErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - NamedType 2657337747" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2, %3 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = First key value, %3 = Second key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - NamedType RecordWithTwoKeysDoesNotExistErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 1812270184 - NamedType 631801445" size-unit="char" translate="yes" xml:space="preserve">
           <source>Location %1 does not exist. Please create the location first or set a valid default location in FA Conversion Setup.</source>
@@ -377,6 +392,16 @@
           <source>FA transfer features are disabled. To use this function, enable the Enable FA Transfer field in FA Conversion Setup.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - NamedType FATransferDisabledErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - NamedType 442836921" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There is no %1 within the filter. Filters: %2</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = Filters</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - NamedType NothingInFilterErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 118642255 - NamedType 3086330205" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = Key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - NamedType RecordDoesNotExistErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 118642255 - Method 3161602747 - NamedType 255132806" size-unit="char" translate="yes" xml:space="preserve">
           <source>Transfer-from and Transfer-to locations cannot be the same.</source>
@@ -428,20 +453,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Transfer Functions - Method ValidateBulkTransferSelection - NamedType NoCurrentLocationErr</note>
         </trans-unit>
-        <trans-unit id="Codeunit 1899522374 - Method 971159013 - NamedType 243883307" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Automatic FA conversion failed for receipt %1 line %2. Details: %3</source>
-          <note from="Developer" annotates="general" priority="2">%1 = Document No., %2 = Line No., %3 = Error Text</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Location Type Automation - Method OnAfterInsertTransRcptLine - NamedType AutoConversionFailedErr</note>
-        </trans-unit>
-        <trans-unit id="Codeunit 1899522374 - Method 1921803029 - NamedType 2944844904" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Codeunit 1899522374 - Method 2298252390 - NamedType 2944844904" size-unit="char" translate="yes" xml:space="preserve">
           <source>Location %1 does not have a Location Type. Do you want to set it to Apartment?</source>
           <note from="Developer" annotates="general" priority="2">%1 = Location Code</note>
-          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Location Type Automation - Method TransferLineOnAfterValidateTransferToCode - NamedType PromptTxt</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Location Type Automation - Method Transfer Line_OnAfterValidateEvent_Transfer-to Code - NamedType PromptTxt</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 1899522374 - Method 989995292 - NamedType 243883307" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Automatic FA conversion failed for receipt %1 line %2. Details: %3</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Document No., %2 = Line No., %3 = Error Text</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit Location Type Automation - Method TransferOrder-Post Receipt_OnAfterInsertTransRcptLine - NamedType AutoConversionFailedErr</note>
         </trans-unit>
         <trans-unit id="Page 1971911761 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Conversion</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1971911761 - NamedType 3086330205" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = Key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion - NamedType RecordDoesNotExistErr</note>
         </trans-unit>
         <trans-unit id="Page 1971911761 - Control 3328780666 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>FA Acquisition</source>
@@ -603,6 +633,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3954217406 - NamedType 2657337747" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2, %3 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = First key value, %3 = Second key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Posted Direct Transfer Lines - NamedType RecordWithTwoKeysDoesNotExistErr</note>
+        </trans-unit>
         <trans-unit id="Page 3954217406 - Control 47657272 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the Description 2 field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -727,6 +762,16 @@
           <source>Posted Transfer Receipt Lines</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1938024015 - NamedType 442836921" size-unit="char" translate="yes" xml:space="preserve">
+          <source>There is no %1 within the filter. Filters: %2</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = Filters</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - NamedType NothingInFilterErr</note>
+        </trans-unit>
+        <trans-unit id="Page 1938024015 - NamedType 3086330205" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = Key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page Pstd Transfer RcptLns INF - NamedType RecordDoesNotExistErr</note>
         </trans-unit>
         <trans-unit id="Page 1938024015 - Control 2357346185 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the location code that will be used for Fixed Asset conversion (same as Transfer-to Code).</source>
@@ -973,6 +1018,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Location List Extension - Control Location Type INF - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="PageExtension 3908294399 - NamedType 2657337747" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 3908294399">
+          <source>%1 %2, %3 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = First key value, %3 = Second key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Direct Transfer Subform - NamedType RecordWithTwoKeysDoesNotExistErr</note>
+        </trans-unit>
         <trans-unit id="PageExtension 3908294399 - Action 2018568690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 3908294399">
           <source>Executes the Create Fixed Assets For Selected Lines action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -982,6 +1032,11 @@
           <source>Create Fixed Assets For Selected Lines</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">PageExtension Posted Direct Transfer Subform - Action CreateFixedAssetsForSelectedLines - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PageExtension 2451172297 - NamedType 3086330205" size-unit="char" translate="yes" xml:space="preserve" al-object-target="PageExtension 2451172297">
+          <source>%1 %2 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = Key value</note>
+          <note from="Xliff Generator" annotates="general" priority="3">PageExtension Resource Card Extension - NamedType RecordDoesNotExistErr</note>
         </trans-unit>
         <trans-unit id="PageExtension 2451172297 - Control 673033145 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1580859378">
           <source>FA Data</source>
@@ -1039,7 +1094,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Ship-to Code - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 1557953399 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
-          <source>Shows the location type derived from the fixed asset's current location.</source>
+          <source>Specifies the location type derived from the fixed asset's current location.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Type INF - Property ToolTip</note>
         </trans-unit>
@@ -1099,7 +1154,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Conversion Count - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3061441615 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
-          <source>Selects the depreciation profile that controls the depreciation life for automatic FA conversions.</source>
+          <source>Specifies the depreciation profile that controls the depreciation life for automatic FA conversions.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Depr. Profile Code INF - Property ToolTip</note>
         </trans-unit>
@@ -1109,7 +1164,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Depr. Profile Code INF - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3429167600 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
-          <source>Sabit kıymete dönüşümde amortisman ömür yılını belirtir.</source>
+          <source>Specifies the number of depreciation years that is used when the item is converted to a fixed asset.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Life Years INF - Property ToolTip</note>
         </trans-unit>

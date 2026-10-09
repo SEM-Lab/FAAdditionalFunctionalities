@@ -5,6 +5,10 @@ using Microsoft.Inventory.Location;
 using Microsoft.Inventory.Transfer;
 using Microsoft.Purchases.Document;
 
+/// <summary>
+/// List of posted transfer receipt lines with an action that converts the selected lines into fixed assets;
+/// can also be used as the item charge assignment lookup (Initialize).
+/// </summary>
 page 60004 "Pstd Transfer RcptLns INF"
 {
     Caption = 'Posted Transfer Receipt Lines';
@@ -13,6 +17,8 @@ page 60004 "Pstd Transfer RcptLns INF"
     SourceTable = "Transfer Receipt Line";
     UsageCategory = History;
     ApplicationArea = All;
+    Permissions = tabledata Location = r,
+                  tabledata "Transfer Receipt Header" = r;
 
     layout
     {
@@ -115,7 +121,8 @@ page 60004 "Pstd Transfer RcptLns INF"
                     var
                         TransRcptHeader: Record "Transfer Receipt Header";
                     begin
-                        TransRcptHeader.Get(Rec."Document No.");
+                        if not TransRcptHeader.Get(Rec."Document No.") then
+                            Error(RecordDoesNotExistErr, TransRcptHeader.TableCaption(), Rec."Document No.");
                         Page.Run(Page::"Posted Transfer Receipt", TransRcptHeader);
                     end;
                 }
@@ -187,16 +194,24 @@ page 60004 "Pstd Transfer RcptLns INF"
     var
         FromTransferReceiptLine: Record "Transfer Receipt Line";
         TempTransferReceiptLine: Record "Transfer Receipt Line" temporary;
-        ItemChargeAssgntPurchItemChargeAssignmentPurch: Record "Item Charge Assignment (Purch)";
+        TempItemChargeAssignmentPurch: Record "Item Charge Assignment (Purch)" temporary;
         ItemChargeAssgntPurch: Codeunit "Item Charge Assgnt. (Purch.)";
         FAConversionFunctions: Codeunit "FA Conversion Functions";
         UnitCost: Decimal;
         CreateCostDistrib: Boolean;
         DocumentNoHideValue: Boolean;
+        RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
+        NothingInFilterErr: Label 'There is no %1 within the filter. Filters: %2', Comment = '%1 = Table caption, %2 = Filters';
 
+    /// <summary>
+    /// Prepares the page as the lookup for an item charge assignment: when the user confirms the lookup
+    /// (LookupOK), item charge assignment lines are created for the selected transfer receipt lines.
+    /// </summary>
+    /// <param name="NewItemChargeAssignmentPurch">The item charge assignment line used as the template for the new assignment lines.</param>
+    /// <param name="NewUnitCost">The unit cost to assign.</param>
     procedure Initialize(NewItemChargeAssignmentPurch: Record "Item Charge Assignment (Purch)"; NewUnitCost: Decimal)
     begin
-        ItemChargeAssgntPurchItemChargeAssignmentPurch := NewItemChargeAssignmentPurch;
+        TempItemChargeAssignmentPurch := NewItemChargeAssignmentPurch;
         UnitCost := NewUnitCost;
         CreateCostDistrib := true;
     end;
@@ -211,12 +226,14 @@ page 60004 "Pstd Transfer RcptLns INF"
         if not TempTransferReceiptLine.FindFirst() then begin
             TransferReceiptLine.CopyFilters(Rec);
             TransferReceiptLine.SetRange("Document No.", DocNo);
-            TransferReceiptLine.FindFirst();
+            if not TransferReceiptLine.FindFirst() then
+                Error(NothingInFilterErr, TransferReceiptLine.TableCaption(), TransferReceiptLine.GetFilters());
             TempTransferReceiptLine := TransferReceiptLine;
             TempTransferReceiptLine.Insert(false);
         end;
         if TempTransferReceiptLine."Line No." = LineNo then
             exit(true);
+        exit(false);
     end;
 
     local procedure LookupOKOnPush()
@@ -225,8 +242,12 @@ page 60004 "Pstd Transfer RcptLns INF"
             FromTransferReceiptLine.Copy(Rec);
             CurrPage.SetSelectionFilter(FromTransferReceiptLine);
             if FromTransferReceiptLine.FindFirst() then begin
-                ItemChargeAssgntPurchItemChargeAssignmentPurch."Unit Cost" := UnitCost;
-                ItemChargeAssgntPurch.CreateTransferRcptChargeAssgnt(FromTransferReceiptLine, ItemChargeAssgntPurchItemChargeAssignmentPurch);
+                // Template record only: CreateTransferRcptChargeAssgnt reads its field values and inserts
+                // new lines through its own record variable, so the template is kept temporary and its
+                // Unit Cost is set without running OnValidate (which would modify the purchase document's
+                // assignment lines via SuggestAssgntFromLine) - as before.
+                TempItemChargeAssignmentPurch."Unit Cost" := UnitCost;
+                ItemChargeAssgntPurch.CreateTransferRcptChargeAssgnt(FromTransferReceiptLine, TempItemChargeAssignmentPurch);
             end;
         end;
     end;
@@ -244,6 +265,7 @@ page 60004 "Pstd Transfer RcptLns INF"
         if LocationCode = '' then
             exit('');
 
+        Location.SetLoadFields(Name);
         if Location.Get(LocationCode) then
             exit(Location.Name);
 

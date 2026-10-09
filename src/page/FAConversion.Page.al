@@ -5,6 +5,9 @@ using Microsoft.FixedAssets.Ledger;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Ledger;
 
+/// <summary>
+/// Card of one FA Conversion, with the Negative Adjustment and FA Acquisition actions.
+/// </summary>
 page 60002 "FA Conversion"
 {
     ApplicationArea = All;
@@ -12,6 +15,10 @@ page 60002 "FA Conversion"
     PageType = Card;
     SourceTable = "FA Conversion";
     UsageCategory = None;
+    Permissions = tabledata "FA Ledger Entry" = r,
+                  tabledata "Fixed Asset" = r,
+                  tabledata Item = r,
+                  tabledata "Item Ledger Entry" = r;
     //Editable = false;
 
     layout
@@ -41,7 +48,8 @@ page 60002 "FA Conversion"
                     var
                         FixedAsset: Record "Fixed Asset";
                     begin
-                        FixedAsset.Get(Rec."FA No.");
+                        if not FixedAsset.Get(Rec."FA No.") then
+                            Error(RecordDoesNotExistErr, FixedAsset.TableCaption(), Rec."FA No.");
                         Page.Run(Page::"Fixed Asset Card", FixedAsset);
                     end;
                 }
@@ -69,7 +77,8 @@ page 60002 "FA Conversion"
                     var
                         ItemLedgerEntry: Record "Item Ledger Entry";
                     begin
-                        ItemLedgerEntry.Get(Rec."Negative Adjmt. ILE Entry No.");
+                        if not ItemLedgerEntry.Get(Rec."Negative Adjmt. ILE Entry No.") then
+                            Error(RecordDoesNotExistErr, ItemLedgerEntry.TableCaption(), Rec."Negative Adjmt. ILE Entry No.");
                         Page.Run(Page::"Item Ledger Entries", ItemLedgerEntry);
                     end;
                 }
@@ -94,7 +103,8 @@ page 60002 "FA Conversion"
                     var
                         FALedgerEntry: Record "FA Ledger Entry";
                     begin
-                        FALedgerEntry.Get(Rec."FA Acquisition Entry No.");
+                        if not FALedgerEntry.Get(Rec."FA Acquisition Entry No.") then
+                            Error(RecordDoesNotExistErr, FALedgerEntry.TableCaption(), Rec."FA Acquisition Entry No.");
                         Page.Run(Page::"FA Ledger Entries", FALedgerEntry);
                     end;
                 }
@@ -143,7 +153,8 @@ page 60002 "FA Conversion"
     begin
         SerialNoEditable := false;
 
-        Item.Get(Rec."Item No.");
+        if not Item.Get(Rec."Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), Rec."Item No.");
         if Item."Item Tracking Code" <> '' then
             SerialNoEditable := true;
     end;
@@ -152,4 +163,5 @@ page 60002 "FA Conversion"
         Item: Record Item;
         FAConversionFunctions: Codeunit "FA Conversion Functions";
         SerialNoEditable: Boolean;
+        RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
 }

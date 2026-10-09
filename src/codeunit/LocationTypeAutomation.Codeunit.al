@@ -4,10 +4,17 @@ using Microsoft.Inventory.Location;
 using Microsoft.Inventory.Transfer;
 using System.Utilities;
 
+/// <summary>
+/// Converts received transfer lines to fixed assets automatically when items move from a Warehouse
+/// location to an Apartment location, and proposes the Apartment type for untyped transfer-to locations.
+/// </summary>
 codeunit 60003 "Location Type Automation"
 {
+    Permissions = tabledata Location = rm,
+                  tabledata "Transfer Receipt Line" = m;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"TransferOrder-Post Receipt", OnAfterInsertTransRcptLine, '', false, false)]
-    local procedure OnAfterInsertTransRcptLine(var TransRcptLine: Record "Transfer Receipt Line"; TransLine: Record "Transfer Line"; CommitIsSuppressed: Boolean; TransferReceiptHeader: Record "Transfer Receipt Header")
+    local procedure "TransferOrder-Post Receipt_OnAfterInsertTransRcptLine"(var TransRcptLine: Record "Transfer Receipt Line")
     var
         AutoConversionFailedErr: Label 'Automatic FA conversion failed for receipt %1 line %2. Details: %3', Comment = '%1 = Document No., %2 = Line No., %3 = Error Text';
     begin
@@ -20,7 +27,7 @@ codeunit 60003 "Location Type Automation"
         if not TryRunAutoConversion(TransRcptLine) then
             Error(AutoConversionFailedErr, TransRcptLine."Document No.", TransRcptLine."Line No.", GetLastErrorText());
 
-        TransRcptLine."Auto FA Conversion Done INF" := true;
+        TransRcptLine.Validate("Auto FA Conversion Done INF", true);
         TransRcptLine.Modify(false);
     end;
 
@@ -64,7 +71,7 @@ codeunit 60003 "Location Type Automation"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Transfer Line", OnAfterValidateEvent, "Transfer-to Code", false, false)]
-    local procedure TransferLineOnAfterValidateTransferToCode(var Rec: Record "Transfer Line"; var xRec: Record "Transfer Line"; CurrFieldNo: Integer)
+    local procedure "Transfer Line_OnAfterValidateEvent_Transfer-to Code"(var Rec: Record "Transfer Line")
     var
         Location: Record Location;
         ConfirmManagement: Codeunit "Confirm Management";

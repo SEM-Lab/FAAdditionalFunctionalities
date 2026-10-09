@@ -1,5 +1,8 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+/// <summary>
+/// List of FA Conversion records; opens the FA Conversion card.
+/// </summary>
 page 60003 "FA Conversion List"
 {
     ApplicationArea = All;

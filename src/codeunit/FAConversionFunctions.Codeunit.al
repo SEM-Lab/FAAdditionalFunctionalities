@@ -19,10 +19,29 @@ using Microsoft.Inventory.Transfer;
 using Microsoft.Service.Item;
 using Microsoft.Service.Setup;
 
+/// <summary>
+/// Converts items, item variants and posted transfer receipt lines into fixed assets: creates the
+/// FA Conversion and the Fixed Asset, posts the negative inventory adjustment and the FA acquisition.
+/// </summary>
 codeunit 60000 "FA Conversion Functions"
 {
     SingleInstance = true;
     Access = Public;
+    Permissions = tabledata "FA Conversion" = im,
+                  tabledata "FA Conversion Setup" = r,
+                  tabledata "FA Depreciation Book" = im,
+                  tabledata "FA Depreciation Profile" = r,
+                  tabledata "FA Location" = ri,
+                  tabledata "Fixed Asset" = rim,
+                  tabledata "Gen. Journal Line" = imd,
+                  tabledata "General Posting Setup" = r,
+                  tabledata Item = r,
+                  tabledata "Item Journal Line" = imd,
+                  tabledata "Item Ledger Entry" = r,
+                  tabledata Location = r,
+                  tabledata "Service Item" = im,
+                  tabledata "Service Item Group" = r;
+
     /// <summary>
     /// Creates a Fixed Asset conversion from an Item Card.
     /// </summary>
@@ -44,6 +63,7 @@ codeunit 60000 "FA Conversion Functions"
         // Get default location code from setup or item
         DefaultLocationCode := GetDefaultLocationCode();
 
+        Location.SetLoadFields(Code);
         // Validate that the location exists
         if DefaultLocationCode <> '' then
             if not Location.Get(DefaultLocationCode) then
@@ -78,7 +98,8 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion: Record "FA Conversion";
         Item: Record Item;
     begin
-        Item.Get(ItemVariant."Item No.");
+        if not Item.Get(ItemVariant."Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), ItemVariant."Item No.");
 
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
@@ -106,17 +127,20 @@ codeunit 60000 "FA Conversion Functions"
     local procedure CreateFixedAsset(Item: Record Item; var FAConversion: Record "FA Conversion")
     var
         FixedAsset: Record "Fixed Asset";
+        TempFixedAsset: Record "Fixed Asset" temporary;
         FADepreciationBook: Record "FA Depreciation Book";
-        //NoSeriesManagement: Codeunit NoSeriesManagement;
         NoSeries: Codeunit "No. Series";
     begin
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("Depreciation Book Code");
 
-        FixedAsset.Init();
-        //NoSeriesManagement.InitSeries(Item."FA No. Series", FixedAsset."No. Series", 0D, FixedAsset."No.", FixedAsset."No. Series");
-        FixedAsset."No. Series" := Item."FA No. Series";
-        FixedAsset."No." := NoSeries.GetNextNo(Item."FA No. Series", WorkDate());
+        // The number comes from the item's FA No. Series, not from FA Setup. The key is built in a
+        // temporary buffer so that "No." OnValidate (TestManual on the FA Setup series, clearing
+        // "No. Series") does not run - exactly as the former direct assignment.
+        TempFixedAsset.Init();
+        TempFixedAsset."No. Series" := Item."FA No. Series";
+        TempFixedAsset."No." := NoSeries.GetNextNo(Item."FA No. Series", WorkDate());
+        FixedAsset := TempFixedAsset;
         FixedAsset.Insert(true);
         FixedAsset.Validate(Description, FAConversion."Item Description");
         FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
@@ -157,6 +181,7 @@ codeunit 60000 "FA Conversion Functions"
     /// </summary>
     /// <param name="FAConversion">The FA Conversion record to process.</param>
     /// <param name="SkipCosting">Whether to skip cost adjustment and posting to GL.</param>
+    /// <returns>True when the negative adjustment was posted; false when an error was caught (try method).</returns>
     [TryFunction]
     procedure TryNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
     var
@@ -168,7 +193,9 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.TestField("Location Code");
         FAConversion.TestField("Posting Date");
 
-        Item.Get(FAConversion."Item No.");
+        Item.SetLoadFields("FA Conv. Gen. Bus. Post. Group");
+        if not Item.Get(FAConversion."Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), FAConversion."Item No.");
 
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("Item Journal Template Name");
@@ -179,9 +206,9 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine.DeleteAll(true);
 
         ItemJournalLine.Init();
-        ItemJournalLine."Journal Template Name" := FAConversionSetup."Item Journal Template Name";
-        ItemJournalLine."Journal Batch Name" := FAConversionSetup."Item Journal Batch Name";
-        ItemJournalLine."Line No." := 10000;
+        ItemJournalLine.Validate("Journal Template Name", FAConversionSetup."Item Journal Template Name");
+        ItemJournalLine.Validate("Journal Batch Name", FAConversionSetup."Item Journal Batch Name");
+        ItemJournalLine.Validate("Line No.", 10000);
         ItemJournalLine.SetUpNewLine(ItemJournalLine);
         ItemJournalLine.Insert(true);
         ItemJournalLine.Validate("Posting Date", FAConversion."Posting Date");
@@ -200,10 +227,11 @@ codeunit 60000 "FA Conversion Functions"
         ItemJnlPostBatch.Run(ItemJournalLine);
         //Codeunit.Run(Codeunit::"Item Jnl.-Post Batch", ItemJournalLine);
 
-        FAConversion."Negative Adjmt. ILE Entry No." := GlobalILENo;
+        FAConversion.Validate("Negative Adjmt. ILE Entry No.", GlobalILENo);
         FAConversion.Modify(true);
 
-        FixedAsset.Get(FAConversion."FA No.");
+        if not FixedAsset.Get(FAConversion."FA No.") then
+            Error(RecordDoesNotExistErr, FixedAsset.TableCaption(), FAConversion."FA No.");
         FixedAsset.Validate("Serial No.", FAConversion."Serial No.");
         FixedAsset.Validate("Source Item No.", FAConversion."Item No.");
         FixedAsset.Validate("Source Variant Code", FAConversion."Variant Code");
@@ -239,7 +267,7 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post", OnBeforeCode, '', false, false)]
-    local procedure OnBeforeCode(var ItemJournalLine: Record "Item Journal Line"; var HideDialog: Boolean; var SuppressCommit: Boolean; var IsHandled: Boolean)
+    local procedure "Item Jnl.-Post_OnBeforeCode"(var HideDialog: Boolean)
     begin
         HideDialog := true;
     end;
@@ -281,13 +309,13 @@ codeunit 60000 "FA Conversion Functions"
     begin
 
         AdjustCostItemEntries.InitializeRequest(FAConversion."Item No.", '');
-        AdjustCostItemEntries.UseRequestPage := false;
+        AdjustCostItemEntries.UseRequestPage(false);
         AdjustCostItemEntries.RunModal();
 
         PostValueEntrytoGL.Reset();
         PostValueEntrytoGL.SetRange("Item No.", FAConversion."Item No.");
         PostInventoryCosttoGL.SetTableView(PostValueEntrytoGL);
-        PostInventoryCosttoGL.UseRequestPage := false;
+        PostInventoryCosttoGL.UseRequestPage(false);
         PostInventoryCosttoGL.InitializeRequest(1, '', true);
         PostInventoryCosttoGL.RunModal();
 
@@ -310,6 +338,7 @@ codeunit 60000 "FA Conversion Functions"
     /// Attempts to post Fixed Asset acquisition entry through General Journal.
     /// </summary>
     /// <param name="FAConversion">The FA Conversion record to process for acquisition.</param>
+    /// <returns>True when the acquisition was posted; false when an error was caught (try method).</returns>
     [TryFunction]
     procedure TryFAAcquisition(var FAConversion: Record "FA Conversion")
     var
@@ -324,9 +353,12 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.TestField("Negative Adjmt. ILE Entry No.");
         FAConversion.TestField("Posting Date");
 
-        Item.Get(FAConversion."Item No.");
+        Item.SetLoadFields("FA Conv. Gen. Bus. Post. Group", "Service Item Group", "Gen. Prod. Posting Group");
+        if not Item.Get(FAConversion."Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), FAConversion."Item No.");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
 
+        ServiceItemGroup.SetLoadFields("Create Service Item");
         if ServiceItemGroup.Get(Item."Service Item Group") and ServiceItemGroup."Create Service Item" then
             CreateServiceItemFromFAConversion(FAConversion);
 
@@ -334,10 +366,14 @@ codeunit 60000 "FA Conversion Functions"
         FAConversionSetup.TestField("Gen. Journal Template Name");
         FAConversionSetup.TestField("Gen. Journal Batch Name");
 
-        ItemLedgerEntry.Get(FAConversion."Negative Adjmt. ILE Entry No.");
+        ItemLedgerEntry.SetLoadFields("Entry No.");
+        if not ItemLedgerEntry.Get(FAConversion."Negative Adjmt. ILE Entry No.") then
+            Error(RecordDoesNotExistErr, ItemLedgerEntry.TableCaption(), FAConversion."Negative Adjmt. ILE Entry No.");
         ItemLedgerEntry.CalcFields("Cost Amount (Actual)");
 
-        GeneralPostingSetup.Get(Item."FA Conv. Gen. Bus. Post. Group", Item."Gen. Prod. Posting Group");
+        GeneralPostingSetup.SetLoadFields("Inventory Adjmt. Account");
+        if not GeneralPostingSetup.Get(Item."FA Conv. Gen. Bus. Post. Group", Item."Gen. Prod. Posting Group") then
+            Error(RecordWithTwoKeysDoesNotExistErr, GeneralPostingSetup.TableCaption(), Item."FA Conv. Gen. Bus. Post. Group", Item."Gen. Prod. Posting Group");
         GeneralPostingSetup.TestField("Inventory Adjmt. Account");
 
         GenJournalLine.SetRange("Journal Template Name", FAConversionSetup."Gen. Journal Template Name");
@@ -345,9 +381,9 @@ codeunit 60000 "FA Conversion Functions"
         GenJournalLine.DeleteAll(true);
 
         GenJournalLine.Init();
-        GenJournalLine."Journal Template Name" := FAConversionSetup."Gen. Journal Template Name";
-        GenJournalLine."Journal Batch Name" := FAConversionSetup."Gen. Journal Batch Name";
-        GenJournalLine."Line No." := 10000;
+        GenJournalLine.Validate("Journal Template Name", FAConversionSetup."Gen. Journal Template Name");
+        GenJournalLine.Validate("Journal Batch Name", FAConversionSetup."Gen. Journal Batch Name");
+        GenJournalLine.Validate("Line No.", 10000);
         GenJournalLine.SetUpNewLine(GenJournalLine, 0, true);
         GenJournalLine.Insert(true);
         GenJournalLine.Validate("Document No.", FAConversion."No.");
@@ -380,39 +416,53 @@ codeunit 60000 "FA Conversion Functions"
 
     local procedure ApplyDepreciationProfile(Item: Record Item; FAConversion: Record "FA Conversion"; var FADepreciationBook: Record "FA Depreciation Book")
     var
-        DepreciationProfile: Record "FA Depreciation Profile";
-        LifeFormula: DateFormula;
         StartDate: Date;
-        EndDate: Date;
-        YearCount: Decimal;
-        LifeFormulaTok: Label '%1Y', Locked = true, Comment = '%1 = number of depreciation years';
     begin
         StartDate := GetDepreciationStartDate(FAConversion);
         if StartDate = 0D then
             exit;
 
         // If Ömür Yılı is provided on the Item Card, copy it to the FA Depreciation Book and
-        // explicitly compute the Depreciation Ending Date from the life-years formula below.
+        // explicitly compute the Depreciation Ending Date from the life-years formula.
         if Item."FA Life Years INF" <> 0 then begin
-            FADepreciationBook.Validate("Depreciation Starting Date", StartDate);
-            FADepreciationBook.Validate("No. of Depreciation Years", Item."FA Life Years INF");
-
-            // Make ending date explicit so the depreciation book shows the expected value.
-            Evaluate(LifeFormula, StrSubstNo(LifeFormulaTok, Item."FA Life Years INF"));
-            EndDate := CalcDate(LifeFormula, StartDate);
-            if EndDate <> 0D then
-                EndDate := EndDate - 1;
-            if EndDate <> 0D then
-                FADepreciationBook.Validate("Depreciation Ending Date", EndDate);
-
-            FADepreciationBook.Modify(true);
+            ApplyLifeYears(Item."FA Life Years INF", StartDate, FADepreciationBook);
             exit;
         end;
 
-        if Item."FA Depr. Profile Code INF" = '' then
+        ApplyDepreciationProfileFormula(Item."FA Depr. Profile Code INF", StartDate, FADepreciationBook);
+    end;
+
+    local procedure ApplyLifeYears(LifeYears: Integer; StartDate: Date; var FADepreciationBook: Record "FA Depreciation Book")
+    var
+        LifeFormula: DateFormula;
+        EndDate: Date;
+        LifeFormulaTok: Label '%1Y', Locked = true, Comment = '%1 = number of depreciation years';
+    begin
+        FADepreciationBook.Validate("Depreciation Starting Date", StartDate);
+        FADepreciationBook.Validate("No. of Depreciation Years", LifeYears);
+
+        // Make ending date explicit so the depreciation book shows the expected value.
+        Evaluate(LifeFormula, StrSubstNo(LifeFormulaTok, LifeYears));
+        EndDate := CalcDate(LifeFormula, StartDate);
+        if EndDate <> 0D then
+            EndDate := EndDate - 1;
+        if EndDate <> 0D then
+            FADepreciationBook.Validate("Depreciation Ending Date", EndDate);
+
+        FADepreciationBook.Modify(true);
+    end;
+
+    local procedure ApplyDepreciationProfileFormula(DepreciationProfileCode: Code[20]; StartDate: Date; var FADepreciationBook: Record "FA Depreciation Book")
+    var
+        DepreciationProfile: Record "FA Depreciation Profile";
+        EndDate: Date;
+        YearCount: Decimal;
+    begin
+        if DepreciationProfileCode = '' then
             exit;
 
-        if not DepreciationProfile.Get(Item."FA Depr. Profile Code INF") then
+        DepreciationProfile.SetLoadFields("Depreciation Life Formula");
+        if not DepreciationProfile.Get(DepreciationProfileCode) then
             exit;
 
         DepreciationProfile.TestField("Depreciation Life Formula");
@@ -469,71 +519,69 @@ codeunit 60000 "FA Conversion Functions"
     procedure CreateServiceItemFromFAConversion(FAConversion: Record "FA Conversion")
     var
         ServItem: Record "Service Item";
+        TempServItem: Record "Service Item" temporary;
         ServMgtSetup: Record "Service Mgt. Setup";
         NoSeries: Codeunit "No. Series";
     begin
-        ServItem.Init();
-        ServMgtSetup.Get();
+        ServMgtSetup.GetRecordOnce();
         ServMgtSetup.TestField("Service Item Nos.");
-        ServItem."No. Series" := ServMgtSetup."Service Item Nos.";
-        ServItem."No." := NoSeries.GetNextNo(ServItem."No. Series");
+        // Key built in a temporary buffer: Service Item "No." OnValidate (TestManual, clearing
+        // "No. Series") must not run, and OnInsert must not re-number (it would call AreRelated,
+        // which requires "Default Nos."). Identical to the former direct assignment.
+        TempServItem.Init();
+        TempServItem."No. Series" := ServMgtSetup."Service Item Nos.";
+        TempServItem."No." := NoSeries.GetNextNo(TempServItem."No. Series");
+        ServItem := TempServItem;
         ServItem.Insert(true);
         //ServItem.OmitAssignResSkills(true);
         ServItem.Validate("Item No.", FAConversion."Item No.");
         //ServItem.OmitAssignResSkills(false);
-        ServItem."Variant Code" := FAConversion."Variant Code";
+        // "Variant Code" is deliberately not validated: its TableRelation rejects blocked and
+        // service-blocked variants, which this conversion has always accepted (behaviour
+        // preservation). The plain assignment goes through the temporary buffer, so neither the
+        // OnValidate trigger nor the relation check runs.
+        TempServItem := ServItem;
+        TempServItem."Variant Code" := FAConversion."Variant Code";
+        ServItem := TempServItem;
         ServItem.Validate("Serial No.", FAConversion."Serial No.");
         ServItem.Modify(true);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", OnBeforeCode, '', false, false)]
-    local procedure OnBeforeCode2(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
+    local procedure "Gen. Jnl.-Post_OnBeforeCode"(var HideDialog: Boolean)
     begin
         HideDialog := true;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", OnBeforeShowPostResultMessage, '', false, false)]
-    local procedure OnBeforeShowPostResultMessage(var GenJnlLine: Record "Gen. Journal Line"; TempJnlBatchName: Code[10]; var IsHandled: Boolean)
+    local procedure "Gen. Jnl.-Post_OnBeforeShowPostResultMessage"(var IsHandled: Boolean)
     begin
         IsHandled := true;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"FA Insert Ledger Entry", OnBeforeInsertRegister, '', false, false)]
-    local procedure OnBeforeInsertRegister(var Sender: Codeunit "FA Insert Ledger Entry"; var FALedgerEntry: Record "FA Ledger Entry"; var FALedgerEntry2: Record "FA Ledger Entry"; var NextEntryNo: Integer)
+    local procedure "FA Insert Ledger Entry_OnBeforeInsertRegister"(var FALedgerEntry: Record "FA Ledger Entry")
     begin
         if GlobalFAConversion."Item No." = '' then
             exit;
 
-        GlobalFAConversion."FA Acquisition Entry No." := FALedgerEntry."Entry No.";
+        GlobalFAConversion.Validate("FA Acquisition Entry No.", FALedgerEntry."Entry No.");
         GlobalFAConversion.Modify(false);
     end;
 
 
     [EventSubscriber(ObjectType::Report, Report::"Adjust Cost - Item Entries", OnBeforePreReport, '', false, false)]
-    local procedure OnBeforePreReport_AdjustCostItemEntries(var Sender: Report "Adjust Cost - Item Entries"; ItemNoFilter: Text[250];
-                                                                            ItemCategoryFilter: Text[250];
-                                                                            PostToGL: Boolean;
-
-    var
-        Item: Record Item)
+    local procedure "Adjust Cost - Item Entries_OnBeforePreReport"(var Item: Record Item)
     begin
         if GlobalFAConversion."Item No." = '' then
             exit;
 
-        Item.Get(GlobalFAConversion."Item No.");
+        if not Item.Get(GlobalFAConversion."Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), GlobalFAConversion."Item No.");
     end;
 
     [EventSubscriber(ObjectType::Report, Report::"Post Inventory Cost to G/L INF", OnBeforePreReport, '', false, false)]
-    local procedure OnBeforePreReport(var Sender: Report "Post Inventory Cost to G/L INF";
-
-    var
-        Item: Record Item;
-
-    var
-        ItemValueEntry: Record "Value Entry";
-
-    var
-        PostValueEntryToGL: Record "Post Value Entry to G/L")
+    local procedure "Post Inventory Cost to G/L INF_OnBeforePreReport"(var Sender: Report "Post Inventory Cost to G/L INF"; var PostValueEntryToGL: Record "Post Value Entry to G/L")
     begin
         if GlobalFAConversion."Item No." = '' then
             exit;
@@ -570,7 +618,8 @@ codeunit 60000 "FA Conversion Functions"
         UseSerialNo: Text[50];
         CompleteFAFailedErr: Label 'Failed to complete FA Conversion: %1', Comment = '%1 = Error message';
     begin
-        Item.Get(TransferReceiptLine."Item No.");
+        if not Item.Get(TransferReceiptLine."Item No.") then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), TransferReceiptLine."Item No.");
 
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
@@ -693,6 +742,7 @@ codeunit 60000 "FA Conversion Functions"
     /// item) in a single transaction. All operations succeed or all fail together (all-or-nothing).
     /// </summary>
     /// <param name="FAConversion">The FA Conversion record to process.</param>
+    /// <returns>True when every step succeeded; false when an error was caught (try method).</returns>
     [TryFunction]
     local procedure TryCreateCompleteFA(var FAConversion: Record "FA Conversion")
     var
@@ -727,7 +777,7 @@ codeunit 60000 "FA Conversion Functions"
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInsertItemLedgEntry, '', false, false)]
-    local procedure OnAfterInsertItemLedgEntry(var ItemLedgerEntry: Record "Item Ledger Entry"; ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer; var ValueEntryNo: Integer; var ItemApplnEntryNo: Integer; GlobalValueEntry: Record "Value Entry"; TransferItem: Boolean; var InventoryPostingToGL: Codeunit "Inventory Posting To G/L"; var OldItemLedgerEntry: Record "Item Ledger Entry")
+    local procedure "Item Jnl.-Post Line_OnAfterInsertItemLedgEntry"(var ItemLedgerEntry: Record "Item Ledger Entry")
     begin
         GlobalILENo := ItemLedgerEntry."Entry No.";
     end;
@@ -739,6 +789,7 @@ codeunit 60000 "FA Conversion Functions"
         Location: Record Location;
         LocalFAConversionSetup: Record "FA Conversion Setup";
     begin
+        Location.SetLoadFields(Code);
         // First try to get from FA Conversion Setup
         LocalFAConversionSetup.GetRecordOnce();
         if LocalFAConversionSetup."FA Trans. Pos. Adjmt. Loc." <> '' then
@@ -762,13 +813,18 @@ codeunit 60000 "FA Conversion Functions"
 
         if not FALocation.Get(LocationCode) then begin
             FALocation.Init();
-            FALocation.Code := LocationCode;
-            FALocation.Name := LocationCode; // Use code as default name
+            FALocation.Validate(Code, LocationCode);
+            FALocation.Validate(Name, LocationCode); // Use code as default name
             FALocation.Insert(true);
         end;
     end;
 
 
+    /// <summary>
+    /// Raised after the FA acquisition of an FA Conversion has been posted through the general journal,
+    /// inside the same transaction and before the conversion's global state is cleared.
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion whose acquisition was posted.</param>
     [IntegrationEvent(false, false)]
     local procedure OnAfterFAAcquisitionPosted(var FAConversion: Record "FA Conversion")
     begin
@@ -780,4 +836,6 @@ codeunit 60000 "FA Conversion Functions"
         FAConversionSetup: Record "FA Conversion Setup";
         GlobalFAConversion: Record "FA Conversion";
         GlobalILENo: Integer;
+        RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
+        RecordWithTwoKeysDoesNotExistErr: Label '%1 %2, %3 does not exist.', Comment = '%1 = Table caption, %2 = First key value, %3 = Second key value';
 }

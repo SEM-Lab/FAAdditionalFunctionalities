@@ -59,7 +59,7 @@ tableextension 60022 "Fixed Asset Ext." extends "Fixed Asset"
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup(Location."Location Type INF" where(Code = field("Current Location")));
-            ToolTip = 'Shows the location type derived from the fixed asset''s current location.';
+            ToolTip = 'Specifies the location type derived from the fixed asset''s current location.';
         }
     }
 }

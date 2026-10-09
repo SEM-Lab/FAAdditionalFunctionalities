@@ -3,12 +3,16 @@ namespace Infotek.FAAdditionalFunctionalities;
 using System.Environment;
 using System.Utilities;
 
+/// <summary>
+/// Assisted setup wizard that edits a temporary copy of FA Conversion Setup and saves it on Finish.
+/// </summary>
 page 60000 "FA Conversion Wizard"
 {
     Caption = 'FA Conversion';
     PageType = NavigatePage;
     SourceTable = "FA Conversion Setup";
     SourceTableTemporary = true;
+    Permissions = tabledata "Media Repository" = r;
 
     layout
     {

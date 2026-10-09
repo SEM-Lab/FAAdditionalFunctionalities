@@ -1,5 +1,8 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+/// <summary>
+/// Setup card of the FA conversion (FA Conversion Setup table); creates the setup record when it is missing.
+/// </summary>
 page 60001 "FA Conversion Setup"
 {
     PageType = Card;
