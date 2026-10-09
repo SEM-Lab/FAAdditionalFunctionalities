@@ -129,8 +129,11 @@ codeunit 60000 "FA Conversion Functions"
         FixedAsset: Record "Fixed Asset";
         TempFixedAsset: Record "Fixed Asset" temporary;
         FADepreciationBook: Record "FA Depreciation Book";
+        FAConversionSetup: Record "FA Conversion Setup";
         NoSeries: Codeunit "No. Series";
     begin
+        // The setup is read into a local record on every call: this codeunit is SingleInstance, so a
+        // global record would keep the first read for the whole session (NDIT-6082, LD-4).
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("Depreciation Book Code");
 
@@ -188,6 +191,7 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine: Record "Item Journal Line";
         Item: Record Item;
         FixedAsset: Record "Fixed Asset";
+        FAConversionSetup: Record "FA Conversion Setup";
         ItemJnlPostBatch: Codeunit "Item Jnl.-Post Batch";
     begin
         FAConversion.TestField("Location Code");
@@ -347,6 +351,7 @@ codeunit 60000 "FA Conversion Functions"
         Item: Record Item;
         GeneralPostingSetup: Record "General Posting Setup";
         ServiceItemGroup: Record "Service Item Group";
+        FAConversionSetup: Record "FA Conversion Setup";
     begin
         FAConversionSetup.GetRecordOnce();
 
@@ -758,11 +763,10 @@ codeunit 60000 "FA Conversion Functions"
         FAAcquisition(FAConversion);
 
         // Step 3: Create transfer item, only when the FA Transfer master switch and the
-        // auto-create toggle are both enabled in setup (NDIT-5968). Read fresh (not via
-        // GetRecordOnce/the global setup var) so toggling the master switch takes effect
-        // without recycling the session. When disabled, the user can still create the
-        // transfer item manually via the Create FA Transfer Item action on the Fixed Asset
-        // card (guarded by the same master switch).
+        // auto-create toggle are both enabled in setup (NDIT-5968). Read at this very step
+        // with a plain Get, so toggling the master switch takes effect immediately. When
+        // disabled, the user can still create the transfer item manually via the Create FA
+        // Transfer Item action on the Fixed Asset card (guarded by the same master switch).
         if LocalFAConversionSetup.Get() then
             if LocalFAConversionSetup."Enable FA Transfer" and LocalFAConversionSetup."Auto Create FA Transfer Item" then begin
                 if not FixedAsset.Get(FAConversion."FA No.") then
@@ -833,7 +837,6 @@ codeunit 60000 "FA Conversion Functions"
 
 
     var
-        FAConversionSetup: Record "FA Conversion Setup";
         GlobalFAConversion: Record "FA Conversion";
         GlobalILENo: Integer;
         RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';

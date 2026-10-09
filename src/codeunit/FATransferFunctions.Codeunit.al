@@ -58,6 +58,7 @@ codeunit 60001 "FA Transfer Functions"
     procedure CreateResourceCard(FixedAsset: Record "Fixed Asset")
     var
         Resource: Record Resource;
+        FAConversionSetup: Record "FA Conversion Setup";
         ConfirmManagement: Codeunit "Confirm Management";
         ConfirmQst: Label 'Resource No.: %1 already exist. Do you want to view resource card?', Comment = '%1 = Resource No.';
     begin
@@ -72,6 +73,8 @@ codeunit 60001 "FA Transfer Functions"
             exit;
         end;
 
+        // The setup is read into a local record on every call: this codeunit is SingleInstance, so a
+        // global record would keep the first read for the whole session (NDIT-6082, LD-4).
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("Resource Gen. Prod Post. Group");
         FAConversionSetup.TestField("Resource VAT Prod. Post. Group");
@@ -98,6 +101,7 @@ codeunit 60001 "FA Transfer Functions"
         ItemJournalLine: Record "Item Journal Line";
         ItemLedgerEntry: Record "Item Ledger Entry";
         FAConversion: Record "FA Conversion";
+        FAConversionSetup: Record "FA Conversion Setup";
         LocationCode: Code[10];
         AlreadyCreatedErr: Label 'FA Transfer Item has been already created.';
         FAConvNotFoundErr: Label 'FA Conversion record not found for Fixed Asset %1. Cannot determine location code.', Comment = '%1 = Fixed Asset No.';
@@ -112,6 +116,7 @@ codeunit 60001 "FA Transfer Functions"
         if not ItemLedgerEntry.IsEmpty() then
             Error(AlreadyCreatedErr);
 
+        // Local setup record, read on every call (see CreateResourceCard).
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("FA Transfer Item No.");
 
@@ -127,7 +132,7 @@ codeunit 60001 "FA Transfer Functions"
         if LocationCode = '' then
             Error(LocationCodeEmptyErr, FAConversion."No.");
 
-        GetSerialTrackedFATransferItem(Item);
+        GetSerialTrackedFATransferItem(Item, FAConversionSetup."FA Transfer Item No.");
 
         FAConversionSetup.TestField("Item Journal Template Name");
         FAConversionSetup.TestField("Item Journal Batch Name");
@@ -161,17 +166,18 @@ codeunit 60001 "FA Transfer Functions"
     end;
 
     /// <summary>
-    /// Reads the FA transfer item from FA Conversion Setup and checks that it exists, has an item tracking
-    /// code and that the code tracks serial numbers specifically.
+    /// Reads the FA transfer item and checks that it exists, has an item tracking code and that the code tracks
+    /// serial numbers specifically.
     /// </summary>
     /// <param name="Item">Receives the FA transfer item; only the item tracking code is loaded besides the key.</param>
-    local procedure GetSerialTrackedFATransferItem(var Item: Record Item)
+    /// <param name="FATransferItemNo">The FA transfer item number as read from FA Conversion Setup by the caller.</param>
+    local procedure GetSerialTrackedFATransferItem(var Item: Record Item; FATransferItemNo: Code[20])
     var
         ItemTrackingCode: Record "Item Tracking Code";
     begin
         Item.SetLoadFields("Item Tracking Code");
-        if not Item.Get(FAConversionSetup."FA Transfer Item No.") then
-            Error(RecordDoesNotExistErr, Item.TableCaption(), FAConversionSetup."FA Transfer Item No.");
+        if not Item.Get(FATransferItemNo) then
+            Error(RecordDoesNotExistErr, Item.TableCaption(), FATransferItemNo);
         Item.TestField("Item Tracking Code");
 
         ItemTrackingCode.SetLoadFields("SN Specific Tracking");
@@ -437,6 +443,7 @@ codeunit 60001 "FA Transfer Functions"
         TransferHeader: Record "Transfer Header";
         TransferLine: Record "Transfer Line";
         Item: Record Item;
+        FAConversionSetup: Record "FA Conversion Setup";
         TransferFromCode: Code[10];
         LineNo: Integer;
         TransferOrderNo: Code[20];
@@ -454,7 +461,7 @@ codeunit 60001 "FA Transfer Functions"
         if TransferFromCode = TransferToCode then
             Error(SameLocationErr);
 
-        // Get FA Transfer Item
+        // Get FA Transfer Item (local setup record, read on every call - see CreateResourceCard)
         FAConversionSetup.GetRecordOnce();
         FAConversionSetup.TestField("FA Transfer Item No.");
 
@@ -635,7 +642,6 @@ codeunit 60001 "FA Transfer Functions"
     end;
 
     var
-        FAConversionSetup: Record "FA Conversion Setup";
         FATransferDisabledErr: Label 'FA transfer features are disabled. To use this function, enable the Enable FA Transfer field in FA Conversion Setup.';
         RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
         NothingInFilterErr: Label 'There is no %1 within the filter. Filters: %2', Comment = '%1 = Table caption, %2 = Filters';
