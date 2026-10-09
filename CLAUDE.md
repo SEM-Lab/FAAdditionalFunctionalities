@@ -21,8 +21,8 @@ This is a Microsoft Business Central AL extension called "Fixed Asset Additional
 - Compiled `.app` files are generated in the `out/` directory
 
 ### Code Quality and Linting
-- **Linting**: Uses LinterCop with custom rules defined in `LinterCop.ruleset.json`
-- Disabled rules: LC0010 (cyclomatic complexity), LC0068 (permission access), LC0084/LC0023/LC0091 (Get method returns)
+- **Linting**: The analyzer set (ALCops suite plus CodeCop/UICop/PerTenantExtensionCop) is declared in `.vscode/settings.json`; `LinterCop.ruleset.json` is empty (`"rules": []`), so every rule is reported at its default severity
+- No rule is disabled or suppressed: the delivery gate is `alc.exe` 0 errors / 0 warnings / 0 info (AD0001 = 0). Fix the cause of a diagnostic; never add a ruleset entry, `#pragma` or `[SuppressMessage]`
 - Follow AL coding standards and Business Central best practices
 
 ### Debugging and Testing
@@ -94,7 +94,7 @@ This is a Microsoft Business Central AL extension called "Fixed Asset Additional
 - `Translations/`: XLF files for multi-language support (tr-TR translations)
 - `.vscode/launch.json`: Sandbox deployment configurations
 - `app.json`: Extension manifest with dependencies
-- `LinterCop.ruleset.json`: Custom linting rules
+- `LinterCop.ruleset.json`: Ruleset (empty by design: no rule is disabled)
 - `compile.ps1`: PowerShell compilation script
 
 ## Important Development Notes
@@ -155,3 +155,8 @@ Specify in PR description:
 - **NEVER** commit sandbox credentials, tenant IDs, or secrets to repository
 - Use VS Code settings or environment variables for sensitive configuration
 - Launch.json configurations are gitignored when containing credentials
+
+<!-- BEGIN ALDC CLAUDE -->
+This project uses the ALDC Claude Code plugin. Discover its installed agents, skills and workflows and read their full contracts. Use al-architect for design, al-spec-agent (via al-spec-create) for specification, al-developer for implementation and al-conductor for TDD orchestration. Keep approved artifacts and memory in the folder named by plans.root in the project aldc.yaml (else the plugin aldc.yaml; Infotek default .github/plans, which is versioned; .claude/ is gitignored in Infotek repos). Read the .claude/rules AL rules for the affected files. Host loading and tool availability must be observed; installation does not certify them. Preserve material human gates.
+At session start or after an environment change, run the read-only ALDC Doctor with an available Python 3.9+ interpreter. Use --workspace for this project and --host claude; --toolkit names the installed plugin root (or this project for Codex local bootstrap). See tools/context-doctor/README.md and aldc_context_doctor.py in the installed plugin. Repeat only affected --operation checks. File presence and exit 0 do not certify host loading or execution. Do not install an interpreter automatically.
+<!-- END ALDC CLAUDE -->
