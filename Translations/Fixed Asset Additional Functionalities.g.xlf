@@ -508,6 +508,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method NegativeAdjustment - NamedType ErrorHandlingLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 2567206778 - NamedType 2530530535" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Failed to create negative adjustment: %1</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method NegativeAdjustmentFromEntry - NamedType ErrorHandlingLbl</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 2304338442 - NamedType 1032739316" size-unit="char" translate="yes" xml:space="preserve">
           <source>The acquisition of fixed asset %2 for FA Conversion %1 was not posted. Check the errors of the posting, correct the cause and post the FA acquisition again.</source>
           <note from="Developer" annotates="general" priority="2">%1 = FA Conversion No., %2 = Fixed Asset No.</note>

@@ -194,6 +194,35 @@ codeunit 60000 "FA Conversion Functions"
     /// <returns>True when the negative adjustment was posted; false when an error was caught (try method).</returns>
     [TryFunction]
     procedure TryNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean)
+    begin
+        PostNegativeAdjustment(FAConversion, SkipCosting, 0);
+    end;
+
+    /// <summary>
+    /// Posts the negative inventory adjustment of one unit of a conversion request, without cost adjustment, taken from a
+    /// given open inbound item ledger entry: the item journal line is applied to that entry and carries its unit cost. With
+    /// no entry it is the same as NegativeAdjustment without cost adjustment (application by the costing method).
+    /// </summary>
+    /// <param name="FAConversion">The FA Conversion of the unit.</param>
+    /// <param name="AppliesToEntryNo">The open inbound item ledger entry the unit is taken from; 0 applies by the costing method.</param>
+    internal procedure NegativeAdjustmentFromEntry(var FAConversion: Record "FA Conversion"; AppliesToEntryNo: Integer)
+    var
+        ErrorHandlingLbl: Label 'Failed to create negative adjustment: %1', Comment = '%1 = Error message';
+    begin
+        if not TryNegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo) then begin
+            // Same cleanup as NegativeAdjustment: the SingleInstance global must not outlive the failed call (NDIT-6082, LD-7).
+            Clear(GlobalFAConversion);
+            Error(ErrorHandlingLbl, GetLastErrorText());
+        end;
+    end;
+
+    [TryFunction]
+    local procedure TryNegativeAdjustmentFromEntry(var FAConversion: Record "FA Conversion"; AppliesToEntryNo: Integer)
+    begin
+        PostNegativeAdjustment(FAConversion, true, AppliesToEntryNo);
+    end;
+
+    local procedure PostNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean; AppliesToEntryNo: Integer)
     var
         ItemJournalLine: Record "Item Journal Line";
         ItemJournalBatch: Record "Item Journal Batch";
@@ -239,7 +268,7 @@ codeunit 60000 "FA Conversion Functions"
         ItemJournalLine.Validate(Quantity, 1);
         ItemJournalLine.Validate("Location Code", FAConversion."Location Code");
         ItemJournalLine.Validate("Gen. Bus. Posting Group", Item."FA Conv. Gen. Bus. Post. Group");
-        ItemJournalLine.Validate("Unit Cost", GetUnitCostFromItemJnlLine(ItemJournalLine));
+        SetApplicationAndUnitCost(ItemJournalLine, AppliesToEntryNo);
         ItemJournalLine.Modify(true);
 
         CreateReservationEntry(ItemJournalLine, FAConversion);
@@ -263,6 +292,36 @@ codeunit 60000 "FA Conversion Functions"
             AdjustAndPostInventoryCost(FAConversion);
             Clear(GlobalFAConversion);
         end;
+    end;
+
+    // A unit of a conversion request is taken from an inbound entry of its own source line, so that it does not use up the
+    // stock of another received line of the item at the location, and it carries the cost of that entry (NDIT-6082, review).
+    // Without an entry the line applies by the costing method and takes the cost of the first open entry at the location, as it
+    // always did.
+    local procedure SetApplicationAndUnitCost(var ItemJournalLine: Record "Item Journal Line"; AppliesToEntryNo: Integer)
+    begin
+        if AppliesToEntryNo = 0 then begin
+            ItemJournalLine.Validate("Unit Cost", GetUnitCostFromItemJnlLine(ItemJournalLine));
+            exit;
+        end;
+
+        ItemJournalLine.Validate("Applies-to Entry", AppliesToEntryNo);
+        ItemJournalLine.Validate("Unit Cost", GetUnitCostOfEntry(AppliesToEntryNo));
+    end;
+
+    local procedure GetUnitCostOfEntry(ItemLedgerEntryNo: Integer): Decimal
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        ItemLedgerEntry.SetLoadFields("Cost Amount (Actual)", Quantity);
+        ItemLedgerEntry.SetAutoCalcFields("Cost Amount (Actual)");
+        if not ItemLedgerEntry.Get(ItemLedgerEntryNo) then
+            Error(RecordDoesNotExistErr, ItemLedgerEntry.TableCaption(), ItemLedgerEntryNo);
+
+        if ItemLedgerEntry.Quantity = 0 then
+            exit(0);
+
+        exit(ItemLedgerEntry."Cost Amount (Actual)" / ItemLedgerEntry.Quantity);
     end;
 
     /// <summary>

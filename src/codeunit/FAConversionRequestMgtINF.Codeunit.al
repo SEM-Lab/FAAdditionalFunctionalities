@@ -486,16 +486,18 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
     var
         FAConversion: Record "FA Conversion";
         SerialNo: Code[50];
+        AppliesToEntryNo: Integer;
     begin
         CurrentStepName := AvailabilityCheckStepLbl;
         SerialNo := CheckAvailability(TempFAConvSourceLine);
+        AppliesToEntryNo := GetOpenEntryToApply(TempFAConvSourceLine);
 
         CurrentStepName := CreateStepLbl;
         FAConversionFunctions.CreateFAConversionFromSourceLine(TempFAConvSourceLine, SerialNo, AcquisitionDate, FAConversion);
         CurrentFANo := FAConversion."FA No.";
 
         CurrentStepName := NegativeAdjustmentStepLbl;
-        FAConversionFunctions.NegativeAdjustment(FAConversion, true);
+        FAConversionFunctions.NegativeAdjustmentFromEntry(FAConversion, AppliesToEntryNo);
 
         CurrentStepName := FAAcquisitionStepLbl;
         FAConversionFunctions.FAAcquisition(FAConversion);
@@ -545,6 +547,31 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
             exit(ItemLedgerEntry."Serial No.");
 
         exit('');
+    end;
+
+    // The entry a unit without a serial number is taken from: the inbound entry of the line with the lowest entry number that
+    // still has a remaining quantity, the same order as the serial pick. Without it the negative adjustment would apply by the
+    // costing method to any open entry of the item at the location (FIFO: the oldest), and a unit counted on this line would use
+    // up the stock of another received line, which then has nothing left to convert (NDIT-6082, review). 0 for a serial-tracked
+    // line (the reservation of its serial number decides the application) and for an entry with item tracking, which can only be
+    // applied through its tracking.
+    local procedure GetOpenEntryToApply(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary): Integer
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+    begin
+        if TempFAConvSourceLine."Serial Tracked" then
+            exit(0);
+
+        ItemLedgerEntry.SetLoadFields("Serial No.", "Lot No.", "Package No.");
+        SetInboundEntryFilters(ItemLedgerEntry, TempFAConvSourceLine);
+        ItemLedgerEntry.SetFilter("Remaining Quantity", '>0');
+        if not ItemLedgerEntry.FindFirst() then
+            exit(0);
+
+        if ItemLedgerEntry.TrackingExists() then
+            exit(0);
+
+        exit(ItemLedgerEntry."Entry No.");
     end;
 
     // FA Conversion Functions.FAAcquisition raises when the posting leaves no new acquisition cost entry (NDIT-6082,
