@@ -31,6 +31,7 @@ codeunit 60000 "FA Conversion Functions"
                   tabledata "FA Conversion Setup" = r,
                   tabledata "FA Depreciation Book" = im,
                   tabledata "FA Depreciation Profile" = r,
+                  tabledata "FA Ledger Entry" = r,
                   tabledata "FA Location" = ri,
                   tabledata "Fixed Asset" = rim,
                   tabledata "Gen. Journal Line" = imd,
@@ -175,8 +176,12 @@ codeunit 60000 "FA Conversion Functions"
     var
         ErrorHandlingLbl: Label 'Failed to create negative adjustment: %1', Comment = '%1 = Error message';
     begin
-        if not TryNegativeAdjustment(FAConversion, SkipCosting) then
+        if not TryNegativeAdjustment(FAConversion, SkipCosting) then begin
+            // A failure inside the costing leaves the conversion that was handed to the cost subscribers in the
+            // SingleInstance global; it must not outlive the failed call (NDIT-6082, LD-7).
+            Clear(GlobalFAConversion);
             Error(ErrorHandlingLbl, GetLastErrorText());
+        end;
     end;
 
     /// <summary>
@@ -334,8 +339,13 @@ codeunit 60000 "FA Conversion Functions"
     var
         ErrorHandlingLbl: Label 'Failed to post FA acquisition: %1', Comment = '%1 = Error message';
     begin
-        if not TryFAAcquisition(FAConversion) then
+        if not TryFAAcquisition(FAConversion) then begin
+            // An error between the hand-over of the conversion to the posting subscribers and the end of the
+            // try method skips its own cleanup; the SingleInstance global must not outlive the failed call
+            // (NDIT-6082, LD-7).
+            Clear(GlobalFAConversion);
             Error(ErrorHandlingLbl, GetLastErrorText());
+        end;
     end;
 
     /// <summary>
@@ -411,12 +421,53 @@ codeunit 60000 "FA Conversion Functions"
             GenJournalLine.Validate("E-Book Description INF", FAConversionSetup."E-Book Description INF");
         GenJournalLine.Modify(true);
 
-        GlobalFAConversion := FAConversion;
-        GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
+        PostAcquisitionJournalLine(GenJournalLine, FAConversion);
 
         OnAfterFAAcquisitionPosted(GlobalFAConversion);
 
         Clear(GlobalFAConversion);
+    end;
+
+    /// <summary>
+    /// Posts the prepared acquisition journal line and checks that the fixed asset really got a new acquisition cost
+    /// entry. SendToPosting does not raise when the posting fails: it commits, runs the posting codeunit with its
+    /// errors captured and only lists them on the Error Messages page. A posting that left no new entry is therefore
+    /// raised here, so that the dependent apps are not told about an acquisition that does not exist (NDIT-6082, D2).
+    /// </summary>
+    /// <param name="GenJournalLine">The acquisition journal line, still carrying the journal batch filters.</param>
+    /// <param name="FAConversion">The FA Conversion the acquisition belongs to; it is handed to the posting subscribers through the global.</param>
+    local procedure PostAcquisitionJournalLine(var GenJournalLine: Record "Gen. Journal Line"; FAConversion: Record "FA Conversion")
+    var
+        LastAcquisitionEntryNoBefore: Integer;
+        AcquisitionNotPostedErr: Label 'The acquisition of fixed asset %2 for FA Conversion %1 was not posted. Check the errors of the posting, correct the cause and post the FA acquisition again.', Comment = '%1 = FA Conversion No., %2 = Fixed Asset No.';
+    begin
+        LastAcquisitionEntryNoBefore := GetLastAcquisitionCostEntryNo(FAConversion."FA No.");
+        GlobalFAConversion := FAConversion;
+        GenJournalLine.SendToPosting(Codeunit::"Gen. Jnl.-Post");
+
+        // The conversion is cleared before the Error: the caller's own cleanup is skipped by it (NDIT-6082, LD-7).
+        if GetLastAcquisitionCostEntryNo(FAConversion."FA No.") = LastAcquisitionEntryNoBefore then begin
+            Clear(GlobalFAConversion);
+            Error(AcquisitionNotPostedErr, FAConversion."No.", FAConversion."FA No.");
+        end;
+    end;
+
+    /// <summary>
+    /// Returns the number of the newest acquisition cost entry of a fixed asset, read from the FA ledger.
+    /// </summary>
+    /// <param name="FANo">The fixed asset to look at.</param>
+    /// <returns>The entry number of the newest acquisition cost entry; 0 when the fixed asset has none.</returns>
+    local procedure GetLastAcquisitionCostEntryNo(FANo: Code[20]): Integer
+    var
+        FALedgerEntry: Record "FA Ledger Entry";
+    begin
+        FALedgerEntry.SetLoadFields("Entry No.");
+        FALedgerEntry.SetRange("FA No.", FANo);
+        FALedgerEntry.SetRange("FA Posting Type", FALedgerEntry."FA Posting Type"::"Acquisition Cost");
+        if FALedgerEntry.FindLast() then
+            exit(FALedgerEntry."Entry No.");
+
+        exit(0);
     end;
 
     local procedure ApplyDepreciationProfile(Item: Record Item; FAConversion: Record "FA Conversion"; var FADepreciationBook: Record "FA Depreciation Book")
@@ -568,6 +619,11 @@ codeunit 60000 "FA Conversion Functions"
     local procedure "FA Insert Ledger Entry_OnBeforeInsertRegister"(var FALedgerEntry: Record "FA Ledger Entry")
     begin
         if GlobalFAConversion."Item No." = '' then
+            exit;
+
+        // Every FA ledger entry of the session passes here. Only the entries of the fixed asset being converted
+        // belong to the conversion held in the global (NDIT-6082, LD-7: defence against a stale global).
+        if FALedgerEntry."FA No." <> GlobalFAConversion."FA No." then
             exit;
 
         GlobalFAConversion.Validate("FA Acquisition Entry No.", FALedgerEntry."Entry No.");
@@ -826,7 +882,8 @@ codeunit 60000 "FA Conversion Functions"
 
     /// <summary>
     /// Raised after the FA acquisition of an FA Conversion has been posted through the general journal,
-    /// inside the same transaction and before the conversion's global state is cleared.
+    /// inside the same transaction and before the conversion's global state is cleared. It is not raised
+    /// when the posting did not produce the acquisition: the FA acquisition then raises an error instead.
     /// </summary>
     /// <param name="FAConversion">The FA Conversion whose acquisition was posted.</param>
     [IntegrationEvent(false, false)]

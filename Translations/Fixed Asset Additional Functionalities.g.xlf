@@ -383,6 +383,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = Error message</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method NegativeAdjustment - NamedType ErrorHandlingLbl</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 2304338442 - NamedType 1032739316" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The acquisition of fixed asset %2 for FA Conversion %1 was not posted. Check the errors of the posting, correct the cause and post the FA acquisition again.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Conversion No., %2 = Fixed Asset No.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method PostAcquisitionJournalLine - NamedType AcquisitionNotPostedErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 1400216895 - NamedType 2554600891" size-unit="char" translate="yes" xml:space="preserve">
           <source>Fixed Asset %1 not found after creation.</source>
           <note from="Developer" annotates="general" priority="2">%1 = Fixed Asset No.</note>
