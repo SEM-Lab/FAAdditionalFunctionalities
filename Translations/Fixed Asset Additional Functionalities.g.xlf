@@ -609,8 +609,8 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NotInAllowedVATDateRangeErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 1130213445" size-unit="char" translate="yes" xml:space="preserve">
-          <source>%1 units were requested, but only one unit can be converted per request while general journals are posted with the job queue (Post with Job Queue in General Ledger Setup). Convert one unit, and the next one after the job queue has posted its FA acquisition.</source>
-          <note from="Developer" annotates="general" priority="2">%1 = number of units requested</note>
+          <source>%1 units were requested, but only one unit can be converted per request while general journals are posted with the job queue (%2 in %3). Convert one unit, and the next one after the job queue has posted its FA acquisition.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = number of units requested, %2 = caption of the field Post with Job Queue, %3 = caption of the table General Ledger Setup</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType OneUnitWithJobQueueErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 3245380793" size-unit="char" translate="yes" xml:space="preserve">
