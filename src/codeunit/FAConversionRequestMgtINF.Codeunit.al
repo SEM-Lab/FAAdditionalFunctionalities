@@ -169,9 +169,10 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
     /// <summary>
     /// Checks the acquisition date against the rules for the posting dates: it has a value, lies in the allowed
-    /// posting range and in the allowed FA posting range, is a valid VAT date (allowed VAT date range and VAT return
-    /// period), lies in no closed inventory period, and is not earlier than the posting date of the selected source
-    /// documents. The first violation raises an error.
+    /// posting range and in the allowed FA posting range, lies in no closed inventory period, is not earlier than the
+    /// posting date of the selected source documents, and is a valid VAT date (allowed VAT date range and VAT return
+    /// period). The VAT date is checked last because in the warning modes of the VAT period control it asks the user
+    /// to confirm; the question is asked only for a date that passes every other rule. The first violation raises an error.
     /// </summary>
     /// <param name="AcquisitionDate">The acquisition date to check.</param>
     /// <param name="EarliestAllowedDate">The latest posting date of the selected source documents; blank when unknown.</param>
@@ -187,13 +188,14 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         if not IsFAPostingDateAllowed(AcquisitionDate) then
             Error(NotInAllowedFAPostingRangeErr, AcquisitionDate);
 
-        if not IsVATDateAllowed(AcquisitionDate) then
-            Error(NotInAllowedVATDateRangeErr, AcquisitionDate);
-
         CheckInventoryPeriod(AcquisitionDate);
 
         if AcquisitionDate < EarliestAllowedDate then
             Error(BeforeSourceDocumentErr, AcquisitionDate, EarliestAllowedDate, EarliestSourceDocumentNo);
+
+        // Last: it may ask a question (review finding F3)
+        if not IsVATDateAllowed(AcquisitionDate) then
+            Error(NotInAllowedVATDateRangeErr, AcquisitionDate);
     end;
 
     /// <summary>
@@ -385,6 +387,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
     // period under General Ledger Setup "Control VAT Period". That check runs only after the negative adjustment of the unit was
     // committed, so the same check runs here first (NDIT-6082, review). In the warning modes of the VAT period control it asks
     // the user to confirm, as the posting does; without a user interface the base application takes the default answer (yes).
+    // The base application forgets the answer when a G/L posting finishes, so the posting of every unit's acquisition asks again.
     local procedure IsVATDateAllowed(VATDate: Date): Boolean
     var
         VATReportingDateMgt: Codeunit "VAT Reporting Date Mgt";
