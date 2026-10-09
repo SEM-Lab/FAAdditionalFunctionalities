@@ -697,9 +697,9 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NotInAllowedPostingRangeErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 410114289" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Acquisition date %1 cannot be the VAT date of the FA acquisition: it is not within the allowed VAT date range, or its VAT return period does not allow posting.</source>
-          <target state="translated">%1 edinme tarihi sabit kıymet ediniminin KDV tarihi olamaz: izin verilen KDV tarihi aralığında değil veya KDV beyan dönemi deftere nakle izin vermiyor.</target>
-          <note from="Developer" annotates="general" priority="2">%1 = acquisition date</note>
+          <source>Acquisition date %1 cannot be the VAT date of the FA acquisition: it is not within the allowed VAT date range, or its %2 does not allow posting.</source>
+          <target state="translated">%1 edinme tarihi sabit kıymet ediniminin KDV tarihi olamaz: izin verilen KDV tarihi aralığında değil veya ait olduğu %2 deftere nakle izin vermiyor.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = acquisition date, %2 = caption of the table VAT Return Period</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NotInAllowedVATDateRangeErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 1130213445" size-unit="char" translate="yes" xml:space="preserve">

@@ -2,6 +2,7 @@ namespace Infotek.FAAdditionalFunctionalities;
 
 using Microsoft.Finance.GeneralLedger.Setup;
 using Microsoft.Finance.VAT.Calculation;
+using Microsoft.Finance.VAT.Reporting;
 using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.FixedAssets.Setup;
 using Microsoft.Inventory.Ledger;
@@ -178,6 +179,8 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
     /// <param name="EarliestAllowedDate">The latest posting date of the selected source documents; blank when unknown.</param>
     /// <param name="EarliestSourceDocumentNo">The number of the source document that has this posting date; blank when unknown.</param>
     internal procedure ValidateAcquisitionDate(AcquisitionDate: Date; EarliestAllowedDate: Date; EarliestSourceDocumentNo: Code[20])
+    var
+        VATReturnPeriod: Record "VAT Return Period";
     begin
         if AcquisitionDate = 0D then
             Error(AcquisitionDateRequiredErr);
@@ -193,9 +196,10 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         if AcquisitionDate < EarliestAllowedDate then
             Error(BeforeSourceDocumentErr, AcquisitionDate, EarliestAllowedDate, EarliestSourceDocumentNo);
 
-        // Last: it may ask a question (review finding F3)
+        // Last: it may ask a question (review finding F3). The VAT return period is named by the caption of its table (review
+        // finding F7).
         if not IsVATDateAllowed(AcquisitionDate) then
-            Error(NotInAllowedVATDateRangeErr, AcquisitionDate);
+            Error(NotInAllowedVATDateRangeErr, AcquisitionDate, VATReturnPeriod.TableCaption());
     end;
 
     /// <summary>
@@ -675,7 +679,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         AcquisitionDateRequiredErr: Label 'Acquisition Date must have a value.';
         NotInAllowedPostingRangeErr: Label 'Acquisition date %1 is not within the allowed posting date range.', Comment = '%1 = acquisition date';
         NotInAllowedFAPostingRangeErr: Label 'Acquisition date %1 is not within the allowed FA posting date range.', Comment = '%1 = acquisition date';
-        NotInAllowedVATDateRangeErr: Label 'Acquisition date %1 cannot be the VAT date of the FA acquisition: it is not within the allowed VAT date range, or its VAT return period does not allow posting.', Comment = '%1 = acquisition date';
+        NotInAllowedVATDateRangeErr: Label 'Acquisition date %1 cannot be the VAT date of the FA acquisition: it is not within the allowed VAT date range, or its %2 does not allow posting.', Comment = '%1 = acquisition date, %2 = caption of the table VAT Return Period';
         BeforeSourceDocumentErr: Label 'Acquisition date %1 cannot be earlier than the posting date %2 of document %3.', Comment = '%1 = acquisition date, %2 = posting date of the source document, %3 = source document no.';
         QuantityMustBePositiveErr: Label 'Quantity to convert must be at least 1.';
         QuantityExceedsErr: Label 'Quantity to convert (%1) exceeds the convertible quantity (%2) of %3 %4 (item %5).', Comment = '%1 = quantity per line, %2 = convertible quantity, %3 = source document no., %4 = source document line no., %5 = item no.';
