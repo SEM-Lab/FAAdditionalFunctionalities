@@ -690,6 +690,12 @@
           <note from="Developer" annotates="general" priority="2">%1 = acquisition date</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NotInAllowedPostingRangeErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1796539849 - NamedType 1130213445" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 units were requested, but only one unit can be converted per request while general journals are posted with the job queue (Post with Job Queue in General Ledger Setup). Convert one unit, and the next one after the job queue has posted its FA acquisition.</source>
+          <target state="translated">%1 adet istendi, ancak genel günlükler iş kuyruğu ile deftere nakledilirken (Genel Muhasebe Kurulumu'nda İş Kuyruğu ile Deftere Naklet) istek başına yalnızca bir adet dönüştürülebilir. Bir adet dönüştürün; sonrakini, iş kuyruğu onun sabit kıymet edinimini deftere naklettikten sonra dönüştürün.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = number of units requested</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType OneUnitWithJobQueueErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 3245380793" size-unit="char" translate="yes" xml:space="preserve">
           <source>Quantity to convert (%1) exceeds the convertible quantity (%2) of %3 %4 (item %5).</source>
           <target state="translated">Dönüştürülecek adet (%1), %3 %4 (madde %5) satırının dönüştürülebilir adedini (%2) aşıyor.</target>

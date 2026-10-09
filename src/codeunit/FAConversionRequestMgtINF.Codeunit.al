@@ -105,8 +105,9 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
     /// <summary>
     /// Validates a conversion request before anything is written: the buffer has rows, the acquisition date passes
-    /// the date rules, and the quantity passes the quantity rules for every row. On success it resolves the number of
-    /// units to convert from each row. The first violation raises an error.
+    /// the date rules, and the quantity passes the quantity rules for every row. It resolves the number of units to
+    /// convert from each row; while General Ledger Setup posts general journals with the job queue, the request may
+    /// convert one unit only. The first violation raises an error.
     /// </summary>
     /// <param name="TempFAConvSourceLine">The request buffer filled by a Collect procedure; the quantity to convert of every row is set.</param>
     /// <param name="AcquisitionDate">The acquisition date chosen for the fixed assets.</param>
@@ -124,6 +125,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         ValidateAcquisitionDate(AcquisitionDate, LatestDocumentPostingDate, LatestDocumentNo);
         ValidateQuantity(TempFAConvSourceLine, QuantityMode, QuantityPerLine);
         SetQuantitiesToConvert(TempFAConvSourceLine, QuantityMode, QuantityPerLine);
+        CheckOneUnitWithJobQueue(TempFAConvSourceLine);
     end;
 
     /// <summary>
@@ -391,6 +393,22 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
             until TempFAConvSourceLine.Next() = 0;
     end;
 
+    // With General Ledger Setup "Post with Job Queue" the acquisition of a unit is only scheduled: its journal line stays in the
+    // journal batch of the FA Conversion Setup until the job queue has posted it. The acquisition of the next unit must empty that
+    // batch first, which a scheduled line refuses, so a request of more than one unit would stop at its second unit. It is
+    // refused before anything is written (NDIT-6082, review).
+    local procedure CheckOneUnitWithJobQueue(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary)
+    var
+        UnitsRequested: Integer;
+    begin
+        UnitsRequested := GetUnitsRequested(TempFAConvSourceLine);
+        if UnitsRequested <= 1 then
+            exit;
+
+        if IsPostWithJobQueue() then
+            Error(OneUnitWithJobQueueErr, UnitsRequested);
+    end;
+
     local procedure ConvertBufferRows(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary; AcquisitionDate: Date): Integer
     var
         TotalConverted: Integer;
@@ -589,6 +607,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         BeforeSourceDocumentErr: Label 'Acquisition date %1 cannot be earlier than the posting date %2 of document %3.', Comment = '%1 = acquisition date, %2 = posting date of the source document, %3 = source document no.';
         QuantityMustBePositiveErr: Label 'Quantity to convert must be at least 1.';
         QuantityExceedsErr: Label 'Quantity to convert (%1) exceeds the convertible quantity (%2) of %3 %4 (item %5).', Comment = '%1 = quantity per line, %2 = convertible quantity, %3 = source document no., %4 = source document line no., %5 = item no.';
+        OneUnitWithJobQueueErr: Label '%1 units were requested, but only one unit can be converted per request while general journals are posted with the job queue (Post with Job Queue in General Ledger Setup). Convert one unit, and the next one after the job queue has posted its FA acquisition.', Comment = '%1 = number of units requested';
         NothingToConvertErr: Label '%1 %2 (item %3) has no convertible units: received %4, already converted %5, open in inventory %6.', Comment = '%1 = source document no., %2 = source document line no., %3 = item no., %4 = received quantity (base), %5 = already converted quantity, %6 = open inbound quantity';
         FAConversionStoppedErr: Label 'FA conversion stopped after %1 of %2 unit(s). Unit %3 (%4 %5, item %6) failed in step "%7": %8', Comment = '%1 = completed units, %2 = requested units, %3 = ordinal of the failing unit, %4 = source document no., %5 = source document line no., %6 = item no., %7 = step name, %8 = error text';
         FAConversionStoppedPostedErr: Label 'FA conversion stopped after %1 of %2 unit(s). Unit %3 (%4 %5, item %6) failed in step "%7": %8 The fixed asset %9 was already created and posted; create its transfer item from the Fixed Asset card.', Comment = '%1 = completed units, %2 = requested units, %3 = ordinal of the failing unit, %4 = source document no., %5 = source document line no., %6 = item no., %7 = step name, %8 = error text, %9 = fixed asset no.';
