@@ -1,6 +1,7 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
 using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.Finance.VAT.Calculation;
 using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.FixedAssets.Setup;
 using Microsoft.Inventory.Ledger;
@@ -168,8 +169,9 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
     /// <summary>
     /// Checks the acquisition date against the rules for the posting dates: it has a value, lies in the allowed
-    /// posting range and in the allowed FA posting range, lies in no closed inventory period, and is not earlier
-    /// than the posting date of the selected source documents. The first violation raises an error.
+    /// posting range and in the allowed FA posting range, is a valid VAT date (allowed VAT date range and VAT return
+    /// period), lies in no closed inventory period, and is not earlier than the posting date of the selected source
+    /// documents. The first violation raises an error.
     /// </summary>
     /// <param name="AcquisitionDate">The acquisition date to check.</param>
     /// <param name="EarliestAllowedDate">The latest posting date of the selected source documents; blank when unknown.</param>
@@ -184,6 +186,9 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
         if not IsFAPostingDateAllowed(AcquisitionDate) then
             Error(NotInAllowedFAPostingRangeErr, AcquisitionDate);
+
+        if not IsVATDateAllowed(AcquisitionDate) then
+            Error(NotInAllowedVATDateRangeErr, AcquisitionDate);
 
         CheckInventoryPeriod(AcquisitionDate);
 
@@ -354,6 +359,18 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
         AllowPostingFrom := UserSetup."Allow FA Posting From";
         AllowPostingTo := UserSetup."Allow FA Posting To";
+    end;
+
+    // The FA acquisition is a purchase line of the general journal, so its posting checks the VAT date, which is the acquisition
+    // date (Gen. Jnl.-Check Line.CheckVATDate): the allowed VAT date range of the user or of VAT Setup, and the VAT return
+    // period under General Ledger Setup "Control VAT Period". That check runs only after the negative adjustment of the unit was
+    // committed, so the same check runs here first (NDIT-6082, review). In the warning modes of the VAT period control it asks
+    // the user to confirm, as the posting does; without a user interface the base application takes the default answer (yes).
+    local procedure IsVATDateAllowed(VATDate: Date): Boolean
+    var
+        VATReportingDateMgt: Codeunit "VAT Reporting Date Mgt";
+    begin
+        exit(VATReportingDateMgt.IsValidDate(VATDate));
     end;
 
     local procedure CheckInventoryPeriod(PostingDate: Date)
@@ -604,6 +621,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         AcquisitionDateRequiredErr: Label 'Acquisition Date must have a value.';
         NotInAllowedPostingRangeErr: Label 'Acquisition date %1 is not within the allowed posting date range.', Comment = '%1 = acquisition date';
         NotInAllowedFAPostingRangeErr: Label 'Acquisition date %1 is not within the allowed FA posting date range.', Comment = '%1 = acquisition date';
+        NotInAllowedVATDateRangeErr: Label 'Acquisition date %1 cannot be the VAT date of the FA acquisition: it is not within the allowed VAT date range, or its VAT return period does not allow posting.', Comment = '%1 = acquisition date';
         BeforeSourceDocumentErr: Label 'Acquisition date %1 cannot be earlier than the posting date %2 of document %3.', Comment = '%1 = acquisition date, %2 = posting date of the source document, %3 = source document no.';
         QuantityMustBePositiveErr: Label 'Quantity to convert must be at least 1.';
         QuantityExceedsErr: Label 'Quantity to convert (%1) exceeds the convertible quantity (%2) of %3 %4 (item %5).', Comment = '%1 = quantity per line, %2 = convertible quantity, %3 = source document no., %4 = source document line no., %5 = item no.';

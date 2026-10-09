@@ -690,6 +690,12 @@
           <note from="Developer" annotates="general" priority="2">%1 = acquisition date</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NotInAllowedPostingRangeErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1796539849 - NamedType 410114289" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Acquisition date %1 cannot be the VAT date of the FA acquisition: it is not within the allowed VAT date range, or its VAT return period does not allow posting.</source>
+          <target state="translated">%1 edinme tarihi sabit kıymet ediniminin KDV tarihi olamaz: izin verilen KDV tarihi aralığında değil veya KDV beyan dönemi deftere nakle izin vermiyor.</target>
+          <note from="Developer" annotates="general" priority="2">%1 = acquisition date</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType NotInAllowedVATDateRangeErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 1130213445" size-unit="char" translate="yes" xml:space="preserve">
           <source>%1 units were requested, but only one unit can be converted per request while general journals are posted with the job queue (Post with Job Queue in General Ledger Setup). Convert one unit, and the next one after the job queue has posted its FA acquisition.</source>
           <target state="translated">%1 adet istendi, ancak genel günlükler iş kuyruğu ile deftere nakledilirken (Genel Muhasebe Kurulumu'nda İş Kuyruğu ile Deftere Naklet) istek başına yalnızca bir adet dönüştürülebilir. Bir adet dönüştürün; sonrakini, iş kuyruğu onun sabit kıymet edinimini deftere naklettikten sonra dönüştürün.</target>
