@@ -53,6 +53,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conv. Source Line INF - Field Location Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3824938169 - Field 1102953595 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Missing Item FA Setup</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conv. Source Line INF - Field Missing Item FA Setup - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3824938169 - Field 3621942582 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open Inbound Quantity</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -578,6 +583,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = fixed asset no.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType FixedAssetNotFoundErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 1796539849 - NamedType 1825733248" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2 (item %3) cannot be converted because these fields of the item have no value: %4. Fill them in on the item card and convert again.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = source document no., %2 = source document line no., %3 = item no., %4 = captions of the missing item fields, separated by commas</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Request Mgt. INF - NamedType MissingItemFASetupErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 1796539849 - NamedType 2273559008" size-unit="char" translate="yes" xml:space="preserve">
           <source>Negative Adjustment</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -758,6 +768,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Request INF - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 765658249 - NamedType 3122980121" size-unit="char" translate="yes" xml:space="preserve">
+          <source>%1 %2 (item %3): %4</source>
+          <note from="Developer" annotates="general" priority="2">%1 = source document no., %2 = source document line no., %3 = item no., %4 = captions of the missing item fields, separated by commas</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Request INF - NamedType MissingItemFASetupLineTxt</note>
+        </trans-unit>
         <trans-unit id="Page 765658249 - Control 682928251 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Acquisition</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -842,6 +857,16 @@
           <source>Item No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Request INF - Control ItemNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 765658249 - Control 2362168475 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the first selected line whose item misses FA setup fields that the conversion requires, and these fields. Fill them in on the item card before the line is converted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Request INF - Control MissingItemFASetup - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 765658249 - Control 2362168475 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Missing Item FA Setup</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Request INF - Control MissingItemFASetup - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 765658249 - Control 550442184 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies how many posted lines are selected.</source>

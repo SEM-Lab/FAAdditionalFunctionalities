@@ -111,6 +111,11 @@ table 60013 "FA Conv. Source Line INF"
             Caption = 'Last FA Conversion No.';
             AllowInCustomizations = Never;
         }
+        field(19; "Missing Item FA Setup"; Text[250])
+        {
+            Caption = 'Missing Item FA Setup';
+            AllowInCustomizations = Never;
+        }
     }
 
     keys
@@ -171,7 +176,8 @@ table 60013 "FA Conv. Source Line INF"
     /// <summary>
     /// Sets the quantities of the current row and calculates its convertible quantity: the number of open serial
     /// numbers for a serial tracked line, otherwise the received base units that are neither converted yet nor
-    /// consumed from inventory nor reserved, rounded down to whole units.
+    /// consumed from inventory nor reserved, rounded down to whole units. A row whose item misses FA setup fields
+    /// has no convertible quantity.
     /// </summary>
     /// <param name="ReceivedBase">The received quantity of the line in base units.</param>
     /// <param name="Converted">The number of fixed assets already created from the line.</param>
@@ -206,6 +212,16 @@ table 60013 "FA Conv. Source Line INF"
     begin
         "Converted This Run" := ConvertedThisRun;
         "Last FA Conversion No." := LastFAConversionNo;
+    end;
+
+    /// <summary>
+    /// Sets the captions of the FA setup fields that the item of the current row misses; blank when the item has every field
+    /// the conversion requires. Set it before the quantities: a row with missing fields has no convertible quantity.
+    /// </summary>
+    /// <param name="MissingItemFASetup">The captions of the missing fields, separated by commas.</param>
+    internal procedure SetMissingItemFASetup(MissingItemFASetup: Text)
+    begin
+        "Missing Item FA Setup" := CopyStr(MissingItemFASetup, 1, MaxStrLen("Missing Item FA Setup"));
     end;
 
     /// <summary>
@@ -260,6 +276,10 @@ table 60013 "FA Conv. Source Line INF"
         ConvertibleUnits: Decimal;
         OpenUnits: Decimal;
     begin
+        // The conversion of a unit stops at the missing item fields, so no unit of such a row can be converted
+        if "Missing Item FA Setup" <> '' then
+            exit(0);
+
         if "Serial Tracked" then
             exit("Open Serial Count");
 

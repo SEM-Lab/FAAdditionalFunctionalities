@@ -94,6 +94,13 @@ page 60014 "FA Conversion Request INF"
                     ToolTip = 'Specifies the description of the item on the selected line.';
                     Visible = SingleLineSelected;
                 }
+                field(MissingItemFASetup; MissingItemFASetupValue)
+                {
+                    Caption = 'Missing Item FA Setup';
+                    ToolTip = 'Specifies the first selected line whose item misses FA setup fields that the conversion requires, and these fields. Fill them in on the item card before the line is converted.';
+                    Style = Unfavorable;
+                    Visible = MissingItemFASetupVisible;
+                }
             }
         }
     }
@@ -120,12 +127,15 @@ page 60014 "FA Conversion Request INF"
         LatestDocumentNo: Code[20];
         ItemNoValue: Code[20];
         DescriptionValue: Text[100];
+        MissingItemFASetupValue: Text;
         AlreadyConvertedValue: Integer;
         ConvertibleQuantityValue: Integer;
         QuantityToConvertValue: Integer;
         SelectedLinesValue: Integer;
         QuantityToConvertEnabled: Boolean;
         SingleLineSelected: Boolean;
+        MissingItemFASetupVisible: Boolean;
+        MissingItemFASetupLineTxt: Label '%1 %2 (item %3): %4', Comment = '%1 = source document no., %2 = source document line no., %3 = item no., %4 = captions of the missing item fields, separated by commas';
 
     /// <summary>
     /// Hands the selected source lines to the dialog before it is opened. The dialog shares the rows of the
@@ -167,7 +177,8 @@ page 60014 "FA Conversion Request INF"
     end;
 
     /// <summary>
-    /// Calculates the totals of the selected lines and, for a single selected line, its item and description.
+    /// Calculates the totals of the selected lines, for a single selected line its item and description, and the first
+    /// selected line whose item misses FA setup fields.
     /// </summary>
     local procedure LoadSummary()
     begin
@@ -176,6 +187,7 @@ page 60014 "FA Conversion Request INF"
         AlreadyConvertedValue := 0;
         ItemNoValue := '';
         DescriptionValue := '';
+        MissingItemFASetupValue := '';
 
         if TempSourceLines.FindSet() then
             repeat
@@ -184,8 +196,11 @@ page 60014 "FA Conversion Request INF"
                 AlreadyConvertedValue += TempSourceLines."Converted Quantity";
                 ItemNoValue := TempSourceLines."Item No.";
                 DescriptionValue := TempSourceLines.Description;
+                if (MissingItemFASetupValue = '') and (TempSourceLines."Missing Item FA Setup" <> '') then
+                    MissingItemFASetupValue := StrSubstNo(MissingItemFASetupLineTxt, TempSourceLines."Source Document No.", TempSourceLines."Source Document Line No.", TempSourceLines."Item No.", TempSourceLines."Missing Item FA Setup");
             until TempSourceLines.Next() = 0;
 
         SingleLineSelected := SelectedLinesValue = 1;
+        MissingItemFASetupVisible := MissingItemFASetupValue <> '';
     end;
 }

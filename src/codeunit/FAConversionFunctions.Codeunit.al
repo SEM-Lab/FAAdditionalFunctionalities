@@ -868,6 +868,8 @@ codeunit 60000 "FA Conversion Functions"
         if not Item.Get(TempFAConvSourceLine."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), TempFAConvSourceLine."Item No.");
 
+        // The request engine refuses an item without these fields before anything is written (GetMissingItemFASetup checks the
+        // same fields); a change here must be made there as well.
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
@@ -887,6 +889,40 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion.Validate("Source Document Line No.", TempFAConvSourceLine."Source Document Line No.");
         CreateFixedAsset(Item, FAConversion);
         FAConversion.Modify(true);
+    end;
+
+    /// <summary>
+    /// Returns the captions of the FA setup fields of an item that the conversion of a unit of a source line requires
+    /// (CreateFAConversionFromSourceLine) and that have no value, separated by commas, in the order the conversion checks them.
+    /// </summary>
+    /// <param name="ItemNo">The item to check.</param>
+    /// <returns>The captions of the missing fields; blank when every field has a value or when the item does not exist.</returns>
+    internal procedure GetMissingItemFASetup(ItemNo: Code[20]): Text
+    var
+        Item: Record Item;
+        MissingFields: Text;
+    begin
+        Item.SetLoadFields("FA No. Series", "FA Conv. Gen. Bus. Post. Group", "FA Posting Group", "FA Life Years INF");
+        if not Item.Get(ItemNo) then
+            exit('');
+
+        if Item."FA No. Series" = '' then
+            AddMissingField(MissingFields, Item.FieldCaption("FA No. Series"));
+        if Item."FA Conv. Gen. Bus. Post. Group" = '' then
+            AddMissingField(MissingFields, Item.FieldCaption("FA Conv. Gen. Bus. Post. Group"));
+        if Item."FA Posting Group" = '' then
+            AddMissingField(MissingFields, Item.FieldCaption("FA Posting Group"));
+        if Item."FA Life Years INF" = 0 then
+            AddMissingField(MissingFields, Item.FieldCaption("FA Life Years INF"));
+
+        exit(MissingFields);
+    end;
+
+    local procedure AddMissingField(var MissingFields: Text; FieldCaption: Text)
+    begin
+        if MissingFields <> '' then
+            MissingFields += FieldListSeparatorTok;
+        MissingFields += FieldCaption;
     end;
 
     /// <summary>
@@ -1074,4 +1110,5 @@ codeunit 60000 "FA Conversion Functions"
         GlobalILENo: Integer;
         RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
         RecordWithTwoKeysDoesNotExistErr: Label '%1 %2, %3 does not exist.', Comment = '%1 = Table caption, %2 = First key value, %3 = Second key value';
+        FieldListSeparatorTok: Label ', ', Locked = true;
 }

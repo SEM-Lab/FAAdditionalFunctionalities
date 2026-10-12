@@ -67,7 +67,8 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
     /// <summary>
     /// Replaces the content of the request buffer with one row per posted transfer receipt line of the record set,
-    /// with the received, converted, open and convertible quantities of each line. Reads only; the filters and
+    /// with the received, converted, open and convertible quantities of each line and the FA setup fields its item misses
+    /// (a line whose item misses any has no convertible quantity). Reads only; the filters and
     /// marks of the record are unchanged, its position and auto-calculated fields may change.
     /// </summary>
     /// <param name="TransferReceiptLine">The lines to collect, filtered or marked; an unfiltered record means every line.</param>
@@ -81,6 +82,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         if TransferReceiptLine.FindSet() then
             repeat
                 TempFAConvSourceLine.InitFromTransferReceiptLine(TransferReceiptLine);
+                TempFAConvSourceLine.SetMissingItemFASetup(FAConversionFunctions.GetMissingItemFASetup(TransferReceiptLine."Item No."));
                 TempFAConvSourceLine.SetDocumentPostingDate(GetTransferReceiptPostingDate(TransferReceiptLine."Document No."));
                 RefreshQuantities(TempFAConvSourceLine, TransferReceiptLine."Quantity (Base)", TransferReceiptLine."FA Converted Qty. INF");
                 TempFAConvSourceLine.Insert(false);
@@ -89,7 +91,8 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
 
     /// <summary>
     /// Replaces the content of the request buffer with one row per posted direct transfer line of the record set,
-    /// with the received, converted, open and convertible quantities of each line. Reads only; the filters and
+    /// with the received, converted, open and convertible quantities of each line and the FA setup fields its item misses
+    /// (a line whose item misses any has no convertible quantity). Reads only; the filters and
     /// marks of the record are unchanged, its position and auto-calculated fields may change.
     /// </summary>
     /// <param name="DirectTransLine">The lines to collect, filtered or marked; an unfiltered record means every line.</param>
@@ -103,6 +106,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         if DirectTransLine.FindSet() then
             repeat
                 TempFAConvSourceLine.InitFromDirectTransLine(DirectTransLine);
+                TempFAConvSourceLine.SetMissingItemFASetup(FAConversionFunctions.GetMissingItemFASetup(DirectTransLine."Item No."));
                 TempFAConvSourceLine.SetDocumentPostingDate(GetDirectTransferPostingDate(DirectTransLine."Document No."));
                 RefreshQuantities(TempFAConvSourceLine, DirectTransLine."Quantity (Base)", DirectTransLine."FA Converted Qty. INF");
                 TempFAConvSourceLine.Insert(false);
@@ -110,8 +114,9 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
     end;
 
     /// <summary>
-    /// Validates a conversion request before anything is written: the buffer has rows, the acquisition date passes
-    /// the date rules, and the quantity passes the quantity rules for every row. It resolves the number of units to
+    /// Validates a conversion request before anything is written: the buffer has rows, the item of every row has the FA
+    /// setup the conversion requires, the acquisition date passes the date rules, and the quantity passes the quantity
+    /// rules for every row. It resolves the number of units to
     /// convert from each row; while General Ledger Setup posts general journals with the job queue, the request may
     /// convert one unit only. The first violation raises an error.
     /// </summary>
@@ -127,6 +132,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         if TempFAConvSourceLine.IsEmpty() then
             Error(NoLinesSelectedErr);
 
+        CheckItemFASetup(TempFAConvSourceLine);
         LatestDocumentPostingDate := TempFAConvSourceLine.GetLatestDocumentPostingDate(LatestDocumentNo);
         ValidateAcquisitionDate(AcquisitionDate, LatestDocumentPostingDate, LatestDocumentNo);
         ValidateQuantity(TempFAConvSourceLine, QuantityMode, QuantityPerLine);
@@ -222,6 +228,19 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         if TempFAConvSourceLine.FindSet() then
             repeat
                 ValidateRowQuantity(TempFAConvSourceLine, QuantityMode, QuantityPerLine);
+            until TempFAConvSourceLine.Next() = 0;
+    end;
+
+    // The conversion of a unit stops when its item misses an FA setup field (FA Conversion Functions.CreateFAConversionFromSourceLine),
+    // so a request with such a row is refused before anything is written, naming the first such row, its item and the missing
+    // fields (NDIT-6082, consultant feedback 2026-10-12). It runs before the date rules, so the VAT question of the date rules is not
+    // asked for a request that is refused anyway.
+    local procedure CheckItemFASetup(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary)
+    begin
+        if TempFAConvSourceLine.FindSet() then
+            repeat
+                if TempFAConvSourceLine."Missing Item FA Setup" <> '' then
+                    Error(MissingItemFASetupErr, TempFAConvSourceLine."Source Document No.", TempFAConvSourceLine."Source Document Line No.", TempFAConvSourceLine."Item No.", TempFAConvSourceLine."Missing Item FA Setup");
             until TempFAConvSourceLine.Next() = 0;
     end;
 
@@ -724,6 +743,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         QuantityMustBePositiveErr: Label 'Quantity to convert must be at least 1.';
         QuantityExceedsErr: Label 'Quantity to convert (%1) exceeds the convertible quantity (%2) of %3 %4 (item %5).', Comment = '%1 = quantity per line, %2 = convertible quantity, %3 = source document no., %4 = source document line no., %5 = item no.';
         OneUnitWithJobQueueErr: Label '%1 units were requested, but only one unit can be converted per request while general journals are posted with the job queue (%2 in %3). Convert one unit, and the next one after the job queue has posted its FA acquisition.', Comment = '%1 = number of units requested, %2 = caption of the field Post with Job Queue, %3 = caption of the table General Ledger Setup';
+        MissingItemFASetupErr: Label '%1 %2 (item %3) cannot be converted because these fields of the item have no value: %4. Fill them in on the item card and convert again.', Comment = '%1 = source document no., %2 = source document line no., %3 = item no., %4 = captions of the missing item fields, separated by commas';
         NothingToConvertErr: Label '%1 %2 (item %3) has no convertible units: received %4, already converted %5, open in inventory and not reserved %6.', Comment = '%1 = source document no., %2 = source document line no., %3 = item no., %4 = received quantity (base), %5 = already converted quantity, %6 = open inbound quantity that is not reserved';
         FAConversionStoppedErr: Label 'FA conversion stopped after %1 of %2 unit(s). Unit %3 (%4 %5, item %6) failed in step "%7": %8', Comment = '%1 = completed units, %2 = requested units, %3 = ordinal of the failing unit, %4 = source document no., %5 = source document line no., %6 = item no., %7 = step name, %8 = error text';
         FAConversionStoppedPostedErr: Label 'FA conversion stopped after %1 of %2 unit(s). Unit %3 (%4 %5, item %6) failed in step "%7": %8 The fixed asset %9 was already created and posted; create its transfer item from the Fixed Asset card.', Comment = '%1 = completed units, %2 = requested units, %3 = ordinal of the failing unit, %4 = source document no., %5 = source document line no., %6 = item no., %7 = step name, %8 = error text, %9 = fixed asset no.';
