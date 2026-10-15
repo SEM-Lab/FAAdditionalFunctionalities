@@ -1032,7 +1032,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control General - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1809950204 - Control 698089833 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>FA Acquistion</source>
+          <source>FA Acquisition</source>
           <target state="translated">Sabit Kıymet Edinimi</target>
           <note from="Xliff Generator" annotates="general" priority="3">Page FA Conversion Setup - Control FAAcquistion - Property Caption</note>
         </trans-unit>
@@ -1601,13 +1601,13 @@
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Direct Trans. Line - Field FA No. Series - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 593634465 - Field 3153419538 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 593634465">
-          <source>Specifies the value of the Remaning Quantity field.</source>
+          <source>Specifies the value of the Remaining Quantity field.</source>
           <target state="translated">Kalan Miktar alanının değerini belirtir.</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Direct Trans. Line - Field Remaning Quantity - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 593634465 - Field 3153419538 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 593634465">
-          <source>Remaning Quantity</source>
+          <source>Remaining Quantity</source>
           <target state="translated">Kalan Miktar</target>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Direct Trans. Line - Field Remaning Quantity - Property Caption</note>
         </trans-unit>
@@ -1732,7 +1732,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Life Years INF - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 2042781808 - Field 3429167600 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3276313895">
-          <source>Ömür Yılı</source>
+          <source>FA Life Years</source>
           <target state="translated">Ömür Yılı</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Item Extension - Field FA Life Years INF - Property Caption</note>
@@ -1858,13 +1858,13 @@
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field FA No. Series - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 3810883434 - Field 3153419538 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1903112923">
-          <source>Specifies the value of the Remaning Quantity field.</source>
+          <source>Specifies the value of the Remaining Quantity field.</source>
           <target state="translated">Kalan Miktar alanının değerini belirtir.</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Remaning Quantity - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="TableExtension 3810883434 - Field 3153419538 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 1903112923">
-          <source>Remaning Quantity</source>
+          <source>Remaining Quantity</source>
           <target state="translated">Kalan Miktar</target>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Transfer Receipt Line Ext. - Field Remaning Quantity - Property Caption</note>
         </trans-unit>

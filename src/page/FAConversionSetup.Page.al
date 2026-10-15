@@ -28,7 +28,7 @@ page 60001 "FA Conversion Setup"
 
                 group(FAAcquistion)
                 {
-                    Caption = 'FA Acquistion';
+                    Caption = 'FA Acquisition';
 
                     field("Depreciation Book Code"; Rec."Depreciation Book Code")
                     {

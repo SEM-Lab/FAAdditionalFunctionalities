@@ -10,11 +10,11 @@ tableextension 60003 "Transfer Receipt Line Ext." extends "Transfer Receipt Line
     {
         field(60000; "Remaning Quantity"; Decimal)
         {
-            Caption = 'Remaning Quantity';
+            Caption = 'Remaining Quantity';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = sum("Item Ledger Entry"."Remaining Quantity" where("Item No." = field("Item No."), "Variant Code" = field("Variant Code"), "Location Code" = field("Transfer-to Code"), "Document No." = field("Document No."), "Document Line No." = field("Line No.")));
-            ToolTip = 'Specifies the value of the Remaning Quantity field.';
+            ToolTip = 'Specifies the value of the Remaining Quantity field.';
         }
         field(60001; "FA No. Series"; Code[20])
         {

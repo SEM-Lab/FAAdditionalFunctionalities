@@ -53,7 +53,7 @@ tableextension 60001 "Item Extension" extends Item
 
         field(60006; "FA Life Years INF"; Integer)
         {
-            Caption = 'Ömür Yılı';
+            Caption = 'FA Life Years';
             MinValue = 0;
             ToolTip = 'Specifies the number of depreciation years that is used when the item is converted to a fixed asset.';
         }
