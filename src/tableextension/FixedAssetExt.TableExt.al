@@ -1,5 +1,6 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+using Microsoft.FixedAssets.Depreciation;
 using Microsoft.FixedAssets.FixedAsset;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Ledger;
@@ -60,6 +61,14 @@ tableextension 60022 "Fixed Asset Ext." extends "Fixed Asset"
             FieldClass = FlowField;
             CalcFormula = lookup(Location."Location Type INF" where(Code = field("Current Location")));
             ToolTip = 'Specifies the location type derived from the fixed asset''s current location.';
+        }
+        field(60007; "Disposed INF"; Boolean)
+        {
+            Caption = 'Disposed';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = exist("FA Depreciation Book" where("FA No." = field("No."), "Disposal Date" = filter(<> 0D)));
+            ToolTip = 'Specifies whether the fixed asset has been disposed of (sold or written off) in at least one depreciation book.';
         }
     }
 }

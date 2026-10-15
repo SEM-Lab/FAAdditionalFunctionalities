@@ -43,6 +43,10 @@ pageextension 60000 "Fixed Asset Card Ext." extends "Fixed Asset Card"
             {
                 ApplicationArea = All;
             }
+            field("Disposed INF"; Rec."Disposed INF")
+            {
+                ApplicationArea = All;
+            }
         }
     }
     actions

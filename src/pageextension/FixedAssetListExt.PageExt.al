@@ -43,6 +43,10 @@ pageextension 60006 "Fixed Asset List Ext." extends "Fixed Asset List"
             {
                 ApplicationArea = All;
             }
+            field("Disposed INF"; Rec."Disposed INF")
+            {
+                ApplicationArea = All;
+            }
         }
     }
     actions

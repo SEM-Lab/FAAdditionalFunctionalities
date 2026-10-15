@@ -1656,6 +1656,18 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Current Location Type INF - Property Caption</note>
         </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 4222463550 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Specifies whether the fixed asset has been disposed of (sold or written off) in at least one depreciation book.</source>
+          <target state="translated">Sabit kıymetin en az bir amortisman defterinde elden çıkarılıp çıkarılmadığını (satış veya hurdaya ayırma) belirtir.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Disposed INF - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 3382964483 - Field 4222463550 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
+          <source>Disposed</source>
+          <target state="translated">Elden Çıkarıldı</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension Fixed Asset Ext. - Field Disposed INF - Property Caption</note>
+        </trans-unit>
         <trans-unit id="TableExtension 3382964483 - Field 4121882914 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 372951706">
           <source>Specifies the description of the source item.</source>
           <target state="translated">Kaynak maddenin açıklamasını belirtir.</target>
