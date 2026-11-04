@@ -49,6 +49,14 @@ tableextension 60001 "Item Extension" extends Item
             Caption = 'FA Depreciation Profile';
             TableRelation = "FA Depreciation Profile".Code;
             ToolTip = 'Specifies the depreciation profile that controls the depreciation life for automatic FA conversions.';
+
+            trigger OnValidate()
+            var
+                FAConversionFunctions: Codeunit "FA Conversion Functions";
+            begin
+                if "FA Depr. Profile Code INF" <> '' then
+                    Validate("FA Life Years INF", FAConversionFunctions.GetWholeYearsOfProfile("FA Depr. Profile Code INF"));
+            end;
         }
 
         field(60006; "FA Life Years INF"; Integer)

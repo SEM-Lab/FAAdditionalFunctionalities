@@ -199,6 +199,35 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
     /// <summary>
+    /// The depreciation life of a profile in whole years, counted from 1 January of the work date year. Errors when the
+    /// profile has no life formula or the formula is not a whole number of years (the life must then be entered manually).
+    /// </summary>
+    /// <param name="ProfileCode">The FA Depreciation Profile code.</param>
+    /// <returns>The number of years, at least 1.</returns>
+    internal procedure GetWholeYearsOfProfile(ProfileCode: Code[20]): Integer
+    var
+        FADepreciationProfile: Record "FA Depreciation Profile";
+        StartDate: Date;
+        EndDate: Date;
+        WholeYears: Integer;
+        FormulaNotWholeYearsErr: Label 'The depreciation life formula %2 of profile %1 is not a whole number of years. Enter FA Life Years manually.', Comment = '%1 = FA Depreciation Profile code, %2 = Depreciation life formula';
+        ProfileDoesNotExistErr: Label 'The FA Depreciation Profile %1 does not exist.', Comment = '%1 = FA Depreciation Profile code';
+    begin
+        FADepreciationProfile.SetLoadFields("Depreciation Life Formula");
+        if not FADepreciationProfile.Get(ProfileCode) then
+            Error(ProfileDoesNotExistErr, ProfileCode);
+        FADepreciationProfile.TestField("Depreciation Life Formula");
+
+        StartDate := DMY2Date(1, 1, WorkDate().Year());
+        EndDate := CalcDate(FADepreciationProfile."Depreciation Life Formula", StartDate);
+        WholeYears := EndDate.Year() - StartDate.Year();
+        if (WholeYears < 1) or (EndDate <> DMY2Date(1, 1, StartDate.Year() + WholeYears)) then
+            Error(FormulaNotWholeYearsErr, ProfileCode, Format(FADepreciationProfile."Depreciation Life Formula"));
+
+        exit(WholeYears);
+    end;
+
+    /// <summary>
     /// Posts the negative inventory adjustment of one unit of a conversion request, without cost adjustment, taken from the
     /// unit's own inbound item ledger entry: the item journal line carries the unit cost of that entry and, when an entry to
     /// apply to is given, is applied to it. With no entries it is the same as NegativeAdjustment without cost adjustment
