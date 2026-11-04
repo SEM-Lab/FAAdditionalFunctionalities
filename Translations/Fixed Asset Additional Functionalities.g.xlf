@@ -133,6 +133,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA Acquisition Entry No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 4246348577 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether the fixed asset acquisition of the conversion has been posted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA Acquisition Posted - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 4246348577 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>FA Acquisition Posted</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field FA Acquisition Posted - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 1982396155 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the FA Description field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -193,6 +203,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Negative Adjmt. ILE Entry No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 4266397254 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies whether the negative inventory adjustment of the conversion has been posted.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Negative Adjmt. Posted - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 4266397254 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Negative Adjustment Posted</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Negative Adjmt. Posted - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1971911761 - Field 4200184881 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the value of the No. field.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -232,6 +252,11 @@
           <source>Serial No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Serial No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1971911761 - Field 47037625 - Method 2126772001 - NamedType 3488344554" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The serial number of FA Conversion %1 cannot be changed because its negative adjustment is already posted (item ledger entry %2).</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Conversion No., %2 = Item ledger entry no. of the posted negative adjustment</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table FA Conversion - Field Serial No. - Method OnValidate - NamedType SerialNoLockedErr</note>
         </trans-unit>
         <trans-unit id="Table 1971911761 - Field 3371451125 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the line number of the posted transfer document that the item was converted from.</source>
@@ -483,6 +508,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = First key value, %3 = Second key value</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - NamedType RecordWithTwoKeysDoesNotExistErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 1831890178 - NamedType 4270473905" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The negative adjustment of FA Conversion %1 is already posted (item ledger entry %2). It cannot be posted again.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Conversion No., %2 = Item ledger entry no. of the posted negative adjustment</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CheckNegativeAdjustmentNotPosted - NamedType NegativeAdjmtAlreadyPostedErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 1812270184 - NamedType 631801445" size-unit="char" translate="yes" xml:space="preserve">
           <source>Location %1 does not exist. Please create the location first or set a valid default location in FA Conversion Setup.</source>
           <note from="Developer" annotates="general" priority="2">%1 = Location Code</note>
@@ -507,6 +537,16 @@
           <source>No serial number found for transfer receipt line %1/%2.</source>
           <note from="Developer" annotates="general" priority="2">%1 = Document No., %2 = Line No.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method GetSerialNoFromTransferReceiptLine - NamedType NoSerialNoFoundErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 2580683755 - NamedType 1514560005" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The depreciation life formula %2 of profile %1 is not a whole number of years. Enter FA Life Years manually.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Depreciation Profile code, %2 = Depreciation life formula</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method GetWholeYearsOfProfile - NamedType FormulaNotWholeYearsErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 2580683755 - NamedType 3279197159" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The FA Depreciation Profile %1 does not exist.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = FA Depreciation Profile code</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method GetWholeYearsOfProfile - NamedType ProfileDoesNotExistErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 4075544376 - NamedType 2530530535" size-unit="char" translate="yes" xml:space="preserve">
           <source>Failed to create negative adjustment: %1</source>
