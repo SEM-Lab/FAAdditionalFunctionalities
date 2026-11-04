@@ -508,6 +508,11 @@
           <note from="Developer" annotates="general" priority="2">%1 = Table caption, %2 = First key value, %3 = Second key value</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - NamedType RecordWithTwoKeysDoesNotExistErr</note>
         </trans-unit>
+        <trans-unit id="Codeunit 2519164786 - Method 537738126 - NamedType 2138266352" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item %1 cannot be converted to a fixed asset because its item tracking code %2 uses lot or package tracking. Only items without item tracking or with serial number tracking can be converted.</source>
+          <note from="Developer" annotates="general" priority="2">%1 = Item No., %2 = Item Tracking Code</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit FA Conversion Functions - Method CheckItemTrackingSupported - NamedType ItemTrackingNotSupportedErr</note>
+        </trans-unit>
         <trans-unit id="Codeunit 2519164786 - Method 1831890178 - NamedType 4270473905" size-unit="char" translate="yes" xml:space="preserve">
           <source>The negative adjustment of FA Conversion %1 is already posted (item ledger entry %2). It cannot be posted again.</source>
           <note from="Developer" annotates="general" priority="2">%1 = FA Conversion No., %2 = Item ledger entry no. of the posted negative adjustment</note>
