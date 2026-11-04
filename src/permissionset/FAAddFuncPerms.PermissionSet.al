@@ -1,5 +1,8 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+using Microsoft.FixedAssets.Ledger;
+using Microsoft.Inventory.Ledger;
+
 /// <summary>
 /// Full access to the objects of the Fixed Asset Additional Functionalities extension.
 /// </summary>
@@ -16,6 +19,9 @@ permissionset 60000 "FA Add Func Perms"
         tabledata "FA Conversion Setup" = RIMD,
         table "FA Depreciation Profile" = X,
         tabledata "FA Depreciation Profile" = RIMD,
+        // Read by the posted-state FlowFields of FA Conversion on the FA Conversion List (BCAPP-475)
+        tabledata "FA Ledger Entry" = R,
+        tabledata "Item Ledger Entry" = R,
         codeunit "FA Add Func Upgrade" = X,
         codeunit "FA Conversion Functions" = X,
         codeunit "FA Conversion Request Mgt. INF" = X,

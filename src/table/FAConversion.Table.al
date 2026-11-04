@@ -1,5 +1,6 @@
 namespace Infotek.FAAdditionalFunctionalities;
 
+using Microsoft.FixedAssets.Ledger;
 using Microsoft.Foundation.NoSeries;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Inventory.Location;
@@ -143,6 +144,22 @@ table 60001 "FA Conversion"
         {
             Caption = 'Source Document Line No.';
             ToolTip = 'Specifies the line number of the posted transfer document that the item was converted from.';
+            Editable = false;
+        }
+        field(30; "Negative Adjmt. Posted"; Boolean)
+        {
+            Caption = 'Negative Adjustment Posted';
+            ToolTip = 'Specifies whether the negative inventory adjustment of the conversion has been posted.';
+            FieldClass = FlowField;
+            CalcFormula = exist("Item Ledger Entry" where("Entry No." = field("Negative Adjmt. ILE Entry No.")));
+            Editable = false;
+        }
+        field(31; "FA Acquisition Posted"; Boolean)
+        {
+            Caption = 'FA Acquisition Posted';
+            ToolTip = 'Specifies whether the fixed asset acquisition of the conversion has been posted.';
+            FieldClass = FlowField;
+            CalcFormula = exist("FA Ledger Entry" where("Entry No." = field("FA Acquisition Entry No.")));
             Editable = false;
         }
         field(107; "No. Series"; Code[20])

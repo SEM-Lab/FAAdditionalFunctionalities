@@ -36,6 +36,12 @@ page 60003 "FA Conversion List"
                 field("Posting Date"; Rec."Posting Date")
                 {
                 }
+                field("Negative Adjmt. Posted"; Rec."Negative Adjmt. Posted")
+                {
+                }
+                field("FA Acquisition Posted"; Rec."FA Acquisition Posted")
+                {
+                }
                 field("Source Document Type"; Rec."Source Document Type")
                 {
                 }
