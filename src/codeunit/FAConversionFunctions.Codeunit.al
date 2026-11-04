@@ -27,7 +27,7 @@ codeunit 60000 "FA Conversion Functions"
 {
     SingleInstance = true;
     Access = Public;
-    Permissions = tabledata "FA Conversion" = im,
+    Permissions = tabledata "FA Conversion" = rim,
                   tabledata "FA Conversion Setup" = r,
                   tabledata "FA Depreciation Book" = rim,
                   tabledata "FA Depreciation Profile" = r,
@@ -224,6 +224,27 @@ codeunit 60000 "FA Conversion Functions"
         PostNegativeAdjustment(FAConversion, true, AppliesToEntryNo, CostEntryNo);
     end;
 
+    // A negative adjustment is posted once per conversion (BCAPP-475). The stored record is read as well, with an update lock:
+    // the caller's copy can be stale (a card opened before another session or tab posted), and the lock makes a concurrent
+    // post wait for the first one and then see its entry no.
+    local procedure CheckNegativeAdjustmentNotPosted(FAConversion: Record "FA Conversion")
+    var
+        StoredFAConversion: Record "FA Conversion";
+        PostedEntryNo: Integer;
+        NegativeAdjmtAlreadyPostedErr: Label 'The negative adjustment of FA Conversion %1 is already posted (item ledger entry %2). It cannot be posted again.', Comment = '%1 = FA Conversion No., %2 = Item ledger entry no. of the posted negative adjustment';
+    begin
+        PostedEntryNo := FAConversion."Negative Adjmt. ILE Entry No.";
+        if PostedEntryNo = 0 then begin
+            StoredFAConversion.ReadIsolation(IsolationLevel::UpdLock);
+            StoredFAConversion.SetLoadFields("Negative Adjmt. ILE Entry No.");
+            if StoredFAConversion.Get(FAConversion."No.") then
+                PostedEntryNo := StoredFAConversion."Negative Adjmt. ILE Entry No.";
+        end;
+
+        if PostedEntryNo <> 0 then
+            Error(NegativeAdjmtAlreadyPostedErr, FAConversion."No.", PostedEntryNo);
+    end;
+
     local procedure PostNegativeAdjustment(var FAConversion: Record "FA Conversion"; SkipCosting: Boolean; AppliesToEntryNo: Integer; CostEntryNo: Integer)
     var
         ItemJournalLine: Record "Item Journal Line";
@@ -234,6 +255,8 @@ codeunit 60000 "FA Conversion Functions"
         ItemJnlPostBatch: Codeunit "Item Jnl.-Post Batch";
         NoSeries: Codeunit "No. Series";
     begin
+        CheckNegativeAdjustmentNotPosted(FAConversion);
+
         FAConversion.TestField("Location Code");
         FAConversion.TestField("Posting Date");
 

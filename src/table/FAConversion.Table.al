@@ -68,6 +68,15 @@ table 60001 "FA Conversion"
             ToolTip = 'Specifies the value of the Serial No. field.';
             TableRelation = "Item Ledger Entry"."Serial No." where("Item No." = field("Item No."), Open = const(true), "Location Code" = field("Location Code"), "Variant Code" = field("Variant Code"));
             ValidateTableRelation = false;
+
+            trigger OnValidate()
+            var
+                SerialNoLockedErr: Label 'The serial number of FA Conversion %1 cannot be changed because its negative adjustment is already posted (item ledger entry %2).', Comment = '%1 = FA Conversion No., %2 = Item ledger entry no. of the posted negative adjustment';
+            begin
+                // The serial number is the one the posted negative adjustment took out of inventory (BCAPP-475)
+                if ("Serial No." <> xRec."Serial No.") and ("Negative Adjmt. ILE Entry No." <> 0) then
+                    Error(SerialNoLockedErr, "No.", "Negative Adjmt. ILE Entry No.");
+            end;
         }
         field(8; "Negative Adjmt. ILE Entry No."; Integer)
         {

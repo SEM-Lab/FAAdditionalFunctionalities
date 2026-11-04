@@ -138,6 +138,7 @@ page 60002 "FA Conversion"
                 Caption = 'Negative Adjustment';
                 ToolTip = 'Executes the Negative Adjustment action.';
                 Image = NegativeLines;
+                Enabled = not NegAdjPosted;
                 Promoted = true;
                 PromotedOnly = true;
                 PromotedCategory = Process;
@@ -146,6 +147,7 @@ page 60002 "FA Conversion"
                 trigger OnAction()
                 begin
                     FAConversionFunctions.NegativeAdjustment(Rec, false);
+                    CurrPage.Update(false);
                 end;
             }
             action(FAAcquisition)
@@ -154,6 +156,7 @@ page 60002 "FA Conversion"
                 Caption = 'FA Acquisition';
                 ToolTip = 'Executes the FA Acquisition action.';
                 Image = FixedAssets;
+                Enabled = not AcquisitionPosted;
                 Promoted = true;
                 PromotedOnly = true;
                 PromotedCategory = Process;
@@ -162,20 +165,34 @@ page 60002 "FA Conversion"
                 trigger OnAction()
                 begin
                     FAConversionFunctions.FAAcquisition(Rec);
+                    CurrPage.Update(false);
                 end;
             }
         }
     }
     trigger OnAfterGetRecord()
     begin
-        SerialNoEditable := false;
-        // The posting date drives the posted entries and the depreciation dates: it is fixed once anything is posted
-        PostingDateLocked := (Rec."Negative Adjmt. ILE Entry No." <> 0) or (Rec."FA Acquisition Entry No." <> 0);
+        SetPostedState();
 
+        SerialNoEditable := false;
         if not Item.Get(Rec."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), Rec."Item No.");
-        if Item."Item Tracking Code" <> '' then
+        // The serial number is the one the negative adjustment posts: it is fixed once that is posted
+        if (Item."Item Tracking Code" <> '') and not NegAdjPosted then
             SerialNoEditable := true;
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    begin
+        SetPostedState();
+    end;
+
+    local procedure SetPostedState()
+    begin
+        NegAdjPosted := Rec."Negative Adjmt. ILE Entry No." <> 0;
+        AcquisitionPosted := Rec."FA Acquisition Entry No." <> 0;
+        // The posting date drives the posted entries and the depreciation dates: it is fixed once anything is posted
+        PostingDateLocked := NegAdjPosted or AcquisitionPosted;
     end;
 
     local procedure ShowSourceDocument()
@@ -196,6 +213,8 @@ page 60002 "FA Conversion"
     var
         Item: Record Item;
         FAConversionFunctions: Codeunit "FA Conversion Functions";
+        AcquisitionPosted: Boolean;
+        NegAdjPosted: Boolean;
         PostingDateLocked: Boolean;
         SerialNoEditable: Boolean;
         RecordDoesNotExistErr: Label '%1 %2 does not exist.', Comment = '%1 = Table caption, %2 = Key value';
