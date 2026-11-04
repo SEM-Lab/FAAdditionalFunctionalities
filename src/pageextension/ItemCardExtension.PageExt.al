@@ -11,6 +11,7 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
             group("FA Conversion")
             {
                 Caption = 'FA Conversion';
+                Visible = FAConversionSupported;
 
                 field("FA No. Series"; Rec."FA No. Series")
                 {
@@ -61,6 +62,7 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Image = FixedAssets;
+                Visible = FAConversionSupported;
                 ToolTip = 'Executes the New FA Conversion action.';
 
                 trigger OnAction()
@@ -72,4 +74,10 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
     }
     var
         FAConversionFunctions: Codeunit "FA Conversion Functions";
+        FAConversionSupported: Boolean;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        FAConversionSupported := FAConversionFunctions.IsItemTrackingSupported(Rec."No.");
+    end;
 }

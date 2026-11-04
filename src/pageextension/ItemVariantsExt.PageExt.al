@@ -29,6 +29,7 @@ pageextension 60004 "Item Variants Ext." extends "Item Variants"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Image = FixedAssets;
+                Visible = FAConversionSupported;
                 ToolTip = 'Executes the New FA Conversion action.';
                 trigger OnAction()
                 begin
@@ -39,4 +40,10 @@ pageextension 60004 "Item Variants Ext." extends "Item Variants"
     }
     var
         FAConversionFunctions: Codeunit "FA Conversion Functions";
+        FAConversionSupported: Boolean;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        FAConversionSupported := FAConversionFunctions.IsItemTrackingSupported(Rec."Item No.");
+    end;
 }

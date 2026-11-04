@@ -29,6 +29,7 @@ pageextension 60007 "Item List Ext." extends "Item List"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 Image = FixedAssets;
+                Enabled = FAConversionSupported;
                 ToolTip = 'Create a new Fixed Asset conversion from the selected item.';
 
                 trigger OnAction()
@@ -41,4 +42,10 @@ pageextension 60007 "Item List Ext." extends "Item List"
 
     var
         FAConversionFunctions: Codeunit "FA Conversion Functions";
+        FAConversionSupported: Boolean;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        FAConversionSupported := FAConversionFunctions.IsItemTrackingSupported(Rec."No.");
+    end;
 }

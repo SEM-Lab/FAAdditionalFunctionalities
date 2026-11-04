@@ -41,6 +41,7 @@ codeunit 60000 "FA Conversion Functions"
                   tabledata "Item Journal Batch" = r,
                   tabledata "Item Journal Line" = imd,
                   tabledata "Item Ledger Entry" = r,
+                  tabledata "Item Tracking Code" = r,
                   tabledata Location = r,
                   tabledata "Service Item" = im,
                   tabledata "Service Item Group" = r;
@@ -57,6 +58,8 @@ codeunit 60000 "FA Conversion Functions"
         LocationNotFoundErr: Label 'Location %1 does not exist. Please create the location first or set a valid default location in FA Conversion Setup.', Comment = '%1 = Location Code';
         NoLocationsErr: Label 'No locations are defined in the system. Please create at least one location before proceeding.';
     begin
+        CheckItemTrackingSupported(Item."No.");
+
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
         Item.TestField("FA Posting Group");
@@ -101,6 +104,8 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion: Record "FA Conversion";
         Item: Record Item;
     begin
+        CheckItemTrackingSupported(ItemVariant."Item No.");
+
         if not Item.Get(ItemVariant."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), ItemVariant."Item No.");
 
@@ -125,6 +130,44 @@ codeunit 60000 "FA Conversion Functions"
             NegativeAdjustment(FAConversion, true);
             FAAcquisition(FAConversion);
         end;
+    end;
+
+    /// <summary>
+    /// Returns false when the item uses lot or package tracking, which the FA conversion does not support.
+    /// </summary>
+    /// <param name="ItemNo">The item to check; an unknown item is reported as supported.</param>
+    /// <returns>True when the item has no lot or package tracking.</returns>
+    internal procedure IsItemTrackingSupported(ItemNo: Code[20]): Boolean
+    var
+        Item: Record Item;
+        ItemTrackingCode: Record "Item Tracking Code";
+    begin
+        Item.SetLoadFields("Item Tracking Code");
+        if not Item.Get(ItemNo) then
+            exit(true);
+        if Item."Item Tracking Code" = '' then
+            exit(true);
+
+        ItemTrackingCode.SetLoadFields("Lot Specific Tracking", "Lot Neg. Adjmt. Outb. Tracking", "Package Specific Tracking", "Package Neg. Outb. Tracking");
+        if not ItemTrackingCode.Get(Item."Item Tracking Code") then
+            exit(true);
+
+        exit(not (ItemTrackingCode."Lot Specific Tracking" or ItemTrackingCode."Lot Neg. Adjmt. Outb. Tracking" or
+                  ItemTrackingCode."Package Specific Tracking" or ItemTrackingCode."Package Neg. Outb. Tracking"));
+    end;
+
+    // Lot and package tracked items fail deep in the posting; refuse them before anything is written (BCAPP-475).
+    internal procedure CheckItemTrackingSupported(ItemNo: Code[20])
+    var
+        Item: Record Item;
+        ItemTrackingNotSupportedErr: Label 'Item %1 cannot be converted to a fixed asset because its item tracking code %2 uses lot or package tracking. Only items without item tracking or with serial number tracking can be converted.', Comment = '%1 = Item No., %2 = Item Tracking Code';
+    begin
+        if IsItemTrackingSupported(ItemNo) then
+            exit;
+
+        Item.SetLoadFields("Item Tracking Code");
+        if Item.Get(ItemNo) then
+            Error(ItemTrackingNotSupportedErr, ItemNo, Item."Item Tracking Code");
     end;
 
     local procedure CreateFixedAsset(Item: Record Item; var FAConversion: Record "FA Conversion")
@@ -285,6 +328,7 @@ codeunit 60000 "FA Conversion Functions"
         NoSeries: Codeunit "No. Series";
     begin
         CheckNegativeAdjustmentNotPosted(FAConversion);
+        CheckItemTrackingSupported(FAConversion."Item No.");
 
         FAConversion.TestField("Location Code");
         FAConversion.TestField("Posting Date");
@@ -869,6 +913,8 @@ codeunit 60000 "FA Conversion Functions"
         UseSerialNo: Text[50];
         CompleteFAFailedErr: Label 'Failed to complete FA Conversion: %1', Comment = '%1 = Error message';
     begin
+        CheckItemTrackingSupported(TransferReceiptLine."Item No.");
+
         if not Item.Get(TransferReceiptLine."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), TransferReceiptLine."Item No.");
 
@@ -923,6 +969,8 @@ codeunit 60000 "FA Conversion Functions"
     var
         Item: Record Item;
     begin
+        CheckItemTrackingSupported(TempFAConvSourceLine."Item No.");
+
         if not Item.Get(TempFAConvSourceLine."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), TempFAConvSourceLine."Item No.");
 

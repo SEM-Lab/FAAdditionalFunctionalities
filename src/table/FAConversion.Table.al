@@ -67,7 +67,7 @@ table 60001 "FA Conversion"
         {
             Caption = 'Serial No.';
             ToolTip = 'Specifies the value of the Serial No. field.';
-            TableRelation = "Item Ledger Entry"."Serial No." where("Item No." = field("Item No."), Open = const(true), "Location Code" = field("Location Code"), "Variant Code" = field("Variant Code"));
+            TableRelation = "Item Ledger Entry"."Serial No." where("Item No." = field("Item No."), "Serial No." = filter(<> ''), Open = const(true), "Location Code" = field("Location Code"), "Variant Code" = field("Variant Code"));
             ValidateTableRelation = false;
 
             trigger OnValidate()
