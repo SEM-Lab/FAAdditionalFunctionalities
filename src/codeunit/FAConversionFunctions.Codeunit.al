@@ -404,6 +404,7 @@ codeunit 60000 "FA Conversion Functions"
         exit(0);
     end;
 
+    // OnBeforeCode exposes HideDialog, the only switch for the confirmation dialog of the item journal posting codeunit.
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post", OnBeforeCode, '', false, false)]
     local procedure "Item Jnl.-Post_OnBeforeCode"(var HideDialog: Boolean)
     begin
@@ -787,18 +788,21 @@ codeunit 60000 "FA Conversion Functions"
         ServItem.Modify(true);
     end;
 
+    // OnBeforeCode exposes HideDialog, the only switch for the confirmation dialog of the general journal posting codeunit.
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", OnBeforeCode, '', false, false)]
     local procedure "Gen. Jnl.-Post_OnBeforeCode"(var HideDialog: Boolean)
     begin
         HideDialog := true;
     end;
 
+    // OnBeforeShowPostResultMessage exposes IsHandled for the result message only, so only the post-result message is suppressed.
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", OnBeforeShowPostResultMessage, '', false, false)]
     local procedure "Gen. Jnl.-Post_OnBeforeShowPostResultMessage"(var IsHandled: Boolean)
     begin
         IsHandled := true;
     end;
 
+    // OnBeforeInsertRegister passes the FA ledger entry being written to the register, so its Entry No. is recorded as the acquisition entry.
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"FA Insert Ledger Entry", OnBeforeInsertRegister, '', false, false)]
     local procedure "FA Insert Ledger Entry_OnBeforeInsertRegister"(var FALedgerEntry: Record "FA Ledger Entry")
     begin
@@ -815,6 +819,7 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
 
+    // OnBeforePreReport passes the Item record by var, so a missing item fails before the report adjusts any cost.
     [EventSubscriber(ObjectType::Report, Report::"Adjust Cost - Item Entries", OnBeforePreReport, '', false, false)]
     local procedure "Adjust Cost - Item Entries_OnBeforePreReport"(var Item: Record Item)
     begin
@@ -825,6 +830,7 @@ codeunit 60000 "FA Conversion Functions"
             Error(RecordDoesNotExistErr, Item.TableCaption(), GlobalFAConversion."Item No.");
     end;
 
+    // OnBeforePreReport passes the request values by var, so the posting mode and item filter are set before the report reads the value entries.
     [EventSubscriber(ObjectType::Report, Report::"Post Inventory Cost to G/L INF", OnBeforePreReport, '', false, false)]
     local procedure "Post Inventory Cost to G/L INF_OnBeforePreReport"(var Sender: Report "Post Inventory Cost to G/L INF"; var PostValueEntryToGL: Record "Post Value Entry to G/L")
     begin
@@ -1097,6 +1103,7 @@ codeunit 60000 "FA Conversion Functions"
     end;
 
 
+    // OnAfterInsertItemLedgEntry passes the inserted entry, so its final Entry No. is kept for the conversion's Negative Adjmt. ILE Entry No.
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Jnl.-Post Line", OnAfterInsertItemLedgEntry, '', false, false)]
     local procedure "Item Jnl.-Post Line_OnAfterInsertItemLedgEntry"(var ItemLedgerEntry: Record "Item Ledger Entry")
     begin
