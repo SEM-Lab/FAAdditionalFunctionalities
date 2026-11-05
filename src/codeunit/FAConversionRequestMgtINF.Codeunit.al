@@ -132,7 +132,7 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
         if TempFAConvSourceLine.IsEmpty() then
             Error(NoLinesSelectedErr);
 
-        CheckItemTrackingSupport(TempFAConvSourceLine);
+        CheckFAConversionAvailability(TempFAConvSourceLine);
         CheckItemFASetup(TempFAConvSourceLine);
         LatestDocumentPostingDate := TempFAConvSourceLine.GetLatestDocumentPostingDate(LatestDocumentNo);
         ValidateAcquisitionDate(AcquisitionDate, LatestDocumentPostingDate, LatestDocumentNo);
@@ -232,14 +232,14 @@ codeunit 60015 "FA Conversion Request Mgt. INF"
             until TempFAConvSourceLine.Next() = 0;
     end;
 
-    local procedure CheckItemTrackingSupport(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary)
+    local procedure CheckFAConversionAvailability(var TempFAConvSourceLine: Record "FA Conv. Source Line INF" temporary)
     var
         CheckedItemNos: List of [Code[20]];
     begin
         if TempFAConvSourceLine.FindSet() then
             repeat
                 if not CheckedItemNos.Contains(TempFAConvSourceLine."Item No.") then begin
-                    FAConversionFunctions.CheckItemTrackingSupported(TempFAConvSourceLine."Item No.");
+                    FAConversionFunctions.CheckFAConversionAvailable(TempFAConvSourceLine."Item No.");
                     CheckedItemNos.Add(TempFAConvSourceLine."Item No.");
                 end;
             until TempFAConvSourceLine.Next() = 0;

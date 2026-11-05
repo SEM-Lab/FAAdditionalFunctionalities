@@ -58,7 +58,7 @@ codeunit 60000 "FA Conversion Functions"
         LocationNotFoundErr: Label 'Location %1 does not exist. Please create the location first or set a valid default location in FA Conversion Setup.', Comment = '%1 = Location Code';
         NoLocationsErr: Label 'No locations are defined in the system. Please create at least one location before proceeding.';
     begin
-        CheckItemTrackingSupported(Item."No.");
+        CheckFAConversionAvailable(Item."No.");
 
         Item.TestField("FA No. Series");
         Item.TestField("FA Conv. Gen. Bus. Post. Group");
@@ -104,7 +104,7 @@ codeunit 60000 "FA Conversion Functions"
         FAConversion: Record "FA Conversion";
         Item: Record Item;
     begin
-        CheckItemTrackingSupported(ItemVariant."Item No.");
+        CheckFAConversionAvailable(ItemVariant."Item No.");
 
         if not Item.Get(ItemVariant."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), ItemVariant."Item No.");
@@ -168,6 +168,35 @@ codeunit 60000 "FA Conversion Functions"
         Item.SetLoadFields("Item Tracking Code");
         if Item.Get(ItemNo) then
             Error(ItemTrackingNotSupportedErr, ItemNo, Item."Item Tracking Code");
+    end;
+
+    /// <summary>
+    /// Returns false when the item exists and is not of type Inventory or uses lot or package tracking.
+    /// </summary>
+    /// <param name="ItemNo">The item to check; an unknown item is reported as available.</param>
+    /// <returns>True when the item can be converted to a fixed asset.</returns>
+    internal procedure IsFAConversionAvailable(ItemNo: Code[20]): Boolean
+    var
+        Item: Record Item;
+    begin
+        Item.SetLoadFields(Type);
+        if Item.Get(ItemNo) then
+            if Item.Type <> Item.Type::Inventory then
+                exit(false);
+
+        exit(IsItemTrackingSupported(ItemNo));
+    end;
+
+    // Only inventory items with supported item tracking are converted; others fail deep in the posting, so they are refused before anything is written (BCAPP-475).
+    internal procedure CheckFAConversionAvailable(ItemNo: Code[20])
+    var
+        Item: Record Item;
+    begin
+        Item.SetLoadFields(Type);
+        if Item.Get(ItemNo) then
+            Item.TestField(Type, Item.Type::Inventory);
+
+        CheckItemTrackingSupported(ItemNo);
     end;
 
     local procedure CreateFixedAsset(Item: Record Item; var FAConversion: Record "FA Conversion")
@@ -328,7 +357,7 @@ codeunit 60000 "FA Conversion Functions"
         NoSeries: Codeunit "No. Series";
     begin
         CheckNegativeAdjustmentNotPosted(FAConversion);
-        CheckItemTrackingSupported(FAConversion."Item No.");
+        CheckFAConversionAvailable(FAConversion."Item No.");
 
         FAConversion.TestField("Location Code");
         FAConversion.TestField("Posting Date");
@@ -913,7 +942,7 @@ codeunit 60000 "FA Conversion Functions"
         UseSerialNo: Text[50];
         CompleteFAFailedErr: Label 'Failed to complete FA Conversion: %1', Comment = '%1 = Error message';
     begin
-        CheckItemTrackingSupported(TransferReceiptLine."Item No.");
+        CheckFAConversionAvailable(TransferReceiptLine."Item No.");
 
         if not Item.Get(TransferReceiptLine."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), TransferReceiptLine."Item No.");
@@ -969,7 +998,7 @@ codeunit 60000 "FA Conversion Functions"
     var
         Item: Record Item;
     begin
-        CheckItemTrackingSupported(TempFAConvSourceLine."Item No.");
+        CheckFAConversionAvailable(TempFAConvSourceLine."Item No.");
 
         if not Item.Get(TempFAConvSourceLine."Item No.") then
             Error(RecordDoesNotExistErr, Item.TableCaption(), TempFAConvSourceLine."Item No.");

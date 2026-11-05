@@ -44,6 +44,6 @@ pageextension 60004 "Item Variants Ext." extends "Item Variants"
 
     trigger OnAfterGetCurrRecord()
     begin
-        FAConversionSupported := FAConversionFunctions.IsItemTrackingSupported(Rec."Item No.");
+        FAConversionSupported := FAConversionFunctions.IsFAConversionAvailable(Rec."Item No.");
     end;
 }

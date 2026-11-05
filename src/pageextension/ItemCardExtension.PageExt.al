@@ -78,6 +78,6 @@ pageextension 60002 "Item Card Extension" extends "Item Card"
 
     trigger OnAfterGetCurrRecord()
     begin
-        FAConversionSupported := FAConversionFunctions.IsItemTrackingSupported(Rec."No.");
+        FAConversionSupported := FAConversionFunctions.IsFAConversionAvailable(Rec."No.");
     end;
 }

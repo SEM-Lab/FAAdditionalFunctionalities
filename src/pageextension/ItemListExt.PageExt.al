@@ -46,6 +46,6 @@ pageextension 60007 "Item List Ext." extends "Item List"
 
     trigger OnAfterGetCurrRecord()
     begin
-        FAConversionSupported := FAConversionFunctions.IsItemTrackingSupported(Rec."No.");
+        FAConversionSupported := FAConversionFunctions.IsFAConversionAvailable(Rec."No.");
     end;
 }
